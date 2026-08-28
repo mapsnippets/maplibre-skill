@@ -1,0 +1,21 @@
+{
+  "name": "maplibre-skill",
+  "version": "1.0.0",
+  "description": "Official MapLibre GL JS AI Agent Skill by MapSnippets. Comprehensive instructions, best practices, and vector basemap patterns for AI coding assistants.",
+  "author": {
+    "name": "MapSnippets",
+    "url": "https://labs.maptiler.com/mapsnippets/"
+  },
+  "homepage": "https://labs.maptiler.com/mapsnippets/",
+  "license": "MIT",
+  "keywords": [
+    "maplibre",
+    "maplibre-gl",
+    "maps",
+    "webgl",
+    "geospatial",
+    "vector-tiles",
+    "3d-terrain",
+    "maptiler"
+  ]
+}
