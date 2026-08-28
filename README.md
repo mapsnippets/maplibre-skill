@@ -2,7 +2,7 @@
 
 > Official **MapLibre GL JS** skill for AI coding assistants (Cursor, Claude Code, Antigravity, GitHub Copilot, Cline).
 
-Maintained by **[MapSnippets](https://labs.maptiler.com/mapsnippets/)**.
+Maintained by **[MapSnippets](https://mapsnippets.com/)**.
 
 ---
 
@@ -56,4 +56,4 @@ const map = new maplibregl.Map({
 ---
 
 ## 📄 License
-MIT © [MapSnippets](https://labs.maptiler.com/mapsnippets/)
+MIT © [MapSnippets](https://mapsnippets.com/)
