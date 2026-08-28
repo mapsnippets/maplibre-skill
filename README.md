@@ -2,11 +2,11 @@
 
 > Official **MapLibre GL JS** skill for AI coding assistants (Cursor, Claude Code, Antigravity, GitHub Copilot, Windsurf, Cline).
 
-Maintained by **[MapSnippets](https://mapsnippets.com/)** — Open-source geospatial snippets, guides, and agent tools.
+Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospatial snippets, guides, and agent tools.
 
 ---
 
-🌐 [Website](https://mapsnippets.com/) &nbsp; 📚 [MapLibre Documentation](https://maplibre.org/maplibre-gl-js/docs/)
+🌐 [Website](https://mapsnippets.org/) &nbsp; 📚 [MapLibre Documentation](https://maplibre.org/maplibre-gl-js/docs/)
 
 ---
 
@@ -148,7 +148,7 @@ The vector tile examples in this skill utilize MapTiler vector basemap styles. T
 
 ## Links
 
-- 🌐 [MapSnippets Community](https://mapsnippets.com/)
+- 🌐 [MapSnippets Community](https://mapsnippets.org/)
 - 🗺️ [MapLibre GL JS Documentation](https://maplibre.org/maplibre-gl-js/docs/)
 - 🐙 [GitHub Repository](https://github.com/mapsnippets/maplibre-skill)
 
@@ -169,5 +169,5 @@ This project is licensed under the MIT License — see the [LICENSE](./LICENSE.m
 <br>
 
 <p align="center">
-  Maintained by <a href="https://mapsnippets.com/">MapSnippets</a> — Open web mapping tools & snippets.
+  Maintained by <a href="https://mapsnippets.org/">MapSnippets</a> — Open web mapping tools & snippets.
 </p>
