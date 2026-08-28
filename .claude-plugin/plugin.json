@@ -4,9 +4,9 @@
   "description": "Official MapLibre GL JS AI Agent Skill by MapSnippets. Comprehensive instructions, best practices, and vector basemap patterns for AI coding assistants.",
   "author": {
     "name": "MapSnippets",
-    "url": "https://labs.maptiler.com/mapsnippets/"
+    "url": "https://mapsnippets.com/"
   },
-  "homepage": "https://labs.maptiler.com/mapsnippets/",
+  "homepage": "https://mapsnippets.com/",
   "license": "MIT",
   "keywords": [
     "maplibre",
