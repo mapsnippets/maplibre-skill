@@ -34,7 +34,7 @@ Maintained by **[MapSnippets](https://mapsnippets.com/)** — Open-source geospa
 A skill is on-demand expertise: the agent loads it only when your request matches the skill's description, then follows its instructions instead of guessing. When you ask for MapLibre maps, vector layers, styling expressions, clustering, or 3D terrain, this skill makes the agent:
 
 - **Generate pure native MapLibre GL JS code** (v3–v5) with modern lifecycle handling (WebGL container sizing, cleanup, event delegation, canvas resize).
-- **Configure high-performance vector basemaps** with modern vector tile styles and clean typography.
+- **Configure high-performance vector basemaps** with modern vector tile styles (`streets-v4`, `outdoor-v4`, `satellite`) and clean typography.
 - **Author complex data-driven expressions** (`interpolate`, `step`, `match`, `case`, `feature-state`) without syntax errors or type mismatches.
 - **Handle GeoJSON layers & clustering correctly** — spatial clustering, expansion zoom, unclustered point popups, and source updates (`setData`).
 - **Implement 3D terrain & globe projections** — Terrain-RGB raster-dem sources, sky layers, pitch & bearing animations, and projection switching.
@@ -128,7 +128,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 
 const map = new maplibregl.Map({
   container: "map",
-  style: "https://api.maptiler.com/maps/streets-v2/style.json?key=YOUR_API_KEY",
+  style: "https://api.maptiler.com/maps/streets-v4/style.json?key=YOUR_API_KEY",
   center: [14.4378, 50.0755], // [lng, lat]
   zoom: 12
 });
