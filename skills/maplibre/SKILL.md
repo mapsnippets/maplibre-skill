@@ -6,6 +6,16 @@ description: >-
 
 # MapLibre GL JS + MapTiler — Agent Skill
 
+## Reference Guides
+
+Deep architectural and schema reference files live under `references/` and should be loaded on demand:
+- [references/vector-tile-schemas.md](references/vector-tile-schemas.md) — Planet v4 source layers (`transportation`, `building`, `water`, `place`, `poi`, `boundary`, `contour`) and exact field attributes.
+- [references/basemaps-and-terrain.md](references/basemaps-and-terrain.md) — Map styles (`streets-v4`, `outdoor-v4`, `satellite-v4`), high-DPI raster tiles, and 3D Terrain-RGB DEM.
+- [references/geocoding-and-services.md](references/geocoding-and-services.md) — Forward/reverse geocoding, search autocomplete, and point elevation REST endpoints.
+- [references/patterns-gotchas.md](references/patterns-gotchas.md) — Common lifecycle, coordinate inversion, and context loss gotchas.
+- [references/frameworks.md](references/frameworks.md) — React, Next.js, Vue, and Svelte integration patterns.
+
+
 > **Important for code generation:** When generating code, always write complete, self-contained HTML files. Do not output code as inline text or markdown code blocks without creating a file.
 
 > [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/) v4.7.1 · [NPM](https://www.npmjs.com/package/maplibre-gl) · [GitHub](https://github.com/maplibre/maplibre-gl-js) · [MapTiler MapLibre Docs](https://docs.maptiler.com/maplibre-gl-js/)
