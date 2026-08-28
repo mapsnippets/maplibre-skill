@@ -1,0 +1,791 @@
+---
+name: maplibre-gl-js-maptiler
+description: >-
+  Expert coding skill for building interactive web maps with MapLibre GL JS and
+  MapTiler Cloud vector tiles/services. USE WHEN the user wants to create a
+  MapLibre GL JS map, use maplibregl.Map, add vector tiles from MapTiler, display
+  GeoJSON data with source/layer architecture, create data-driven styling with
+  expressions, build 3D terrain with MapTiler terrain tiles, add fill-extrusion
+  building layers, show a globe projection, cluster points with built-in GeoJSON
+  clustering, add markers or popups with maplibregl.Marker/Popup, create heatmap
+  layers, animate the camera with flyTo/easeTo, add line layers with gradients,
+  load image/pattern layers, handle map events (click, mousemove, load), build
+  custom controls with IControl, use MapTiler geocoding API, integrate MapLibre
+  with React (react-map-gl) or Vue. Also USE WHEN the user mentions MapLibre,
+  maplibre-gl, vector map, or WebGL map — but NOT when they mention MapTiler SDK
+  or @maptiler/sdk (use the SDK skill instead). This skill is for RAW MapLibre
+  GL JS without the SDK wrapper. MapLibre uses [lng, lat] coordinate order and
+  source/layer architecture. Covers CDN and NPM usage, expressions, and
+  framework integration patterns.
+---
+
+# MapLibre GL JS + MapTiler — Agent Skill
+
+> **Important for code generation:** When generating code, always write complete, self-contained HTML files. Do not output code as inline text or markdown code blocks without creating a file.
+
+> [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/) v4.7.1 · [NPM](https://www.npmjs.com/package/maplibre-gl) · [GitHub](https://github.com/maplibre/maplibre-gl-js) · [MapTiler MapLibre Docs](https://docs.maptiler.com/maplibre-gl-js/)
+
+MapLibre GL JS is an open-source TypeScript library for rendering interactive vector maps using WebGL/WebGPU. This skill covers using MapLibre GL JS with **MapTiler Cloud** for vector styles, tiles, geocoding, and other map services.
+
+---
+
+## 1. Why MapLibre GL JS + MapTiler
+
+MapLibre GL JS is the community-maintained fork of Mapbox GL JS v1 — fully open-source (BSD-3-Clause), with no proprietary restrictions. Combined with MapTiler Cloud:
+
+- **Vector tile styles** — Streets, Satellite, Outdoor, Topo, Dataviz, and 16+ styles as style.json
+- **Source/layer architecture** — add GeoJSON, vector, raster, image sources with typed layers
+- **Expression-based styling** — data-driven colors, sizes, filters using the expression DSL
+- **3D terrain** — MapTiler terrain-rgb tiles for realistic elevation rendering
+- **Globe projection** — built-in globe view at low zoom levels
+- **Built-in clustering** — GeoJSON source-level clustering, no plugins needed
+- **Fill-extrusion layers** — 3D building extrusions from vector tile data
+- **Heatmap layers** — native heatmap rendering, no plugins
+- **Geocoding API** — forward/reverse search via MapTiler REST endpoints
+- **60fps WebGL rendering** — hardware-accelerated, smooth camera animations
+
+**When to use MapLibre GL JS vs MapTiler SDK:** Use raw MapLibre GL JS when you want full control, minimal dependencies, or are integrating with an existing MapLibre codebase. Use MapTiler SDK when you want convenience wrappers (helpers, auto-API key, MapStyle enum, session billing). The SDK extends MapLibre — everything in this skill works with the SDK too.
+
+**When to use MapLibre vs Leaflet:** Use MapLibre for vector tiles, 3D terrain, globe view, data-driven styling, fill-extrusions, or 1000+ points. Use Leaflet for lightweight raster maps, maximum plugin ecosystem, or simple 2D use cases.
+
+---
+
+## 2. Setup
+
+### CDN (recommended for quick demos)
+
+```html
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+```
+
+### NPM
+
+```bash
+npm install maplibre-gl
+```
+
+```js
+import maplibregl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
+```
+
+### API Key
+
+**Do NOT hardcode a fake API key.** Ask the user for theirs, or instruct them to get one at https://cloud.maptiler.com/account/keys/
+
+Use `YOUR_MAPTILER_KEY` as placeholder in examples.
+
+### Minimal Map
+
+```js
+const map = new maplibregl.Map({
+  container: 'map',                      // DOM element or ID
+  style: 'https://api.maptiler.com/maps/streets-v4/style.json?key=YOUR_MAPTILER_KEY',
+  center: [14.4178, 50.1167],            // [lng, lat] — NOT [lat, lng]!
+  zoom: 12
+});
+```
+
+> **Critical:** The container element must have explicit dimensions (e.g., `height: 100vh`), otherwise the map is invisible.
+
+> **Critical:** MapLibre uses **`[lng, lat]`** coordinate order — same as GeoJSON, opposite of Leaflet.
+
+---
+
+## 3. Core Concepts
+
+### Map Constructor Options
+
+```js
+const map = new maplibregl.Map({
+  container: 'map',
+  style: 'https://api.maptiler.com/maps/streets-v4/style.json?key=YOUR_MAPTILER_KEY',
+  center: [lng, lat],               // [lng, lat] — NOT [lat, lng]!
+  zoom: 12,
+  pitch: 0,                          // 0-85 degrees (camera tilt)
+  bearing: 0,                        // map rotation in degrees
+  minZoom: 0,
+  maxZoom: 22,
+  maxPitch: 85,
+  hash: false,                       // sync viewport with URL hash
+  antialias: true,                   // smoother edges (slight perf cost)
+  attributionControl: true,
+  cooperativeGestures: false,        // Cmd+scroll to zoom
+  maxBounds: [[sw_lng, sw_lat], [ne_lng, ne_lat]],  // optional constraint
+});
+```
+
+### MapTiler Vector Style URLs
+
+MapTiler provides style.json files that configure sources, layers, fonts, and sprites — everything MapLibre needs.
+
+| Style | URL path |
+|-------|----------|
+| Streets v4 | `maps/streets-v4/style.json` |
+| Streets v4 Dark | `maps/streets-v4-dark/style.json` |
+| Streets v4 Light | `maps/streets-v4-light/style.json` |
+| Satellite | `maps/satellite/style.json` |
+| Hybrid | `maps/hybrid/style.json` |
+| Outdoor v4 | `maps/outdoor-v4/style.json` |
+| Topo v4 | `maps/topo-v4/style.json` |
+| Dataviz | `maps/dataviz/style.json` |
+| Dataviz Dark | `maps/dataviz-dark/style.json` |
+| Dataviz Light | `maps/dataviz-light/style.json` |
+| Base v4 | `maps/base-v4/style.json` |
+| Bright v4 | `maps/bright-v4/style.json` |
+| Ocean | `maps/ocean/style.json` |
+| Winter v4 | `maps/winter-v4/style.json` |
+| Landscape | `maps/landscape/style.json` |
+| Backdrop | `maps/backdrop/style.json` |
+
+All URLs are prefixed with `https://api.maptiler.com/` and suffixed with `?key=YOUR_MAPTILER_KEY`.
+
+```js
+// Example: switching to satellite
+map.setStyle('https://api.maptiler.com/maps/satellite/style.json?key=YOUR_MAPTILER_KEY');
+```
+
+> Full style URL reference: `references/maptiler-styles.md`
+
+### Source and Layer Architecture
+
+MapLibre uses a **source → layer** model. Sources hold data; layers define how to render it.
+
+```js
+// 1. Add a source (data)
+map.addSource('my-points', {
+  type: 'geojson',
+  data: {
+    type: 'FeatureCollection',
+    features: [
+      { type: 'Feature', geometry: { type: 'Point', coordinates: [14.4178, 50.1167] }, properties: { name: 'Prague' } }
+    ]
+  }
+});
+
+// 2. Add a layer (rendering)
+map.addLayer({
+  id: 'my-points-layer',
+  type: 'circle',
+  source: 'my-points',
+  paint: {
+    'circle-radius': 8,
+    'circle-color': '#FF0000'
+  }
+});
+```
+
+**Source types:** `geojson`, `vector`, `raster`, `raster-dem`, `image`, `video`
+**Layer types:** `circle`, `line`, `fill`, `fill-extrusion`, `symbol`, `heatmap`, `raster`, `hillshade`, `background`
+
+> Full source/layer reference: `references/sources-layers.md`
+
+### Attribution
+
+**Always include attribution.** MapTiler styles include it automatically via the style.json. If building custom styles, add:
+
+```js
+new maplibregl.Map({
+  // ...
+  attributionControl: true  // default
+});
+```
+
+---
+
+## 4. Common Recipes
+
+### Markers and Popups
+
+```js
+// Basic marker with popup
+new maplibregl.Marker({ color: '#FF0000' })
+  .setLngLat([14.4178, 50.1167])    // [lng, lat]!
+  .setPopup(new maplibregl.Popup({ offset: 25 }).setHTML('<h3>Prague</h3><p>Capital of Czech Republic</p>'))
+  .addTo(map);
+
+// Custom HTML marker
+const el = document.createElement('div');
+el.className = 'custom-marker';
+el.style.width = '30px';
+el.style.height = '30px';
+el.style.backgroundImage = 'url(marker.png)';
+el.style.backgroundSize = 'cover';
+
+new maplibregl.Marker({ element: el })
+  .setLngLat([14.4178, 50.1167])
+  .addTo(map);
+
+// Standalone popup
+new maplibregl.Popup({ closeOnClick: false })
+  .setLngLat([14.4178, 50.1167])
+  .setHTML('<h3>Hello!</h3>')
+  .addTo(map);
+```
+
+### GeoJSON Source and Layers
+
+```js
+map.on('load', () => {
+  // Add GeoJSON source
+  map.addSource('places', {
+    type: 'geojson',
+    data: 'https://example.com/places.geojson'  // URL or inline object
+  });
+
+  // Render as circles
+  map.addLayer({
+    id: 'places-circles',
+    type: 'circle',
+    source: 'places',
+    paint: {
+      'circle-radius': 6,
+      'circle-color': '#0891b2',
+      'circle-stroke-width': 2,
+      'circle-stroke-color': '#ffffff'
+    }
+  });
+
+  // Render labels
+  map.addLayer({
+    id: 'places-labels',
+    type: 'symbol',
+    source: 'places',
+    layout: {
+      'text-field': ['get', 'name'],
+      'text-font': ['Noto Sans Regular'],
+      'text-offset': [0, 1.5],
+      'text-anchor': 'top',
+      'text-size': 12
+    },
+    paint: {
+      'text-color': '#333333',
+      'text-halo-color': '#ffffff',
+      'text-halo-width': 1
+    }
+  });
+});
+```
+
+### Data-Driven Styling with Expressions
+
+```js
+// Color circles by property value
+map.addLayer({
+  id: 'earthquakes',
+  type: 'circle',
+  source: 'earthquakes',
+  paint: {
+    // Size by magnitude
+    'circle-radius': [
+      'interpolate', ['linear'], ['get', 'magnitude'],
+      1, 3,
+      5, 15,
+      8, 40
+    ],
+    // Color by magnitude (step expression)
+    'circle-color': [
+      'step', ['get', 'magnitude'],
+      '#51bbd6',    // < 3
+      3, '#f1f075', // 3-5
+      5, '#f28cb1',  // 5-7
+      7, '#e31a1c'   // 7+
+    ],
+    'circle-opacity': 0.8
+  }
+});
+```
+
+> Full expression reference: `references/expressions.md`
+
+### Forward Geocoding (MapTiler API)
+
+```js
+async function geocodeForward(query) {
+  const url = `https://api.maptiler.com/geocoding/${encodeURIComponent(query)}.json?key=YOUR_MAPTILER_KEY`;
+  const response = await fetch(url);
+  const data = await response.json();
+
+  if (data.features.length > 0) {
+    const coords = data.features[0].geometry.coordinates; // [lng, lat]
+    map.flyTo({ center: coords, zoom: 14 });
+
+    new maplibregl.Marker()
+      .setLngLat(coords)
+      .setPopup(new maplibregl.Popup().setHTML(`<b>${data.features[0].place_name}</b>`))
+      .addTo(map);
+  }
+}
+```
+
+### Reverse Geocoding (MapTiler API)
+
+```js
+map.on('click', async (e) => {
+  const { lng, lat } = e.lngLat;
+  const url = `https://api.maptiler.com/geocoding/${lng},${lat}.json?key=YOUR_MAPTILER_KEY`;
+  const response = await fetch(url);
+  const data = await response.json();
+
+  if (data.features.length > 0) {
+    new maplibregl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(data.features[0].place_name)
+      .addTo(map);
+  }
+});
+```
+
+### Marker Clustering (Built-in)
+
+No plugins needed — MapLibre clusters at the GeoJSON source level.
+
+```js
+map.on('load', () => {
+  map.addSource('points', {
+    type: 'geojson',
+    data: pointsGeoJSON,
+    cluster: true,
+    clusterMaxZoom: 14,
+    clusterRadius: 50
+  });
+
+  // Cluster circles
+  map.addLayer({
+    id: 'clusters',
+    type: 'circle',
+    source: 'points',
+    filter: ['has', 'point_count'],
+    paint: {
+      'circle-color': ['step', ['get', 'point_count'], '#51bbd6', 100, '#f1f075', 750, '#f28cb1'],
+      'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40]
+    }
+  });
+
+  // Cluster count labels
+  map.addLayer({
+    id: 'cluster-count',
+    type: 'symbol',
+    source: 'points',
+    filter: ['has', 'point_count'],
+    layout: {
+      'text-field': ['get', 'point_count_abbreviated'],
+      'text-font': ['Noto Sans Regular'],
+      'text-size': 12
+    }
+  });
+
+  // Individual points
+  map.addLayer({
+    id: 'unclustered-point',
+    type: 'circle',
+    source: 'points',
+    filter: ['!', ['has', 'point_count']],
+    paint: {
+      'circle-color': '#11b4da',
+      'circle-radius': 6,
+      'circle-stroke-width': 1,
+      'circle-stroke-color': '#fff'
+    }
+  });
+
+  // Click cluster to zoom in
+  map.on('click', 'clusters', (e) => {
+    const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+    const clusterId = features[0].properties.cluster_id;
+    map.getSource('points').getClusterExpansionZoom(clusterId, (err, zoom) => {
+      if (err) return;
+      map.easeTo({ center: features[0].geometry.coordinates, zoom });
+    });
+  });
+});
+```
+
+### Heatmap Layer
+
+```js
+map.addLayer({
+  id: 'heatmap',
+  type: 'heatmap',
+  source: 'earthquakes',
+  paint: {
+    'heatmap-weight': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 0, 6, 1],
+    'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, 1, 9, 3],
+    'heatmap-color': [
+      'interpolate', ['linear'], ['heatmap-density'],
+      0, 'rgba(33,102,172,0)',
+      0.2, 'rgb(103,169,207)',
+      0.4, 'rgb(209,229,240)',
+      0.6, 'rgb(253,219,199)',
+      0.8, 'rgb(239,138,98)',
+      1, 'rgb(178,24,43)'
+    ],
+    'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 2, 9, 20],
+    'heatmap-opacity': 0.8
+  }
+});
+```
+
+### 3D Terrain
+
+```js
+map.on('load', () => {
+  // Add MapTiler terrain source
+  map.addSource('terrain', {
+    type: 'raster-dem',
+    url: 'https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key=YOUR_MAPTILER_KEY',
+    tileSize: 256
+  });
+
+  // Enable terrain
+  map.setTerrain({ source: 'terrain', exaggeration: 1.5 });
+
+  // Optional: add sky layer for atmosphere
+  map.addLayer({
+    id: 'sky',
+    type: 'sky',
+    paint: {
+      'sky-type': 'atmosphere',
+      'sky-atmosphere-sun': [0.0, 90.0],
+      'sky-atmosphere-sun-intensity': 15
+    }
+  });
+});
+```
+
+### 3D Building Extrusions
+
+MapTiler v2 styles use `maptiler_planet` as the vector source name (older styles used `openmaptiles`). To be safe, detect the source at runtime:
+
+```js
+map.on('load', () => {
+  // Detect the vector tile source name (varies by style version)
+  const sources = map.getStyle().sources;
+  let vectorSource = null;
+  for (const [name, src] of Object.entries(sources)) {
+    if (src.type === 'vector') { vectorSource = name; break; }
+  }
+  if (!vectorSource) return;
+
+  map.addLayer({
+    id: '3d-buildings',
+    source: vectorSource,
+    'source-layer': 'building',
+    type: 'fill-extrusion',
+    minzoom: 14,
+    paint: {
+      'fill-extrusion-color': [
+        'interpolate', ['linear'], ['get', 'render_height'],
+        0, '#e0e0e0',
+        50, '#c0c0c0',
+        100, '#a0a0a0',
+        200, '#808080'
+      ],
+      'fill-extrusion-height': ['get', 'render_height'],
+      'fill-extrusion-base': ['get', 'render_min_height'],
+      'fill-extrusion-opacity': 0.8
+    }
+  });
+});
+```
+
+### Globe Projection
+
+```js
+const map = new maplibregl.Map({
+  container: 'map',
+  style: 'https://api.maptiler.com/maps/satellite/style.json?key=YOUR_MAPTILER_KEY',
+  center: [0, 20],
+  zoom: 1.5,
+  projection: 'globe'     // 'mercator' (default) or 'globe'
+});
+
+// Optional: atmosphere
+map.on('load', () => {
+  map.setFog({
+    color: 'rgb(186, 210, 235)',
+    'high-color': 'rgb(36, 92, 223)',
+    'horizon-blend': 0.02,
+    'space-color': 'rgb(11, 11, 25)',
+    'star-intensity': 0.6
+  });
+});
+```
+
+### Camera Animations
+
+```js
+// Smooth fly animation
+map.flyTo({
+  center: [14.4178, 50.1167],
+  zoom: 15,
+  pitch: 60,
+  bearing: 30,
+  duration: 3000,
+  essential: true       // not affected by prefers-reduced-motion
+});
+
+// Ease (linear interpolation)
+map.easeTo({
+  center: [14.4178, 50.1167],
+  zoom: 14,
+  duration: 1000
+});
+
+// Instant jump
+map.jumpTo({
+  center: [14.4178, 50.1167],
+  zoom: 12
+});
+
+// Fit to bounds
+map.fitBounds(
+  [[12.0, 48.5], [18.9, 51.1]],  // [[sw_lng, sw_lat], [ne_lng, ne_lat]]
+  { padding: 50, duration: 1000 }
+);
+```
+
+### Line Layer with Gradient
+
+```js
+map.addSource('route', {
+  type: 'geojson',
+  lineMetrics: true,   // REQUIRED for line-gradient
+  data: routeGeoJSON
+});
+
+map.addLayer({
+  id: 'route-line',
+  type: 'line',
+  source: 'route',
+  layout: {
+    'line-join': 'round',
+    'line-cap': 'round'
+  },
+  paint: {
+    'line-width': 6,
+    'line-gradient': [
+      'interpolate', ['linear'], ['line-progress'],
+      0, '#0000ff',
+      0.5, '#00ff00',
+      1, '#ff0000'
+    ]
+  }
+});
+```
+
+### Custom Control
+
+```js
+class CoordinateControl {
+  onAdd(map) {
+    this._map = map;
+    this._container = document.createElement('div');
+    this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
+    this._container.style.padding = '6px 10px';
+    this._container.style.background = 'white';
+    this._container.textContent = '-';
+
+    map.on('mousemove', (e) => {
+      this._container.textContent =
+        `${e.lngLat.lng.toFixed(4)}, ${e.lngLat.lat.toFixed(4)}`;
+    });
+
+    return this._container;
+  }
+
+  onRemove() {
+    this._container.parentNode.removeChild(this._container);
+    this._map = undefined;
+  }
+}
+
+map.addControl(new CoordinateControl(), 'bottom-left');
+```
+
+> **Working HTML examples** (complete, copy-paste ready):
+> `scripts/basic-map.html`, `scripts/markers-popups.html`, `scripts/geojson-layers.html`,
+> `scripts/geocoding-search.html`, `scripts/clustering.html`, `scripts/heatmap.html`,
+> `scripts/3d-terrain.html`, `scripts/globe-projection.html`
+
+---
+
+## 5. Framework Integration
+
+### React (react-map-gl)
+
+```bash
+npm install react-map-gl maplibre-gl
+```
+
+```jsx
+import Map, { Marker, Popup, NavigationControl } from 'react-map-gl/maplibre';
+import 'maplibre-gl/dist/maplibre-gl.css';
+
+function MapView() {
+  return (
+    <Map
+      initialViewState={{ longitude: 14.4178, latitude: 50.1167, zoom: 12 }}
+      style={{ width: '100%', height: '400px' }}
+      mapStyle="https://api.maptiler.com/maps/streets-v4/style.json?key=YOUR_MAPTILER_KEY"
+    >
+      <NavigationControl position="top-right" />
+      <Marker longitude={14.4178} latitude={50.1167} color="#FF0000" />
+    </Map>
+  );
+}
+```
+
+**Next.js App Router:** Add `"use client";` at the top. For SSR: `dynamic(() => import('./Map'), { ssr: false })`.
+
+### Vue 3
+
+```bash
+npm install maplibre-gl
+```
+
+```vue
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+import maplibregl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
+
+const container = ref(null);
+let map = null;  // plain let, NOT ref() — Vue reactivity on map causes issues
+
+onMounted(() => {
+  map = new maplibregl.Map({
+    container: container.value,
+    style: 'https://api.maptiler.com/maps/streets-v4/style.json?key=YOUR_MAPTILER_KEY',
+    center: [14.4178, 50.1167],
+    zoom: 12
+  });
+});
+
+onUnmounted(() => { map?.remove(); map = null; });
+</script>
+
+<template>
+  <div ref="container" style="width: 100%; height: 400px" />
+</template>
+```
+
+> Svelte, Angular, and advanced patterns: `references/frameworks.md`
+
+---
+
+## 6. MapTiler Cloud APIs with MapLibre
+
+Unlike MapTiler SDK, raw MapLibre does not have built-in API wrappers. Use `fetch()` to call MapTiler REST endpoints directly.
+
+| API | Endpoint | Purpose |
+|-----|----------|---------|
+| Geocoding (forward) | `geocoding/{query}.json` | Search places by name |
+| Geocoding (reverse) | `geocoding/{lng},{lat}.json` | Coordinates to address |
+| Static Maps | `maps/{style}/static/{lng},{lat},{zoom}/{width}x{height}.png` | Map image URLs |
+| Terrain tiles | `tiles/terrain-rgb-v2/tiles.json` | Elevation data (raster-dem) |
+| Elevation | `tiles/terrain-rgb-v2/{z}/{x}/{y}.webp` | Individual terrain tiles |
+
+All endpoints are at `https://api.maptiler.com/` with `?key=YOUR_MAPTILER_KEY`.
+
+```js
+// Forward geocoding
+const response = await fetch(
+  `https://api.maptiler.com/geocoding/${encodeURIComponent(query)}.json?key=YOUR_MAPTILER_KEY&limit=5`
+);
+const data = await response.json();
+// data.features[0].geometry.coordinates → [lng, lat]
+// data.features[0].place_name → "Prague, Czech Republic"
+```
+
+> Full API reference: `references/maptiler-apis.md`
+
+---
+
+## 7. Critical Gotchas
+
+| Problem | Fix |
+|---------|-----|
+| Map invisible | Container needs explicit height (`height: 100vh` or `position: absolute; inset: 0`) |
+| Wrong location | Coordinates are `[lng, lat]` not `[lat, lng]` |
+| "Style not loaded" error | Add layers inside `map.on('load', ...)` or check `map.isStyleLoaded()` |
+| Layers vanish after `setStyle()` | Re-add custom layers in `map.once('styledata', ...)` |
+| Data layers cover labels | Use `beforeId` parameter — detect label layers at runtime (see patterns-gotchas.md) |
+| Duplicate source/layer errors | Remove before re-adding: `if (map.getLayer(id)) map.removeLayer(id)` |
+| Slow with many points | Enable `cluster: true` on the GeoJSON source |
+| Memory leaks in SPA | Always call `map.remove()` on unmount |
+| Using `mapboxgl` namespace | Use `maplibregl` — this is MapLibre, not Mapbox! |
+| Line gradient not working | Set `lineMetrics: true` on the GeoJSON source |
+| `text-font` error | Use `'Noto Sans Regular'` — available in MapTiler styles |
+| Terrain not showing | Add `raster-dem` source first, then call `map.setTerrain()` inside `load` event |
+
+> All gotchas + reusable patterns: `references/patterns-gotchas.md`
+
+---
+
+## 8. Events
+
+### Key Events
+
+```js
+// Wait for style + tiles to load (REQUIRED before adding layers)
+map.on('load', () => {
+  map.addSource(...);
+  map.addLayer(...);
+});
+
+// Click on map
+map.on('click', (e) => {
+  console.log('Clicked at:', e.lngLat.lng, e.lngLat.lat);
+});
+
+// Click on specific layer
+map.on('click', 'my-layer', (e) => {
+  const feature = e.features[0];
+  new maplibregl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML(`<b>${feature.properties.name}</b>`)
+    .addTo(map);
+});
+
+// Hover effects
+map.on('mouseenter', 'my-layer', () => {
+  map.getCanvas().style.cursor = 'pointer';
+});
+map.on('mouseleave', 'my-layer', () => {
+  map.getCanvas().style.cursor = '';
+});
+
+// Camera events
+map.on('moveend', () => {
+  console.log('Center:', map.getCenter());
+  console.log('Zoom:', map.getZoom());
+});
+```
+
+> Full events reference: `references/events.md`
+
+---
+
+## 9. Resources
+
+- [MapLibre GL JS Documentation](https://maplibre.org/maplibre-gl-js/docs/)
+- [MapLibre GL JS Examples](https://maplibre.org/maplibre-gl-js/docs/examples/)
+- [MapTiler MapLibre Guide](https://docs.maptiler.com/maplibre-gl-js/)
+- [MapTiler Cloud Console](https://cloud.maptiler.com/)
+- [GitHub — MapLibre GL JS](https://github.com/maplibre/maplibre-gl-js)
+- [NPM — maplibre-gl](https://www.npmjs.com/package/maplibre-gl)
+- [react-map-gl (Visgl)](https://visgl.github.io/react-map-gl/)
+- [Style Specification](https://maplibre.org/maplibre-style-spec/)
+- [Expression Reference](https://maplibre.org/maplibre-style-spec/expressions/)
+
+## Reference Files
+
+- `references/maptiler-styles.md` — All MapTiler style.json URLs for MapLibre
+- `references/sources-layers.md` — Source types, layer types, and common patterns
+- `references/expressions.md` — Expression syntax for data-driven styling
+- `references/patterns-gotchas.md` — 12 gotchas + 12 reusable code patterns
+- `references/events.md` — Lifecycle, camera, interaction, data events
+- `references/maptiler-apis.md` — MapTiler Cloud REST API usage with fetch()
+- `references/frameworks.md` — React (react-map-gl), Vue, Svelte, Angular patterns
