@@ -6,7 +6,7 @@ Maintained by **[MapSnippets](https://mapsnippets.com/)** — Open-source geospa
 
 ---
 
-🌐 [Website](https://mapsnippets.com/) &nbsp; 📚 [Documentation](https://maplibre.org/maplibre-gl-js/docs/)
+🌐 [Website](https://mapsnippets.com/) &nbsp; 📚 [MapLibre Documentation](https://maplibre.org/maplibre-gl-js/docs/)
 
 ---
 
@@ -20,6 +20,7 @@ Maintained by **[MapSnippets](https://mapsnippets.com/)** — Open-source geospa
 <li><a href="#-installation">Installation</a></li>
 <li><a href="#-repository-layout">Repository layout</a></li>
 <li><a href="#-quickstart-example">Quickstart Example</a></li>
+<li><a href="#-basemap-api-keys">Basemap API Keys</a></li>
 <li><a href="#links">Links</a></li>
 <li><a href="#-contributing">Contributing</a></li>
 <li><a href="#-license">License</a></li>
@@ -132,6 +133,14 @@ const map = new maplibregl.Map({
   zoom: 12
 });
 ```
+
+<br>
+
+## 🔑 Basemap API Keys
+
+The vector tile examples in this skill utilize MapTiler vector basemap styles. To run the examples with live vector tiles:
+- Follow the guide on [how to get a free MapTiler API Key](https://docs.maptiler.com/cloud/api/authentication-key/) (includes a free plan with 100,000 monthly map loads).
+- Replace `YOUR_API_KEY` in the snippet with your key.
 
 ---
 
