@@ -1,12 +1,12 @@
-# Geocoding & Geospatial REST Services Reference
+# Geospatial REST Services & APIs Reference
 
-This reference provides direct REST API specifications for address search, autocomplete, reverse geocoding, and elevation queries without external SDK dependencies.
+This reference provides direct REST API specifications for address search, autocomplete, reverse geocoding, static map images, IP geolocation, and elevation queries without requiring wrapper SDKs.
 
 ---
 
-## 1. Forward Geocoding & Autocomplete
+## 1. Forward Geocoding & Address Autocomplete
 
-Search for addresses, cities, countries, or points of interest:
+Search for addresses, cities, countries, or points of interest.
 
 ### Endpoint:
 ```text
@@ -61,9 +61,32 @@ async function reverseGeocode(lng, lat, apiKey) {
 
 ---
 
-## 3. Point Elevation Lookup
+## 3. Static Maps API (Non-Interactive Image Generator)
 
-Query the exact elevation (in meters) for a geographic location:
+Generate static PNG / JPEG images of maps for emails, social share cards (og:image), or PDF reports:
+
+### Center & Zoom Endpoint:
+```text
+GET https://api.maptiler.com/maps/{styleId}/static/{longitude},{latitude},{zoom}/{width}x{height}@2x.png?key=YOUR_API_KEY
+```
+
+### Auto-Fitted with Markers:
+```text
+GET https://api.maptiler.com/maps/streets-v4/static/auto/600x400@2x.png?markers=14.4378,50.0755,red|14.412,50.088,blue&key=YOUR_API_KEY
+```
+
+### Parameters:
+* `styleId`: `streets-v4`, `outdoor-v4`, `satellite-v4`, `dataviz-v4-dark`
+* `width` / `height`: Pixel dimensions (max 2048px)
+* `scale`: `@2x` for retina high-DPI
+* `markers`: `lng,lat,color` (e.g. `14.43,50.07,red`)
+* `path`: Polyline styling (e.g. `stroke:blue|width:3|14.41,50.08|14.43,50.07`)
+
+---
+
+## 4. Point Elevation Lookup
+
+Query the exact elevation (in meters) for any coordinate on Earth:
 
 ### Endpoint:
 ```text
@@ -75,5 +98,27 @@ GET https://api.maptiler.com/elevation/lookup/{longitude},{latitude}.json?key=YO
 {
   "elevation": 245.5,
   "unit": "meters"
+}
+```
+
+---
+
+## 5. IP Geolocation API
+
+Determine the user's approximate location (city, country, coordinates) based on client IP:
+
+### Endpoint:
+```text
+GET https://api.maptiler.com/geolocation/ip.json?key=YOUR_API_KEY
+```
+
+### Example Response:
+```json
+{
+  "country": "Czechia",
+  "country_code": "CZ",
+  "city": "Prague",
+  "latitude": 50.0755,
+  "longitude": 14.4378
 }
 ```
