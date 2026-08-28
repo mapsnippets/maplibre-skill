@@ -1,22 +1,7 @@
 ---
-name: maplibre-gl-js-maptiler
+name: maplibre
 description: >-
-  Expert coding skill for building interactive web maps with MapLibre GL JS and
-  MapTiler Cloud vector tiles/services. USE WHEN the user wants to create a
-  MapLibre GL JS map, use maplibregl.Map, add vector tiles from MapTiler, display
-  GeoJSON data with source/layer architecture, create data-driven styling with
-  expressions, build 3D terrain with MapTiler terrain tiles, add fill-extrusion
-  building layers, show a globe projection, cluster points with built-in GeoJSON
-  clustering, add markers or popups with maplibregl.Marker/Popup, create heatmap
-  layers, animate the camera with flyTo/easeTo, add line layers with gradients,
-  load image/pattern layers, handle map events (click, mousemove, load), build
-  custom controls with IControl, use MapTiler geocoding API, integrate MapLibre
-  with React (react-map-gl) or Vue. Also USE WHEN the user mentions MapLibre,
-  maplibre-gl, vector map, or WebGL map — but NOT when they mention MapTiler SDK
-  or @maptiler/sdk (use the SDK skill instead). This skill is for RAW MapLibre
-  GL JS without the SDK wrapper. MapLibre uses [lng, lat] coordinate order and
-  source/layer architecture. Covers CDN and NPM usage, expressions, and
-  framework integration patterns.
+  Expert coding skill for building web maps with MapLibre GL JS (v3-v5). USE WHEN the user wants to create a map, add an interactive map to a web app, display locations or routes, render geographic data, build a store locator, add markers, popups, heatmaps, or clustering, show GeoJSON on a map, create data-driven styling or visual expressions, render 3D terrain, globe view, or 3D buildings, switch to satellite imagery, animate camera movement (flyTo/fitBounds), add drawing/measuring tools, integrate maps in React, Next.js, Vue, or Svelte, or optimize map performance. Also USE WHEN the user mentions MapLibre, maplibre-gl, vector map, WebGL map, or MapTiler vector basemaps.
 ---
 
 # MapLibre GL JS + MapTiler — Agent Skill
