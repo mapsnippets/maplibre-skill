@@ -1,0 +1,17 @@
+{
+  "name": "maplibre-skill",
+  "owner": {
+    "name": "mapsnippets"
+  },
+  "plugins": [
+    {
+      "name": "maplibre-skill",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/mapsnippets/maplibre-skill.git"
+      },
+      "description": "MapLibre GL JS expert skill for AI agents",
+      "version": "1.0.0"
+    }
+  ]
+}
