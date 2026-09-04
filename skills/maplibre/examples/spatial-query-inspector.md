@@ -1,4 +1,4 @@
-# Official Example: Feature Querying & Inspection (`queryRenderedFeatures`) 🔍📋
+# Recipe: Feature Querying & Inspection (`queryRenderedFeatures`) 🔍📋
 
 > Source: https://maplibre.org/maplibre-gl-js/docs/examples/get-features-under-the-mouse-pointer/
 

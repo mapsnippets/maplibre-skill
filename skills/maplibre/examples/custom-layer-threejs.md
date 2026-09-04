@@ -1,4 +1,4 @@
-# Official Example: 3D Model with Three.js Custom Layer 🎮📦
+# Recipe: 3D Model with Three.js Custom Layer 🎮📦
 
 > Source: https://maplibre.org/maplibre-gl-js/docs/examples/add-a-3d-model-using-threejs/
 

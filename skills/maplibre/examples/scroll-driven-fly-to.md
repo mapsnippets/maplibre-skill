@@ -1,6 +1,6 @@
 # Scrollytelling & Narrative Chapter Navigation 📜
 
-> **Official MapLibre GL JS Example:** [Fly to a location on scroll](https://maplibre.org/maplibre-gl-js/docs/examples/scroll-fly-to/)  
+> **Documentation Reference:** [Fly to a location on scroll](https://maplibre.org/maplibre-gl-js/docs/examples/scroll-fly-to/)  
 > **Target Category:** Production Task Implementation
 
 Sync map camera positions (bearing, pitch, center, zoom) to story chapter sections as the user scrolls down an article sidebar.
@@ -98,6 +98,6 @@ features.onscroll = () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/scroll-fly-to/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/scroll-fly-to/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

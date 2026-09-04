@@ -1,6 +1,6 @@
 # 3D Sun Directional Lighting & Shadows ☀️
 
-> **Official MapLibre GL JS Example:** [Change the lighting of a map](https://maplibre.org/maplibre-gl-js/docs/examples/set-light/)  
+> **Documentation Reference:** [Change the lighting of a map](https://maplibre.org/maplibre-gl-js/docs/examples/set-light/)  
 > **Target Category:** Production Task Implementation
 
 Control sun azimuth and altitude angles to project realistic directional cast shadows across 3D buildings and mountain ridges via `map.setLight()`.
@@ -94,6 +94,6 @@ map.on('load', () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/set-light/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/set-light/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

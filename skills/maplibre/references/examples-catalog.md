@@ -1,4 +1,4 @@
-# MapLibre GL JS Official Recipe Directory & API Cross-Reference 📚🛠️
+# MapLibre GL JS Recipe Catalog & API Cross-Reference 📚🛠️
 
 > An encyclopedic technical directory connecting every MapLibre GL JS API capability, class, and shader expression directly to its verified, production-grade standalone recipe in `skills/examples/`. Engineered with modern MapTiler Planet v4 styles.
 

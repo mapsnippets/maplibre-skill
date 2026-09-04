@@ -1,6 +1,6 @@
 # Interactive Bounding Box Feature Selection
 
-> Official Reference: [Interactive Bounding Box Feature Selection](https://maplibre.org/maplibre-gl-js/docs/examples/using-boxqueryrenderedfeatures-with-dragging/)
+> **Documentation Reference:** [Interactive Bounding Box Feature Selection](https://maplibre.org/maplibre-gl-js/docs/examples/using-boxqueryrenderedfeatures-with-dragging/)
 > Category: **Points, Clusters & UI**
 
 ## Overview

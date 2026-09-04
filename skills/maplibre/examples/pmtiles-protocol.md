@@ -1,4 +1,4 @@
-# Official Example: PMTiles Source & Protocol (`addProtocol`) 📦⚡
+# Recipe: PMTiles Source & Protocol (`addProtocol`) 📦⚡
 
 > Source: https://maplibre.org/maplibre-gl-js/docs/examples/pmtiles-source-and-protocol/
 

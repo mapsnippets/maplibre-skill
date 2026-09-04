@@ -1,6 +1,6 @@
 # MapLibre GL JS v6.7.0 Reference Index 🗂️⚡
 
-> Master index and topic routing directory for all MapLibre GL JS v6.7.0 agent references, API standards, official documentation guides, and MapTiler basemap integrations. Load on demand.
+> Master index and topic routing directory for all MapLibre GL JS v6.7.0 agent references, API standards, comprehensive documentation guides, and MapTiler basemap integrations. Load on demand.
 
 Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospatial snippets, guides, and agent tools.
 
@@ -10,7 +10,7 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 
 | Topic Area | Directory / Prefix | Contents |
 | :--- | :--- | :--- |
-| **Official Task Examples** | **[examples/INDEX.md](../examples/INDEX.md)** | **40 atomic official recipes** with full HTML, CSS, and native JS across 3D Terrain, Globe, FlyTo, Clustering, Feature State, PMTiles, and Overlays |
+| **Task Examples** | **[examples/INDEX.md](../examples/INDEX.md)** | **atomic runnable recipes** with full HTML, CSS, and native JS across 3D Terrain, Globe, FlyTo, Clustering, Feature State, PMTiles, and Overlays |
 | **Core API & Architecture** | `references/api-*`, `references/architecture-*` | `Map` methods, custom `IControl`, runtime styling, Three.js custom layers, WebGL lifecycle |
 | **Style Specification** | `references/style-spec-*`, `references/expressions.md` | Exhaustive MapLibre Style Specification v8, all 9 layer types, expressions DSL |
 | **Basemaps, Schemas & Services**| `references/basemaps-*`, `references/vector-tile-*` | MapTiler Planet v4 tile URLs, vector schemas, and REST endpoints |
@@ -24,7 +24,7 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 * **[expressions.md](expressions.md)** — Comprehensive expression syntax guide and operator dictionary (`interpolate`, `step`, `case`, `match`, math, typography).
 * **[api-classes-and-controls.md](api-classes-and-controls.md)** — `Map` methods, custom `IControl` interface, runtime styling (`setPaintProperty`), `Marker`, `Popup`, protocol handlers.
 * **[sources-layers.md](sources-layers.md)** — Dynamic source/layer management (`vector`, `raster`, `raster-dem`, `geojson`, `image`, `video`), sandwich pattern, and style swaps.
-* **[official-examples-catalog.md](official-examples-catalog.md)** — API-to-Recipe directory cross-referencing all MapLibre APIs to the 40 official task recipes.
+* **[examples-catalog.md](examples-catalog.md)** — API-to-Recipe directory cross-referencing all MapLibre APIs to the 41 standalone task recipes.
 * **[architecture-and-guides.md](architecture-and-guides.md)** — WebGL 16-context cleanup pattern, Three.js layer integration, custom protocols.
 * **[events.md](events.md)** — Map lifecycle, camera physics, pointer tracking, layer-scoped events, and spatial query listeners.
 * **[patterns-gotchas.md](patterns-gotchas.md)** — Solutions for the top critical MapLibre bugs (`[lng, lat]` order, missing CSS, context loss, reactive proxy bugs).

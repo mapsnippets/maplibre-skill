@@ -1,6 +1,6 @@
 # Multidirectional Hillshade with Terrain-RGB
 
-> Official Reference: [Multidirectional Hillshade with Terrain-RGB](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-multidirectional-hillshade-layer/)
+> **Documentation Reference:** [Multidirectional Hillshade with Terrain-RGB](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-multidirectional-hillshade-layer/)
 > Category: **3D Terrain, Buildings & Elevation**
 
 ## Overview

@@ -1,4 +1,4 @@
-# Official Example: Camera Navigation & Animations (`flyTo`) ✈️🎥
+# Recipe: Camera Navigation & Animations (`flyTo`) ✈️🎥
 
 > Source: https://maplibre.org/maplibre-gl-js/docs/examples/fly-to-a-location/
 

@@ -1,6 +1,6 @@
 # High-Accuracy GPS Geolocation with Heading
 
-> Official Reference: [High-Accuracy GPS Geolocation with Heading](https://maplibre.org/maplibre-gl-js/docs/examples/locate-user/)
+> **Documentation Reference:** [High-Accuracy GPS Geolocation with Heading](https://maplibre.org/maplibre-gl-js/docs/examples/locate-user/)
 > Category: **Camera & Navigation**
 
 ## Overview

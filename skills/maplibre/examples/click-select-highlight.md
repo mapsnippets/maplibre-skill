@@ -1,6 +1,6 @@
 # Click Selection & Persistent Feature State 🎯
 
-> **Official MapLibre GL JS Example:** [Highlight features containing similar data](https://maplibre.org/maplibre-gl-js/docs/examples/set-feature-state/)  
+> **Documentation Reference:** [Highlight features containing similar data](https://maplibre.org/maplibre-gl-js/docs/examples/set-feature-state/)  
 > **Target Category:** Production Task Implementation
 
 Select and keep track of selected polygon state on click using MapLibre `map.setFeatureState` for hardware-accelerated 60 FPS highlighting.
@@ -108,6 +108,6 @@ map.on('load', () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/set-feature-state/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/set-feature-state/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

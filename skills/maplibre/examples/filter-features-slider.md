@@ -1,6 +1,6 @@
 # Time / Magnitude Filtering with Sliders 🎚️
 
-> **Official MapLibre GL JS Example:** [Filter symbols by text input](https://maplibre.org/maplibre-gl-js/docs/examples/filter-markers/)  
+> **Documentation Reference:** [Filter symbols by text input](https://maplibre.org/maplibre-gl-js/docs/examples/filter-markers/)  
 > **Target Category:** Production Task Implementation
 
 Dynamically filter visible map features in real time based on a range slider or search query using `map.setFilter()`.
@@ -102,6 +102,6 @@ map.on('load', () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/filter-markers/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/filter-markers/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

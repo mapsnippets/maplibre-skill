@@ -1,6 +1,6 @@
 # Terrain-RGB Color Relief Elevation Ramp 🏔️
 
-> **Official MapLibre GL JS Example:** [Color relief layer](https://maplibre.org/maplibre-gl-js/docs/examples/color-relief/)  
+> **Documentation Reference:** [Color relief layer](https://maplibre.org/maplibre-gl-js/docs/examples/color-relief/)  
 > **Target Category:** Production Task Implementation
 
 Colorize digital elevation model (DEM) Terrain-RGB tiles with dynamic hypsometric elevation tinting ramps.
@@ -81,6 +81,6 @@ map.on('load', () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/color-relief/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/color-relief/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

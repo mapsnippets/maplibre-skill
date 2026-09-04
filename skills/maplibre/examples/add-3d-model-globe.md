@@ -1,6 +1,6 @@
 # 3D Models on Globe Projection (Three.js) 🛰️
 
-> **Official MapLibre GL JS Example:** [Add a 3D model to globe using three.js](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-3d-model-to-globe-using-threejs/)  
+> **Documentation Reference:** [Add a 3D model to globe using three.js](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-3d-model-to-globe-using-threejs/)  
 > **Target Category:** Production Task Implementation
 
 Render 3D satellites, aircraft, or space stations orbiting the interactive 3D globe projection using custom WebGL layers and Three.js.
@@ -76,6 +76,6 @@ map.on('load', () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/add-a-3d-model-to-globe-using-threejs/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/add-a-3d-model-to-globe-using-threejs/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

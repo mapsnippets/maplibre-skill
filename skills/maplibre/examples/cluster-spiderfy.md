@@ -1,6 +1,6 @@
 # Point Cluster Expansion & Spiderfy 🕷️
 
-> **Official MapLibre GL JS Example:** [Cluster with HTML markers](https://maplibre.org/maplibre-gl-js/docs/examples/cluster-html/)  
+> **Documentation Reference:** [Cluster with HTML markers](https://maplibre.org/maplibre-gl-js/docs/examples/cluster-html/)  
 > **Target Category:** Production Task Implementation
 
 Inspect clustered point collections and smoothly display individual child markers when clicking dense overlapping clusters.
@@ -113,6 +113,6 @@ map.on('load', () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/cluster-html/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/cluster-html/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

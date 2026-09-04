@@ -1,6 +1,6 @@
 # Vector Contour Lines with Elevation Labels
 
-> Official Reference: [Vector Contour Lines with Elevation Labels](https://maplibre.org/maplibre-gl-js/docs/examples/add-contour-lines/)
+> **Documentation Reference:** [Vector Contour Lines with Elevation Labels](https://maplibre.org/maplibre-gl-js/docs/examples/add-contour-lines/)
 > Category: **Data & Vector Styling**
 
 ## Overview

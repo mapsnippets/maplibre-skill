@@ -1,6 +1,6 @@
 # Hardware-Accelerated WebGL Heatmap Layer 🔥
 
-> **Official MapLibre GL JS Example:** [Create a heatmap layer](https://maplibre.org/maplibre-gl-js/docs/examples/heatmap-layer/)  
+> **Documentation Reference:** [Create a heatmap layer](https://maplibre.org/maplibre-gl-js/docs/examples/heatmap-layer/)  
 > **Target Category:** Production Task Implementation
 
 Display dense spatial incident occurrences, telemetry pings, or crime reports as smooth GPU density gradients that morph into circle clusters as users zoom in.
@@ -102,6 +102,6 @@ map.on('load', () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/heatmap-layer/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/heatmap-layer/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

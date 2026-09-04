@@ -1,4 +1,4 @@
-# Official Example: Animate a Point Along a Route 🚗📍
+# Recipe: Animate a Point Along a Route 🚗📍
 
 > Source: https://maplibre.org/maplibre-gl-js/docs/examples/animate-a-point-along-a-route/
 

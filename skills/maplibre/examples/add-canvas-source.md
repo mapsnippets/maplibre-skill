@@ -1,6 +1,6 @@
 # Procedural HTML5 Canvas Layer Source 🎨
 
-> **Official MapLibre GL JS Example:** [Add a canvas source](https://maplibre.org/maplibre-gl-js/docs/examples/canvas-source/)  
+> **Documentation Reference:** [Add a canvas source](https://maplibre.org/maplibre-gl-js/docs/examples/canvas-source/)  
 > **Target Category:** Production Task Implementation
 
 Draw real-time animated charts, radar simulations, or particles on an HTML5 canvas and project it into MapLibre as a georeferenced raster layer.
@@ -109,6 +109,6 @@ map.on('load', () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/canvas-source/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/canvas-source/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

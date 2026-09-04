@@ -1,6 +1,6 @@
 # Fit Viewport Bounds with UI Padding 📐
 
-> **Official MapLibre GL JS Example:** [Fit a map to a bounding box](https://maplibre.org/maplibre-gl-js/docs/examples/fitbounds/)  
+> **Documentation Reference:** [Fit a map to a bounding box](https://maplibre.org/maplibre-gl-js/docs/examples/fitbounds/)  
 > **Target Category:** Production Task Implementation
 
 Calculate the bounding box of multiple locations or routes and fit the camera snugly with asymmetric padding so pins are not obscured by overlay sidebars.
@@ -94,6 +94,6 @@ document.getElementById('fit-btn').onclick = () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/fitbounds/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/fitbounds/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

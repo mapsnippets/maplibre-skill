@@ -1,6 +1,6 @@
 # Three.js 3D Model Clamped to 3D Terrain
 
-> Official Reference: [Three.js 3D Model Clamped to 3D Terrain](https://maplibre.org/maplibre-gl-js/docs/examples/adding-3d-models-using-threejs-on-terrain/)
+> **Documentation Reference:** [Three.js 3D Model Clamped to 3D Terrain](https://maplibre.org/maplibre-gl-js/docs/examples/adding-3d-models-using-threejs-on-terrain/)
 > Category: **3D Terrain, Buildings & Elevation**
 
 ## Overview

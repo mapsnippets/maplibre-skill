@@ -1,6 +1,6 @@
 # Pulsing Radar Marker (Canvas / GPU Animation)
 
-> Official Reference: [Pulsing Radar Marker (Canvas / GPU Animation)](https://maplibre.org/maplibre-gl-js/docs/examples/add-an-animated-icon-to-the-map/)
+> **Documentation Reference:** [Pulsing Radar Marker (Canvas / GPU Animation)](https://maplibre.org/maplibre-gl-js/docs/examples/add-an-animated-icon-to-the-map/)
 > Category: **Points, Clusters & UI**
 
 ## Overview

@@ -1,6 +1,6 @@
 # Multiple Geometries from One GeoJSON Source
 
-> Official Reference: [Multiple Geometries from One GeoJSON Source](https://maplibre.org/maplibre-gl-js/docs/examples/add-multiple-geometries-from-one-geojson-source/)
+> **Documentation Reference:** [Multiple Geometries from One GeoJSON Source](https://maplibre.org/maplibre-gl-js/docs/examples/add-multiple-geometries-from-one-geojson-source/)
 > Category: **Data & Vector Styling**
 
 ## Overview

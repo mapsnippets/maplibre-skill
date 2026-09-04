@@ -1,4 +1,4 @@
-# Official Example: Create & Style Clusters in MapLibre 📍✨
+# Recipe: Create & Style Clusters in MapLibre 📍✨
 
 > Source: https://maplibre.org/maplibre-gl-js/docs/examples/create-and-style-clusters/
 

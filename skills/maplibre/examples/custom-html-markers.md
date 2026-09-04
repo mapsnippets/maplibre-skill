@@ -1,4 +1,4 @@
-# Official Example: Custom HTML Markers & CSS Radar Beacons 📍📡
+# Recipe: Custom HTML Markers & CSS Radar Beacons 📍📡
 
 > Source: https://maplibre.org/maplibre-gl-js/docs/examples/add-custom-icons-with-markers/
 

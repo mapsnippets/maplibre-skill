@@ -1,6 +1,6 @@
 # Continuous 360° Camera Orbit Animation 🔄
 
-> **Official MapLibre GL JS Example:** [Rotate Camera](https://maplibre.org/maplibre-gl-js/docs/examples/rotate-camera/)  
+> **Documentation Reference:** [Rotate Camera](https://maplibre.org/maplibre-gl-js/docs/examples/rotate-camera/)  
 > **Target Category:** Production Task Implementation
 
 Smoothly rotate the camera continuously around a central point of interest (e.g., a mountain peak, stadium, or landmark) using requestAnimationFrame.
@@ -91,6 +91,6 @@ document.getElementById('toggle-orbit').onclick = () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/rotate-camera/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/rotate-camera/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

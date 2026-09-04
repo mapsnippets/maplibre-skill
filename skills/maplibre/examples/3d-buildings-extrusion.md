@@ -1,4 +1,4 @@
-# Official Example: Display Buildings in 3D (`fill-extrusion`) 🏢🌆
+# Recipe: Display Buildings in 3D (`fill-extrusion`) 🏢🌆
 
 > Source: https://maplibre.org/maplibre-gl-js/docs/examples/display-buildings-in-3d/
 

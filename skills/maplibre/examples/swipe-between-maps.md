@@ -1,6 +1,6 @@
 # Split-Screen Swipe Comparison Slider 🪟
 
-> **Official MapLibre GL JS Example:** [Swipe between maps](https://maplibre.org/maplibre-gl-js/docs/examples/mapbox-gl-compare/)  
+> **Documentation Reference:** [Swipe between maps](https://maplibre.org/maplibre-gl-js/docs/examples/mapbox-gl-compare/)  
 > **Target Category:** Production Task Implementation
 
 Synchronize two side-by-side MapLibre map instances with an interactive vertical wiper to compare satellite imagery with topographic street layers.
@@ -82,6 +82,6 @@ const afterMap = new maplibregl.Map({
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/mapbox-gl-compare/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/mapbox-gl-compare/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

@@ -1,6 +1,6 @@
 # OGC WMS Layer Integration
 
-> Official Reference: [OGC WMS Layer Integration](https://maplibre.org/maplibre-gl-js/docs/examples/wms/)
+> **Documentation Reference:** [OGC WMS Layer Integration](https://maplibre.org/maplibre-gl-js/docs/examples/wms/)
 > Category: **Raster, Canvas & Video Overlays**
 
 ## Overview

@@ -1,6 +1,6 @@
 # Georeferenced Video Layer Overlay 🎥
 
-> **Official MapLibre GL JS Example:** [Add a video source](https://maplibre.org/maplibre-gl-js/docs/examples/video-on-a-map/)  
+> **Documentation Reference:** [Add a video source](https://maplibre.org/maplibre-gl-js/docs/examples/video-on-a-map/)  
 > **Target Category:** Production Task Implementation
 
 Drape live video feeds, meteorological loops, or simulated drone flight footage over 3D terrain using `video` layer sources.
@@ -92,6 +92,6 @@ map.on('load', () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/video-on-a-map/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/video-on-a-map/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

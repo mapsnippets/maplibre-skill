@@ -1,6 +1,6 @@
 # Georeferenced Image Overlay (Drone / Historical) 🗺️
 
-> **Official MapLibre GL JS Example:** [Add an image source](https://maplibre.org/maplibre-gl-js/docs/examples/image-source/)  
+> **Documentation Reference:** [Add an image source](https://maplibre.org/maplibre-gl-js/docs/examples/image-source/)  
 > **Target Category:** Production Task Implementation
 
 Project orthophoto drone surveys, historical archive maps, or blueprint diagrams onto geographical coordinates using 4 bounding corners.
@@ -91,6 +91,6 @@ map.on('load', () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/image-source/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/image-source/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

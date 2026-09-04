@@ -1,6 +1,6 @@
 # Add Layer Below Labels (Sandwich Architecture)
 
-> Official Reference: [Add Layer Below Labels (Sandwich Architecture)](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-new-layer-below-labels/)
+> **Documentation Reference:** [Add Layer Below Labels (Sandwich Architecture)](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-new-layer-below-labels/)
 > Category: **Data & Vector Styling**
 
 ## Overview

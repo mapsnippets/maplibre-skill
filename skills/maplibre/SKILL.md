@@ -28,7 +28,7 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 Follow these rules on every MapLibre GL JS code generation to prevent bugs:
 
 ### 1. 🌐 Pure Native Library Imports
-* Always use official MapLibre GL JS packages and CSS:
+* Always use standard MapLibre GL JS packages and CSS:
   ```html
   <!-- ESM / Modern Browser Module -->
   <script type="module">
@@ -81,7 +81,7 @@ To quickly find the exact MapLibre implementation guide or API specification, us
 
 | Category | Location | Contents |
 | :--- | :--- | :--- |
-| **Official Task Examples** | **[examples/INDEX.md](examples/INDEX.md)** | **30 atomic official examples** with full HTML, CSS, and native JS across 3D Terrain, Globe, FlyTo, Clustering, Feature State, PMTiles, and Overlays |
+| **Task Examples** | **[examples/INDEX.md](examples/INDEX.md)** | **atomic runnable recipes** with full HTML, CSS, and native JS across 3D Terrain, Globe, FlyTo, Clustering, Feature State, PMTiles, and Overlays |
 | **Core API & Architecture** | **[references/INDEX.md](references/INDEX.md)** | Declarative specifications for `Map` methods, custom `IControl`, runtime styling, Three.js custom layers, WebGL lifecycle |
 | **Style Specification** | `references/style-spec-*`, `references/expressions.md` | Exhaustive MapLibre Style Specification v8, all 9 layer types, expressions DSL |
 | **Basemaps, Schemas & Services**| `references/basemaps-*`, `references/vector-tile-*` | MapTiler Planet v4 tile URLs, vector schemas, and REST endpoints |
@@ -89,7 +89,7 @@ To quickly find the exact MapLibre implementation guide or API specification, us
 
 ---
 
-## 🧪 30 Official Task Examples (`examples/`)
+## 🧪 Runnable Task Examples (`examples/`)
 
 All task examples are self-contained with complete HTML, CSS, and native MapLibre GL JS code (`new maplibregl.Map(...)`) using modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. Browse **[examples/INDEX.md](examples/INDEX.md)** for the complete categorized catalog:
 

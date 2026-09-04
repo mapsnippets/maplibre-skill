@@ -1,4 +1,4 @@
-# Official Example: Display a Vector Map 🗺️⚡
+# Recipe: Display a Vector Map 🗺️⚡
 
 > Source: https://maplibre.org/maplibre-gl-js/docs/examples/display-a-map/
 

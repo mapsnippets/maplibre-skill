@@ -1,6 +1,6 @@
 # Runtime Basemap Style Switcher 🗂️
 
-> **Official MapLibre GL JS Example:** [Change a map's style](https://maplibre.org/maplibre-gl-js/docs/examples/set-style/)  
+> **Documentation Reference:** [Change a map's style](https://maplibre.org/maplibre-gl-js/docs/examples/set-style/)  
 > **Target Category:** Production Task Implementation
 
 Seamlessly switch between different vector and raster basemaps (Streets v4, Outdoor v4, Satellite v4, Dataviz Dark) without recreating the map instance or losing camera state.
@@ -87,6 +87,6 @@ inputs.forEach((input) => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/set-style/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/set-style/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

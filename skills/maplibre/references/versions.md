@@ -1,6 +1,6 @@
 # MapLibre GL JS & Ecosystem Versions 📦⚡
 
-This guide lists the current production versions of MapLibre GL JS, verified official companion plugins, compatible spatial utilities, and MapTiler Planet v4 style endpoints. Use these versions when creating HTML scripts, `package.json` dependencies, or CDN links.
+This guide lists the current production versions of MapLibre GL JS, verified companion plugins, compatible spatial utilities, and MapTiler Planet v4 style endpoints. Use these versions when creating HTML scripts, `package.json` dependencies, or CDN links.
 
 ---
 

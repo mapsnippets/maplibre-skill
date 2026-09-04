@@ -1,4 +1,4 @@
-# Official Example: Create a Gradient Line (`line-gradient`) 🌈〰️
+# Recipe: Create a Gradient Line (`line-gradient`) 🌈〰️
 
 > Source: https://maplibre.org/maplibre-gl-js/docs/examples/create-a-gradient-line-using-an-expression/
 

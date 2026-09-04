@@ -1,4 +1,4 @@
-# Official Example: 3D Terrain & Hillshade Elevation 🏔️🌲
+# Recipe: 3D Terrain & Hillshade Elevation 🏔️🌲
 
 > Source: https://maplibre.org/maplibre-gl-js/docs/examples/3d-terrain/
 

@@ -1,6 +1,6 @@
 # Real-Time Telemetry & Live GeoJSON Streaming 📡
 
-> **Official MapLibre GL JS Example:** [Add live realtime data](https://maplibre.org/maplibre-gl-js/docs/examples/live-geojson/)  
+> **Documentation Reference:** [Add live realtime data](https://maplibre.org/maplibre-gl-js/docs/examples/live-geojson/)  
 > **Target Category:** Production Task Implementation
 
 Poll or receive live vehicle telemetry coordinates over WebSockets and update the GeoJSON map source seamlessly via `source.setData()` without flickering.
@@ -96,6 +96,6 @@ map.on('load', () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/live-geojson/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/live-geojson/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

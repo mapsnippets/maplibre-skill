@@ -1,6 +1,6 @@
 # Interactive Distance Measurement with Turf.js
 
-> Official Reference: [Interactive Distance Measurement with Turf.js](https://maplibre.org/maplibre-gl-js/docs/examples/measure/)
+> **Documentation Reference:** [Interactive Distance Measurement with Turf.js](https://maplibre.org/maplibre-gl-js/docs/examples/measure/)
 > Category: **Camera & Navigation**
 
 ## Overview

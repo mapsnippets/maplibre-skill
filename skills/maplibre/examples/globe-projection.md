@@ -1,6 +1,6 @@
 # Interactive 3D Globe Projection 🌍
 
-> **Official MapLibre GL JS Example:** [Display a Globe](https://maplibre.org/maplibre-gl-js/docs/examples/globe/)  
+> **Documentation Reference:** [Display a Globe](https://maplibre.org/maplibre-gl-js/docs/examples/globe/)  
 > **Target Category:** Production Task Implementation
 
 Rendering the world as a seamless 3D sphere globe at low zoom levels transitioning smoothly into planar Mercator as users zoom into street level.
@@ -78,6 +78,6 @@ map.on('load', () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/globe/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/globe/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |

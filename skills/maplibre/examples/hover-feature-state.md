@@ -1,4 +1,4 @@
-# Official Example: High-Performance Hover Effect (`feature-state`) 🖱️✨
+# Recipe: High-Performance Hover Effect (`feature-state`) 🖱️✨
 
 > Source: https://maplibre.org/maplibre-gl-js/docs/examples/create-a-hover-effect/
 

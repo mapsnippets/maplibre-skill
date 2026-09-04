@@ -6,7 +6,7 @@
 [![MapLibre GL JS](https://img.shields.io/badge/MapLibre_GL_JS-v6.7.0_(ESM)-brightgreen)](https://maplibre.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE.md)
 
-> Official **MapLibre GL JS** AI skill for coding assistants (Claude Code, Cursor, Antigravity, GitHub Copilot, Windsurf, Roo Code, Gemini CLI). Built in accordance with the open **[Agent Skills Specification](https://agentskills.io/)**.
+> Open-source **MapLibre GL JS** AI skill for coding assistants (Claude Code, Cursor, Antigravity, GitHub Copilot, Windsurf, Roo Code, Gemini CLI). Built in accordance with the open **[Agent Skills Specification](https://agentskills.io/)**.
 
 Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospatial snippets, guides, and agent tools.
 
@@ -95,7 +95,7 @@ npx skills add mapsnippets/maplibre-skill
 
 ### Option 2: Claude Code Plugin
 
-Install directly via the official Claude Code plugin marketplace:
+Install directly via the Claude Code plugin marketplace:
 
 ```bash
 /plugin marketplace add mapsnippets/maplibre-skill
@@ -170,7 +170,7 @@ map.on("load", () => {
 ## 🔑 Basemap API Keys
 
 The vector tile recipes in this skill use MapTiler Planet v4 vector basemap styles. To run recipes with live vector tiles:
-- Follow the official guide on [how to get a free MapTiler API Key](https://docs.maptiler.com/cloud/api/authentication-key/) (free tier includes 100,000 monthly requests).
+- Follow the guide on [how to get a free MapTiler API Key](https://docs.maptiler.com/cloud/api/authentication-key/) (free tier includes 100,000 monthly requests).
 - Replace `YOUR_API_KEY` in the snippet with your active key.
 
 <br>
@@ -184,7 +184,7 @@ This skill includes an automated evaluation benchmark suite in `skills/maplibre/
 4. Marker Clustering & Popups
 5. Custom PMTiles Protocol Integration
 
-To validate compliance against the official Agent Skills specification using the reference validator:
+To validate compliance against the Agent Skills specification using the reference validator:
 
 ```bash
 npx @agentskills/skills-ref validate skills/maplibre

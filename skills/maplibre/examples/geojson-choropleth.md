@@ -1,6 +1,6 @@
 # GeoJSON Choropleth with Style Expressions 🎨
 
-> **Official MapLibre GL JS Example:** [Update a choropleth layer by data-driven styling](https://maplibre.org/maplibre-gl-js/docs/examples/updating-choropleth/)  
+> **Documentation Reference:** [Update a choropleth layer by data-driven styling](https://maplibre.org/maplibre-gl-js/docs/examples/updating-choropleth/)  
 > **Target Category:** Production Task Implementation
 
 Coloring administrative regions dynamically using data-driven style expressions (`step` / `interpolate`) mapped to numeric demographic properties.
@@ -107,6 +107,6 @@ map.on('load', () => {
 
 | Parameter / Feature | Purpose |
 | :--- | :--- |
-| **Official Standard** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/updating-choropleth/` using native `maplibregl.*` APIs. |
+| **Reference Spec** | Conforms to `https://maplibre.org/maplibre-gl-js/docs/examples/updating-choropleth/` using native `maplibregl.*` APIs. |
 | **Basemap Service** | Powered by modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. |
 | **WebGL Lifecycle** | Automatically destroys WebGL contexts on SPA unmount via `map.remove()`. |
