@@ -2,6 +2,10 @@
 name: maplibre
 description: >-
   Expert coding skill for building web maps with MapLibre GL JS (v3-v5). USE WHEN the user wants to create a map, add an interactive map to a web app, display locations or routes, render geographic data, build a store locator, add markers, popups, heatmaps, or clustering, show GeoJSON on a map, create data-driven styling or visual expressions, render 3D terrain, globe view, or 3D buildings, switch to satellite imagery, animate camera movement (flyTo/fitBounds), add drawing/measuring tools, integrate maps in React, Next.js, Vue, or Svelte, or optimize map performance. Also USE WHEN the user mentions MapLibre, maplibre-gl, vector map, WebGL map, or MapTiler vector basemaps.
+license: MIT
+metadata:
+  author: mapsnippets
+  homepage: https://mapsnippets.org/
 ---
 
 # MapLibre GL JS + MapTiler — Agent Skill
