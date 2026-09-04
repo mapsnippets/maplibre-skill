@@ -34,7 +34,7 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 
 ### 2. Basemaps, Schemas & Services
 * **[vector-tile-schemas.md](vector-tile-schemas.md)** — Complete Planet v4 vector tile schema (transportation, building, water, place, poi, boundary).
-* **[basemaps-and-terrain.md](basemaps-and-terrain.md)** — Production endpoints for `streets-v4`, `dataviz-v4-dark`, `outdoor-v4`, `satellite-v4`, and Terrain-RGB.
+* **[versions.md](versions.md)** — Core MapLibre GL JS v6.7.0, companion plugins, CDN URLs, and V4 styles.\n* **[basemaps-and-terrain.md](basemaps-and-terrain.md)** — Production endpoints for `streets-v4`, `dataviz-v4-dark`, `outdoor-v4`, `satellite-v4`, and Terrain-RGB.
 * **[geocoding-and-services.md](geocoding-and-services.md)** — Forward/reverse geocoding, autocomplete search, static maps, and elevation.
 
 ---
