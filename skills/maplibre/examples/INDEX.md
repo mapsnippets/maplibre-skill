@@ -1,6 +1,6 @@
 # MapLibre GL JS Task Examples Index 🧪🗺️
 
-> The authoritative index of **40 atomic, copy-pasteable task implementations** for MapLibre GL JS (v4–v5+), curated from MapLibre documentation and community recipes and engineered with modern MapTiler Planet v4 basemap styles.
+> The authoritative index of **41 atomic, copy-pasteable task implementations** for MapLibre GL JS v6 (v6.7.0 ESM), curated from MapLibre documentation and community recipes and engineered with modern MapTiler Planet v4 basemap styles.
 
 ---
 

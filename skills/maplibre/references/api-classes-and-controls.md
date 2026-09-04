@@ -1,6 +1,6 @@
 # MapLibre GL JS Classes, Controls & API Encyclopedia 🏛️
 
-> The authoritative API reference for **MapLibre GL JS (v4–v5+)**, covering `Map`, camera physics, layer & source methods, built-in controls, markers, popups, and spatial mathematics.
+> The authoritative API reference for **MapLibre GL JS v6 (v6.7.0 ESM)**, covering `Map`, camera physics, layer & source methods, built-in controls, markers, popups, and spatial mathematics.
 
 ---
 

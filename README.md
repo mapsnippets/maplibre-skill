@@ -43,7 +43,7 @@ An **Agent Skill** is on-demand domain expertise: AI assistants load it dynamica
 
 When activated for **MapLibre GL JS**, this skill guides the agent to:
 
-- **Generate pure native MapLibre GL JS code** (v3–v5) using modern lifecycle practices (WebGL container sizing, canvas resizing, event delegation, and resource cleanup).
+- **Generate pure native MapLibre GL JS code** (v6.7.0 ESM / v6+) using modern lifecycle practices (WebGL container sizing, canvas resizing, event delegation, and resource cleanup).
 - **Configure high-performance vector basemaps** with modern vector tile styles (`streets-v4`, `outdoor-v4`, `satellite-v4`, `dataviz-v4-dark`, `base-v4`) and clean typography.
 - **Author complex data-driven expressions** (`interpolate`, `step`, `match`, `case`, `feature-state`) with strict type safety and zero syntax errors.
 - **Handle GeoJSON layers & spatial clustering** — spatial clustering, expansion zoom, unclustered point popups, and high-frequency `setData` mutations.
