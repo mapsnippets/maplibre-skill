@@ -1,9 +1,9 @@
 # MapLibre GL JS — Agent Skill 🗺️🤖
 
 [![Agent Skills Specification](https://img.shields.io/badge/Agent_Skills-Specification_Compliant-0084FF?logo=anthropic&logoColor=white)](https://agentskills.io/specification)
-[![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-Plugin_v1.1.0-7952B3?logo=anthropic&logoColor=white)](https://code.claude.com)
+[![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-Plugin-7952B3?logo=anthropic&logoColor=white)](https://code.claude.com)
 [![Skills CLI](https://img.shields.io/badge/Skills_CLI-npx_skills_add-success)](https://github.com/vercel-labs/skills)
-[![MapLibre GL JS](https://img.shields.io/badge/MapLibre_GL_JS-v6.7.0_(ESM)-brightgreen)](https://maplibre.org/)
+[![MapLibre GL JS](https://img.shields.io/badge/MapLibre_GL_JS-WebGL-brightgreen)](https://maplibre.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE.md)
 
 > Open-source **MapLibre GL JS** AI skill for coding assistants (Claude Code, Cursor, Antigravity, GitHub Copilot, Windsurf, Roo Code, Gemini CLI). Built in accordance with the open **[Agent Skills Specification](https://agentskills.io/)**.
@@ -24,7 +24,7 @@ An **Agent Skill** is on-demand domain expertise: AI assistants load it dynamica
 
 When activated for **MapLibre GL JS**, this skill guides the agent to:
 
-- **Generate pure native MapLibre GL JS code** (v6.7.0 ESM / v6+) using modern lifecycle practices (WebGL container sizing, canvas resizing, event delegation, and resource cleanup).
+- **Generate pure native MapLibre GL JS code** using modern lifecycle practices (WebGL container sizing, canvas resizing, event delegation, and resource cleanup).
 - **Configure high-performance vector basemaps** with modern vector tile styles (streets, outdoor, satellite, dark) and clean typography.
 - **Author complex data-driven expressions** (`interpolate`, `step`, `match`, `case`, `feature-state`) with strict type safety and zero syntax errors.
 - **Handle GeoJSON layers & spatial clustering** — spatial clustering, expansion zoom, unclustered point popups, and high-frequency `setData` mutations.
@@ -108,8 +108,8 @@ This repository strictly conforms to the [Agent Skills specification](https://ag
 ```text
 mapsnippets/maplibre-skill/
 ├── .claude-plugin/
-│   ├── marketplace.json    — Claude Code marketplace catalog manifest (v1.1.0)
-│   └── plugin.json         — Claude Code plugin manifest & metadata (v1.1.0)
+│   ├── marketplace.json    — Claude Code marketplace catalog manifest
+│   └── plugin.json         — Claude Code plugin manifest & metadata
 ├── skills/
 │   └── maplibre/
 │       ├── SKILL.md        — Entry point prompt & progressive disclosure router (< 200 lines)

@@ -1,7 +1,7 @@
 ---
 name: maplibre
 description: >-
-  Expert coding skill for building web maps with MapLibre GL JS v6 (v6.7.0). USE WHEN the user wants to create a map, add an interactive map to a web app, display locations or routes, render geographic data, build a store locator, add markers, popups, heatmaps, or clustering, show GeoJSON on a map, create data-driven styling or visual expressions, render 3D terrain, globe view, or 3D buildings, switch to satellite imagery, animate camera movement (flyTo/fitBounds), add drawing/measuring tools, integrate maps in React, Next.js, Vue, or Svelte, or optimize map performance. Also USE WHEN the user mentions MapLibre, maplibre-gl, vector map, WebGL map, or MapTiler vector basemaps.
+  Expert coding skill for building web maps with MapLibre GL JS. USE WHEN the user wants to create a map, add an interactive map to a web app, display locations or routes, render geographic data, build a store locator, add markers, popups, heatmaps, or clustering, show GeoJSON on a map, create data-driven styling or visual expressions, render 3D terrain, globe view, or 3D buildings, switch to satellite imagery, animate camera movement (flyTo/fitBounds), add drawing/measuring tools, integrate maps in React, Next.js, Vue, or Svelte, or optimize map performance. Also USE WHEN the user mentions MapLibre, maplibre-gl, vector map, WebGL map, or MapTiler vector basemaps.
 license: MIT
 metadata:
   author: mapsnippets
@@ -10,7 +10,7 @@ metadata:
 
 # MapLibre GL JS — Agent Skill 🗺️⚡
 
-> The authoritative AI coding standard for building fast, hardware-accelerated vector web maps with **MapLibre GL JS v6 (v6.7.0 ESM)** using MapTiler as the primary basemap and geospatial data source.
+> The authoritative AI coding standard for building fast, hardware-accelerated vector web maps with **MapLibre GL JS** using MapTiler as the primary basemap and geospatial data source.
 
 Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospatial snippets, guides, and agent tools.
 
