@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MapLibre GL JS — GeoJSON Data-Driven Styling &amp; Feature States</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    #map { width: 100%; height: 100%; }
+    .hud-card {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
+      background: rgba(11, 17, 24, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 210, 255, 0.3);
+      border-radius: 8px;
+      padding: 14px 18px;
+      color: #ffffff;
+      max-width: 320px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+    .hud-title { font-size: 15px; font-weight: 700; color: #00D2FF; margin-bottom: 4px; }
+    .hud-desc { font-size: 12px; color: #94a3b8; line-height: 1.4; margin-bottom: 12px; }
+    .legend { display: flex; flex-direction: column; gap: 4px; font-size: 11px; color: #cbd5e1; }
+    .legend-item { display: flex; align-items: center; gap: 8px; }
+    .legend-color { width: 14px; height: 14px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <div class="hud-card">
+    <div class="hud-title">📊 Data-Driven Expressions</div>
+    <div class="hud-desc">Polygons styled dynamically with continuous color interpolation and GPU feature states.</div>
+    <div class="legend">
+      <div class="legend-item"><span class="legend-color" style="background: #FF2A6D"></span> High Activity (&gt; 80)</div>
+      <div class="legend-item"><span class="legend-color" style="background: #00D2FF"></span> Medium Activity (40 - 80)</div>
+      <div class="legend-item"><span class="legend-color" style="background: #0084FF"></span> Standard Activity (&lt; 40)</div>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script>
+    const apiKey = new URLSearchParams(window.location.search).get('key') || 'YOUR_MAPTILER_API_KEY';
+
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: `https://api.maptiler.com/maps/dataviz-dark/style.json?key=${apiKey}`,
+      center: [-74.006, 40.7128], // New York
+      zoom: 11
+    });
+
+    map.addControl(new maplibregl.NavigationControl(), 'top-right');
+
+    const sampleGeoJson = {
+      type: 'FeatureCollection',
+      features: [
+        {
+          id: 1,
+          type: 'Feature',
+          properties: { name: 'Lower Manhattan Zone', value: 92 },
+          geometry: {
+            type: 'Polygon',
+            coordinates: [[
+              [-74.02, 40.70], [-73.98, 40.71], [-73.99, 40.73], [-74.01, 40.72], [-74.02, 40.70]
+            ]]
+          }
+        },
+        {
+          id: 2,
+          type: 'Feature',
+          properties: { name: 'Midtown District', value: 65 },
+          geometry: {
+            type: 'Polygon',
+            coordinates: [[
+              [-74.00, 40.74], [-73.97, 40.75], [-73.98, 40.77], [-74.01, 40.76], [-74.00, 40.74]
+            ]]
+          }
+        },
+        {
+          id: 3,
+          type: 'Feature',
+          properties: { name: 'Brooklyn Hub', value: 34 },
+          geometry: {
+            type: 'Polygon',
+            coordinates: [[
+              [-73.99, 40.68], [-73.95, 40.69], [-73.96, 40.71], [-74.00, 40.70], [-73.99, 40.68]
+            ]]
+          }
+        }
+      ]
+    };
+
+    let hoveredId = null;
+
+    map.on('load', () => {
+      map.addSource('zones', {
+        type: 'geojson',
+        data: sampleGeoJson,
+        generateId: false // using manual integer IDs for feature state
+      });
+
+      // 1. Fill Layer with Continuous Color Interpolation
+      map.addLayer({
+        id: 'zones-fill',
+        type: 'fill',
+        source: 'zones',
+        paint: {
+          'fill-color': [
+            'interpolate', ['linear'], ['get', 'value'],
+            20, '#0084FF',
+            60, '#00D2FF',
+            90, '#FF2A6D'
+          ],
+          'fill-opacity': [
+            'case',
+            ['boolean', ['feature-state', 'hover'], false],
+            0.85,
+            0.45
+          ]
+        }
+      });
+
+      // 2. Outline Layer
+      map.addLayer({
+        id: 'zones-line',
+        type: 'line',
+        source: 'zones',
+        paint: {
+          'line-color': '#ffffff',
+          'line-width': [
+            'case',
+            ['boolean', ['feature-state', 'hover'], false],
+            3,
+            1
+          ]
+        }
+      });
+
+      const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
+
+      map.on('mousemove', 'zones-fill', (e) => {
+        if (e.features.length > 0) {
+          if (hoveredId !== null) {
+            map.setFeatureState({ source: 'zones', id: hoveredId }, { hover: false });
+          }
+          hoveredId = e.features[0].id;
+          map.setFeatureState({ source: 'zones', id: hoveredId }, { hover: true });
+          map.getCanvas().style.cursor = 'pointer';
+
+          const props = e.features[0].properties;
+          popup.setLngLat(e.lngLat)
+            .setHTML(`<strong>${props.name}</strong><br/>Activity Index: ${props.value}`)
+            .addTo(map);
+        }
+      });
+
+      map.on('mouseleave', 'zones-fill', () => {
+        if (hoveredId !== null) {
+          map.setFeatureState({ source: 'zones', id: hoveredId }, { hover: false });
+        }
+        hoveredId = null;
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+    });
+  </script>
+</body>
+</html>
