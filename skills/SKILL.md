@@ -23,42 +23,56 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 
 ---
 
-## 🔎 Fast Search & Prefix Conventions
+## 🔎 Fast Search Topic Router
 
-Target your `grep` or file searches in `references/` using these prefixes to quickly load exact task guides:
+To quickly find the exact MapLibre implementation guide or API specification, use direct directory routing:
 
-| Category | File Prefix | Contents |
+| Category | Location | Contents |
 | :--- | :--- | :--- |
-| **Official Task Examples** | `examples-maplibre-*` | Atomic, copy-pasteable tutorials with full HTML, CSS, and native JS (Vector map, FlyTo, 3D Terrain, 3D Buildings, Clustering, Hover state, Gradient line, Three.js, PMTiles) |
-| **Core API & Architecture** | `api-*`, `architecture-*`, `style-spec-*` | Specifications for MapLibre classes, controls, style spec v8, and WebGL lifecycle |
-| **Basemaps & Services** | `basemaps-*`, `vector-tile-*`, `geocoding-*` | MapTiler Planet v4 tile endpoints, vector tile schemas, and REST services |
-
-Consult **[references/INDEX.md](references/INDEX.md)** for the complete master index.
+| **Official Task Examples** | **[examples/INDEX.md](examples/INDEX.md)** | **30 atomic official examples** with full HTML, CSS, and native JS across 3D Terrain, Globe, FlyTo, Clustering, Feature State, PMTiles, and Overlays |
+| **Core API & Architecture** | **[references/INDEX.md](references/INDEX.md)** | Declarative specifications for `Map` methods, custom `IControl`, runtime styling, Three.js custom layers, WebGL lifecycle |
+| **Style Specification** | `references/style-spec-*`, `references/expressions.md` | Exhaustive MapLibre Style Specification v8, all 9 layer types, expressions DSL |
+| **Basemaps, Schemas & Services**| `references/basemaps-*`, `references/vector-tile-*` | MapTiler Planet v4 tile URLs, vector schemas, and REST endpoints |
 
 ---
 
-## 📚 Modular Reference Guides & Examples
+## 🧪 30 Official Task Examples (`examples/`)
+
+All task examples are self-contained with complete HTML, CSS, and native MapLibre GL JS code (`new maplibregl.Map(...)`) using modern MapTiler Planet v4 vector styles or Terrain-RGB tiles. Browse **[examples/INDEX.md](examples/INDEX.md)** for the complete categorized catalog:
+
+- [examples/display-vector-map.md](examples/display-vector-map.md) — Vector map with MapTiler Streets v4, NavigationControl, and FullscreenControl.
+- [examples/switch-map-styles.md](examples/switch-map-styles.md) — Runtime basemap style switcher toggling Streets, Outdoor, and Satellite.
+- [examples/globe-projection.md](examples/globe-projection.md) — Interactive 3D globe view projection at low zoom levels.
+- [examples/fly-to-camera.md](examples/fly-to-camera.md) — Cinematic camera flight navigation with pitch, bearing, and curve controls.
+- [examples/animate-point-along-route.md](examples/animate-point-along-route.md) — Smooth 60 FPS marker interpolation along a GeoJSON line.
+- [examples/3d-terrain-elevation.md](examples/3d-terrain-elevation.md) — Hardware-accelerated 3D DEM elevation using Terrain-RGB tiles.
+- [examples/3d-buildings-extrusion.md](examples/3d-buildings-extrusion.md) — Vector building footprints extruded to 3D with height expressions.
+- [examples/marker-clustering.md](examples/marker-clustering.md) — Native GeoJSON source-level clustering, step styling, and click expansion.
+- [examples/hover-feature-state.md](examples/hover-feature-state.md) — 60 FPS polygon boundary hover highlights with `map.setFeatureState`.
+- [examples/gradient-line.md](examples/gradient-line.md) — Multi-color gradient routes using `line-gradient` and `lineMetrics`.
+- [examples/custom-layer-threejs.md](examples/custom-layer-threejs.md) — Custom WebGL layer embedding a 3D Three.js model with `MercatorCoordinate`.
+- [examples/pmtiles-protocol.md](examples/pmtiles-protocol.md) — Streaming serverless vector tiles using `maplibregl.addProtocol` and PMTiles.
+- *...and 18 more task recipes in [examples/INDEX.md](examples/INDEX.md).*
+
+---
+
+## 📚 Core API & Architecture References (`references/`)
 
 Deep architectural and schema reference files live under `references/` and should be loaded on demand:
-- [references/INDEX.md](references/INDEX.md) — **Master topic index & router** for all MapLibre references and guides.
-- [references/examples-maplibre-display-vector-map.md](references/examples-maplibre-display-vector-map.md) — Display vector map, NavigationControl, FullscreenControl, and Streets v4.
-- [references/examples-maplibre-fly-to-camera.md](references/examples-maplibre-fly-to-camera.md) — Cinematic camera flight navigation, pitch/bearing 3D tilt, and viewport padding.
-- [references/examples-maplibre-3d-terrain-elevation.md](references/examples-maplibre-3d-terrain-elevation.md) — 3D DEM elevation with Terrain-RGB, exaggeration, and hillshading.
-- [references/examples-maplibre-3d-buildings-extrusion.md](references/examples-maplibre-3d-buildings-extrusion.md) — Extruded 3D buildings (`fill-extrusion`), height expressions, and sunlight.
-- [references/examples-maplibre-marker-clustering.md](references/examples-maplibre-marker-clustering.md) — GeoJSON point clustering, step-function styling, and cluster expansion zoom.
-- [references/examples-maplibre-hover-feature-state.md](references/examples-maplibre-hover-feature-state.md) — 60 FPS polygon hover highlight using `map.setFeatureState`.
-- [references/examples-maplibre-custom-layer-threejs.md](references/examples-maplibre-custom-layer-threejs.md) — Custom WebGL layer embedding a Three.js 3D model with `MercatorCoordinate`.
-- [references/examples-maplibre-pmtiles-protocol.md](references/examples-maplibre-pmtiles-protocol.md) — Streaming serverless vector tiles using `maplibregl.addProtocol` and PMTiles.
-- [references/api-classes-and-controls.md](references/api-classes-and-controls.md) — Core `maplibregl` classes (`Map`, `Marker`, `Popup`), UI controls, and custom `IControl`.
-- [references/plugins-catalog.md](references/plugins-catalog.md) — Complete catalog of plugins, controls, layer extensions, and drawing tools (`terra-draw`).
-- [references/style-spec-reference.md](references/style-spec-reference.md) — Exhaustive MapLibre Style Specification v8 reference (sources, all 9 layer types, expressions).
-- [references/architecture-and-guides.md](references/architecture-and-guides.md) — Technical guides on WebGL context management (16 context limit), custom layers, and protocols.
-- [references/vector-tile-schemas.md](references/vector-tile-schemas.md) — Planet v4 source layers (`transportation`, `building`, `water`, `place`, `poi`, `boundary`).
-- [references/basemaps-and-terrain.md](references/basemaps-and-terrain.md) — Map styles (`streets-v4`, `outdoor-v4`, `satellite-v4`, `dataviz-v4-dark`), raster tiles, and DEM.
-- [references/geocoding-and-services.md](references/geocoding-and-services.md) — Forward/reverse geocoding, search autocomplete, and point elevation REST endpoints.
-- [references/patterns-gotchas.md](references/patterns-gotchas.md) — Common lifecycle, coordinate inversion, and context loss gotchas.
-- [references/frameworks.md](references/frameworks.md) — React, Next.js, Vue, and Svelte integration patterns.
-- [examples/README.md](examples/README.md) — **Standalone executable HTML examples** (vector basemaps, 3D terrain/extrusions, GeoJSON styling, clustering, PMTiles).
+- [references/INDEX.md](references/INDEX.md) — **Master API reference index & router**.
+- [references/api-classes-and-controls.md](references/api-classes-and-controls.md) — `Map` methods, custom `IControl` interface, runtime styling (`setPaintProperty`), `Marker`, `Popup`.
+- [references/style-spec-reference.md](references/style-spec-reference.md) — MapLibre Style Specification v8, root properties, 9 layer types, expressions DSL.
+- [references/sources-layers.md](references/sources-layers.md) — Dynamic source/layer management (`vector`, `raster`, `raster-dem`, `geojson`, `image`, `video`).
+- [references/expressions.md](references/expressions.md) — Comprehensive expression syntax guide (interpolate, step, case, match, math).
+- [references/architecture-and-guides.md](references/architecture-and-guides.md) — WebGL 16-context cleanup pattern, Three.js layer integration, custom protocols.
+- [references/plugins-catalog.md](references/plugins-catalog.md) — Directory of third-party plugins (`@maptiler/geocoding-control`, `terra-draw`, compare).
+- [references/frameworks.md](references/frameworks.md) — React (`react-map-gl/maplibre`), Next.js SSR fix, Vue 3, Svelte (`svelte-maplibre`), Angular.
+- [references/events.md](references/events.md) — Pointer tracking, layer events, spatial query listeners.
+- [references/patterns-gotchas.md](references/patterns-gotchas.md) — Solutions for the top 10 MapLibre bugs (`[lng, lat]` order, missing CSS, context loss).
+- [references/prompt-benchmarks.md](references/prompt-benchmarks.md) — Standardized MapLibre evaluation prompts and patterns.
+- [references/vector-tile-schemas.md](references/vector-tile-schemas.md) — Planet v4 vector tile schema (transportation, building, water, place, poi).
+- [references/basemaps-and-terrain.md](references/basemaps-and-terrain.md) — Production endpoints for `streets-v4`, `dataviz-v4-dark`, `outdoor-v4`, `satellite-v4`.
+- [references/geocoding-and-services.md](references/geocoding-and-services.md) — Forward/reverse geocoding, autocomplete search, static maps, and elevation.
 
 
 > **Important for code generation:** When generating code, always write complete, self-contained HTML files. Do not output code as inline text or markdown code blocks without creating a file.
