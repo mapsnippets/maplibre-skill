@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MapLibre GL JS — Native GeoJSON Clustering &amp; Interactive Popups</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    #map { width: 100%; height: 100%; }
+    .hud-card {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
+      background: rgba(11, 17, 24, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 210, 255, 0.3);
+      border-radius: 8px;
+      padding: 14px 18px;
+      color: #ffffff;
+      max-width: 320px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+    .hud-title { font-size: 15px; font-weight: 700; color: #00D2FF; margin-bottom: 4px; }
+    .hud-desc { font-size: 12px; color: #94a3b8; line-height: 1.4; }
+  </style>
+</head>
+<body>
+  <div class="hud-card">
+    <div class="hud-title">⚡ GPU Point Clustering</div>
+    <div class="hud-desc">Built-in worker clustering handling thousands of points with smooth expansion zoom.</div>
+  </div>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script>
+    const apiKey = new URLSearchParams(window.location.search).get('key') || 'YOUR_MAPTILER_API_KEY';
+
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: `https://api.maptiler.com/maps/streets-v4/style.json?key=${apiKey}`,
+      center: [-103.59, 40.66], // USA
+      zoom: 3.5
+    });
+
+    map.addControl(new maplibregl.NavigationControl(), 'top-right');
+
+    map.on('load', () => {
+      // 1. Add clustered GeoJSON source
+      map.addSource('earthquakes', {
+        type: 'geojson',
+        data: 'https://maplibre.org/maplibre-gl-js/docs/assets/earthquakes.geojson',
+        cluster: true,
+        clusterMaxZoom: 14,
+        clusterRadius: 50
+      });
+
+      // 2. Clusters Layer (Step color expression)
+      map.addLayer({
+        id: 'clusters',
+        type: 'circle',
+        source: 'earthquakes',
+        filter: ['has', 'point_count'],
+        paint: {
+          'circle-color': [
+            'step', ['get', 'point_count'],
+            '#0084FF',
+            100, '#00D2FF',
+            750, '#FF2A6D'
+          ],
+          'circle-radius': [
+            'step', ['get', 'point_count'],
+            18,
+            100, 24,
+            750, 32
+          ],
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#ffffff'
+        }
+      });
+
+      // 3. Cluster Count Label Layer
+      map.addLayer({
+        id: 'cluster-count',
+        type: 'symbol',
+        source: 'earthquakes',
+        filter: ['has', 'point_count'],
+        layout: {
+          'text-field': '{point_count_abbreviated}',
+          'text-font': ['Open Sans Bold'],
+          'text-size': 12
+        },
+        paint: {
+          'text-color': '#ffffff'
+        }
+      });
+
+      // 4. Individual Unclustered Points Layer
+      map.addLayer({
+        id: 'unclustered-point',
+        type: 'circle',
+        source: 'earthquakes',
+        filter: ['!', ['has', 'point_count']],
+        paint: {
+          'circle-color': '#00D2FF',
+          'circle-radius': 6,
+          'circle-stroke-width': 1.5,
+          'circle-stroke-color': '#ffffff'
+        }
+      });
+
+      // Zoom into cluster on click
+      map.on('click', 'clusters', (e) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+        const clusterId = features[0].properties.cluster_id;
+        map.getSource('earthquakes').getClusterExpansionZoom(clusterId, (err, zoom) => {
+          if (err) return;
+          map.easeTo({
+            center: features[0].geometry.coordinates,
+            zoom: zoom
+          });
+        });
+      });
+
+      // Show popup on unclustered point click
+      map.on('click', 'unclustered-point', (e) => {
+        const coords = e.features[0].geometry.coordinates.slice();
+        const mag = e.features[0].properties.mag;
+        new maplibregl.Popup()
+          .setLngLat(coords)
+          .setHTML(`<strong>Earthquake Event</strong><p>Magnitude: ${mag}</p>`)
+          .addTo(map);
+      });
+
+      map.on('mouseenter', 'clusters', () => { map.getCanvas().style.cursor = 'pointer'; });
+      map.on('mouseleave', 'clusters', () => { map.getCanvas().style.cursor = ''; });
+      map.on('mouseenter', 'unclustered-point', () => { map.getCanvas().style.cursor = 'pointer'; });
+      map.on('mouseleave', 'unclustered-point', () => { map.getCanvas().style.cursor = ''; });
+    });
+  </script>
+</body>
+</html>
