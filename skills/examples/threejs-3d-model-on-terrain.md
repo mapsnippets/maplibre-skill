@@ -14,14 +14,15 @@ Places an external 3D mesh model with Three.js accurately positioned and altitud
 <head>
   <meta charset="UTF-8">
   <title>MapLibre - Three.js Model Clamped to Terrain</title>
-  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.css" />
   <script src="https://unpkg.com/three@0.147.0/build/three.min.js"></script>
   <style>body { margin: 0; padding: 0; } #map { width: 100vw; height: 100vh; }</style>
 </head>
 <body>
   <div id="map"></div>
-  <script>
+  <script type="module">
+    import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.mjs';
     const MAPTILER_KEY = 'YOUR_MAPTILER_API_KEY';
 
     const modelOrigin = [8.5417, 47.3769];

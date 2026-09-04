@@ -16,7 +16,7 @@ Project orthophoto drone surveys, historical archive maps, or blueprint diagrams
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Georeferenced Image Overlay (Drone / Historical) 🗺️</title>
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -52,7 +52,7 @@ html, body {
 ## 3. Complete JavaScript Implementation
 
 ```javascript
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 const MAPTILER_KEY = 'YOUR_MAPTILER_KEY';

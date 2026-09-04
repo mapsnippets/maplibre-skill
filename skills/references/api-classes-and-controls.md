@@ -9,7 +9,7 @@
 The central class representing an interactive WebGL map instance.
 
 ```javascript
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 
 const map = new maplibregl.Map({
   container: 'map',

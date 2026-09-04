@@ -14,8 +14,8 @@ Interactive click-to-measure tool calculating accurate geodesic path lengths wit
 <head>
   <meta charset="UTF-8">
   <title>MapLibre - Turf.js Distance Measurement</title>
-  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.css" />
   <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
   <style>
     body { margin: 0; padding: 0; font-family: sans-serif; }
@@ -33,7 +33,8 @@ Interactive click-to-measure tool calculating accurate geodesic path lengths wit
     <strong>Distance:</strong> <span id="distance">0 km</span><br>
     <small>Click map to add measurement points</small>
   </div>
-  <script>
+  <script type="module">
+    import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.mjs';
     const MAPTILER_KEY = 'YOUR_MAPTILER_API_KEY';
 
     const map = new maplibregl.Map({

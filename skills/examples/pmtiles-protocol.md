@@ -15,7 +15,7 @@ This tutorial shows how to extend MapLibre GL JS with custom streaming protocols
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MapLibre PMTiles Protocol</title>
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.css" />
   <style>
     body { margin: 0; padding: 0; }
     #map { width: 100vw; height: 100vh; }
@@ -23,7 +23,7 @@ This tutorial shows how to extend MapLibre GL JS with custom streaming protocols
 </head>
 <body>
   <div id="map"></div>
-  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  
   <script src="https://unpkg.com/pmtiles@3.0.6/dist/pmtiles.js"></script>
   <script src="main.js"></script>
 </body>
@@ -35,7 +35,7 @@ This tutorial shows how to extend MapLibre GL JS with custom streaming protocols
 ## 2. JavaScript Implementation
 
 ```javascript
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 import { Protocol } from 'pmtiles';
 import 'maplibre-gl/dist/maplibre-gl.css';
 

@@ -77,7 +77,7 @@ Deep architectural and schema reference files live under `references/` and shoul
 
 > **Important for code generation:** When generating code, always write complete, self-contained HTML files. Do not output code as inline text or markdown code blocks without creating a file.
 
-> [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/) v4.7.1 · [NPM](https://www.npmjs.com/package/maplibre-gl) · [GitHub](https://github.com/maplibre/maplibre-gl-js) · [MapTiler MapLibre Docs](https://docs.maptiler.com/maplibre-gl-js/)
+> [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/) v6.7.0 (Latest ESM) · [NPM](https://www.npmjs.com/package/maplibre-gl) · [GitHub](https://github.com/maplibre/maplibre-gl-js) · [MapTiler MapLibre Docs](https://docs.maptiler.com/maplibre-gl-js/)
 
 MapLibre GL JS is an open-source TypeScript library for rendering interactive vector maps using WebGL/WebGPU. This skill covers using MapLibre GL JS with **MapTiler Cloud** as the data and basemap provider for vector styles, tiles, 3D terrain, and geocoding services.
 
@@ -107,18 +107,20 @@ MapLibre GL JS is the community-maintained fork of Mapbox GL JS v1 — fully ope
 ### CDN (recommended for quick demos)
 
 ```html
-<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+<script type="module">
+  import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.mjs';
+</script>
+<link href="https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.css" rel="stylesheet" />
 ```
 
 ### NPM
 
 ```bash
-npm install maplibre-gl
+npm install maplibre-gl@^6.7.0
 ```
 
-```js
-import maplibregl from 'maplibre-gl';
+```javascript
+import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 ```
 
@@ -702,7 +704,7 @@ npm install maplibre-gl
 ```vue
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 const container = ref(null);

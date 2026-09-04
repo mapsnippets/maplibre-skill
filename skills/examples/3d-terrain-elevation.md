@@ -15,7 +15,7 @@ This guide demonstrates how to configure real 3D digital elevation models (DEM) 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MapLibre 3D Terrain</title>
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.css" />
   <style>
     body { margin: 0; padding: 0; }
     #map { width: 100vw; height: 100vh; }
@@ -23,8 +23,7 @@ This guide demonstrates how to configure real 3D digital elevation models (DEM) 
 </head>
 <body>
   <div id="map"></div>
-  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-  <script src="main.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
 ```
@@ -34,7 +33,7 @@ This guide demonstrates how to configure real 3D digital elevation models (DEM) 
 ## 2. JavaScript Implementation
 
 ```javascript
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 const apiKey = 'YOUR_MAPTILER_API_KEY';

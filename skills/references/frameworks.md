@@ -9,7 +9,7 @@ Same core pattern everywhere: create a map on mount, call `map.remove()` on unmo
 The standard React wrapper for MapLibre GL JS, maintained by Vis.gl.
 
 ```bash
-npm install react-map-gl maplibre-gl
+npm install react-map-gl maplibre-gl@^6.7.0
 ```
 
 ### Basic Usage
@@ -151,7 +151,7 @@ If you prefer imperative control:
 
 ```jsx
 import { useEffect, useRef } from 'react';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 function MapView() {
@@ -202,7 +202,7 @@ Env: `NEXT_PUBLIC_MAPTILER_KEY`
 No official vue-maplibre wrapper — use maplibre-gl directly (it works great).
 
 ```bash
-npm install maplibre-gl
+npm install maplibre-gl@^6.7.0
 ```
 
 ### Basic Usage
@@ -210,7 +210,7 @@ npm install maplibre-gl
 ```vue
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 const container = ref(null);
@@ -245,7 +245,7 @@ onUnmounted(() => {
 ```js
 // composables/useMap.js
 import { ref, onMounted, onUnmounted } from 'vue';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 
 export function useMap(containerRef, options = {}) {
   const map = ref(null);
@@ -292,7 +292,7 @@ Wrap with `<ClientOnly>`:
 ```svelte
 <script>
   import { onMount, onDestroy } from 'svelte';
-  import maplibregl from 'maplibre-gl';
+  import * as maplibregl from 'maplibre-gl';
   import 'maplibre-gl/dist/maplibre-gl.css';
 
   let mapContainer;
@@ -324,12 +324,12 @@ Wrap with `<ClientOnly>`:
 ## Angular
 
 ```bash
-npm install maplibre-gl
+npm install maplibre-gl@^6.7.0
 ```
 
 ```typescript
 import { Component, ElementRef, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 
 @Component({
   selector: 'app-map',

@@ -96,7 +96,9 @@ useEffect(() => {
   const map = new maplibregl.Map({
     container: 'map',
     style: styleUrl,
-    preserveDrawingBuffer: true // Required for image capture
+    canvasContextAttributes: {
+      preserveDrawingBuffer: true // Required for image capture in v6+
+    }
   });
 
   function exportPng() {
@@ -161,3 +163,16 @@ map.getCanvas().addEventListener('webglcontextrestored', () => {
    ```
 3. **Limit Terrain Exaggeration**: On low-powered mobile GPUs, reduce DEM resolution or keep `exaggeration` around `1.0` to avoid fill-rate bottlenecks.
 4. **Use Symbol Clustering**: Aggregate dense point clouds at zoom levels < 14 using `cluster: true` and `clusterRadius: 50`.
+
+---
+
+### 8. MapLibre GL JS v6 ESM-Only Distribution Trap
+* **Gotcha**: MapLibre GL JS v6 drops CommonJS (`require()`) and UMD bundles (`maplibre-gl.js`). Attempting `const maplibregl = require('maplibre-gl')` or `<script src=".../maplibre-gl.js">` causes `ERR_PACKAGE_PATH_NOT_EXPORTED` or HTTP 404.
+* **Fix**:
+  * In HTML: Use `<script type="module">` with `https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.mjs`.
+  * In modern JS/TS: Always use namespace or named imports:
+    ```javascript
+    import * as maplibregl from 'maplibre-gl';
+    // or
+    import { Map, NavigationControl } from 'maplibre-gl';
+    ```

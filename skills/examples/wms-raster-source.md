@@ -14,13 +14,14 @@ Integrates an external OGC Web Map Service (WMS) as a raster tile source overlai
 <head>
   <meta charset="UTF-8">
   <title>MapLibre - OGC WMS Layer</title>
-  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.css" />
   <style>body { margin: 0; padding: 0; } #map { width: 100vw; height: 100vh; }</style>
 </head>
 <body>
   <div id="map"></div>
-  <script>
+  <script type="module">
+    import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.mjs';
     const MAPTILER_KEY = 'YOUR_MAPTILER_API_KEY';
 
     const map = new maplibregl.Map({

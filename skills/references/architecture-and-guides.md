@@ -23,7 +23,7 @@ Browsers (Chrome, Firefox, Safari) enforce a hard limit of **16 active WebGL con
 **Production React Cleanup Pattern:**
 ```typescript
 import React, { useEffect, useRef } from 'react';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 export const MapComponent: React.FC<{ apiKey: string }> = ({ apiKey }) => {

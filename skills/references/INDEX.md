@@ -1,6 +1,6 @@
-# MapLibre GL JS Reference Index 🗂️⚡
+# MapLibre GL JS v6.7.0 Reference Index 🗂️⚡
 
-> Master index and topic routing directory for all MapLibre GL JS agent references, API standards, official documentation guides, and MapTiler basemap integrations. Load on demand.
+> Master index and topic routing directory for all MapLibre GL JS v6.7.0 agent references, API standards, official documentation guides, and MapTiler basemap integrations. Load on demand.
 
 Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospatial snippets, guides, and agent tools.
 
