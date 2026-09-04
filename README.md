@@ -16,26 +16,7 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 
 ---
 
-<br>
 
-<details>
-<summary><b>Table of Contents</b></summary>
-<ul>
-<li><a href="#-overview--capabilities">Overview & Capabilities</a></li>
-<li><a href="#-how-agent-skills-work">How Agent Skills Work</a></li>
-<li><a href="#-example-prompts-that-trigger-this-skill">Example Prompts That Trigger This Skill</a></li>
-<li><a href="#-installation">Installation</a></li>
-<li><a href="#-repository-architecture">Repository Architecture</a></li>
-<li><a href="#-quickstart-example">Quickstart Example</a></li>
-<li><a href="#-basemap-api-keys">Basemap API Keys</a></li>
-<li><a href="#-evaluation--validation">Evaluation & Validation</a></li>
-<li><a href="#links">Links</a></li>
-<li><a href="#-forking--customization">Forking & Customization</a></li>
-<li><a href="#-license">License</a></li>
-</ul>
-</details>
-
-<br>
 
 ## 💡 Overview & Capabilities
 
@@ -57,10 +38,11 @@ When activated for **MapLibre GL JS**, this skill guides the agent to:
 
 This skill follows the **[Agent Skills open format](https://agentskills.io/)**, utilizing a **three-tier progressive disclosure model** to minimize context overhead:
 
-```mermaid
-graph LR
-    A[1. Discovery<br/>Startup] -->|Match Query| B[2. Activation<br/>Load SKILL.md]
-    B -->|As Needed| C[3. Execution<br/>Modular References & Examples]
+```text
+┌────────────────────────┐         Match Query         ┌────────────────────────┐         As Needed          ┌───────────────────────────────────┐
+│ 1. Discovery (Startup) │ ──────────────────────────> │ 2. Activation (Load)   │ ─────────────────────────> │ 3. Execution (Deep Dive)          │
+│    name & description  │                             │    SKILL.md router     │                            │    Modular References & Recipes   │
+└────────────────────────┘                             └────────────────────────┘                            └───────────────────────────────────┘
 ```
 
 1. **Discovery (Startup)**: The agent only inspects the YAML frontmatter `name` and `description` (~50 tokens).
