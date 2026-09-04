@@ -1,44 +1,52 @@
-# MapLibre GL JS Reference Index 🗂️
+# MapLibre GL JS Reference Index 🗂️⚡
 
-> Master index and topic routing directory for all MapLibre GL JS agent references, API standards, official documentation guides, and MapTiler basemap integrations.
+> Master index and topic routing directory for all MapLibre GL JS agent references, API standards, official documentation guides, and MapTiler basemap integrations. Load on demand.
 
 Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospatial snippets, guides, and agent tools.
 
 ---
 
-## 1. Master Reference Directory
+## 🔎 Fast Search & Prefix Conventions
 
-| Document | Scope & Contents | Key Topics |
+Target your `grep` or file searches in `references/` using these prefixes to load the exact guide needed:
+
+| Category | File Prefix | Contents |
 | :--- | :--- | :--- |
-| [**api-classes-and-controls.md**](api-classes-and-controls.md) | Exhaustive reference for MapLibre core classes, UI controls, and methods. | `Map` methods (`flyTo`, `fitBounds`, `queryRenderedFeatures`, `project`), controls (`NavigationControl`, `GeolocateControl`, `ScaleControl`, `FullscreenControl`, `AttributionControl`), `Marker`, `Popup`, `LngLat`, `MercatorCoordinate`. |
-| [**plugins-catalog.md**](plugins-catalog.md) | Comprehensive directory of third-party plugins, controls, and layer extensions. | UI controls, `@maptiler/geocoding-control`, PMTiles protocol, Three.js 3D layers, `terra-draw`, `react-map-gl/maplibre`. |
-| [**style-spec-reference.md**](style-spec-reference.md) | Complete reference for MapLibre Style Specification v8. | Root properties, sources (`vector`, `raster`, `raster-dem`, `geojson`), 9 layer types (`fill`, `line`, `symbol`, `circle`, `heatmap`, `fill-extrusion`, `raster`, `hillshade`, `background`), expression DSL, light, terrain. |
-| [**architecture-and-guides.md**](architecture-and-guides.md) | Deep technical guide to architecture, WebGL lifecycle, and optimization. | WebGL context limits (16 context trap), React/Next.js lifecycle cleanup (`map.remove()`), camera math (`fitBounds`, padding), `CustomLayerInterface`, PMTiles protocol, feature-state hover patterns. |
-| [**official-examples-catalog.md**](official-examples-catalog.md) | Complete directory of 70+ official MapLibre examples with links and patterns. | Map basics, camera animations, source feeds, layer styling, 3D terrain/globe, annotations/labels, spatial querying. |
-| [**vector-tile-schemas.md**](vector-tile-schemas.md) | MapTiler Planet v4 vector tile schema and attribute specifications. | `transportation`, `building`, `water`, `place`, `poi`, `boundary`, `contour` layers and attribute fields. |
-| [**basemaps-and-terrain.md**](basemaps-and-terrain.md) | Guide to MapTiler basemap styles, high-DPI raster tiles, and 3D DEM. | `streets-v4`, `dataviz-v4-dark`, `outdoor-v4`, `satellite-v4`, `hybrid-v4`, `terrain-rgb-v2`, hillshade exaggeration. |
-| [**sources-layers.md**](sources-layers.md) | Detailed usage guide for managing sources and layers dynamically via JS API. | `map.addSource()`, `map.addLayer()`, `map.setFilter()`, `map.setLayoutProperty()`, `map.setPaintProperty()`. |
-| [**expressions.md**](expressions.md) | Deep dive into MapLibre expression syntax and shader logic. | Data expressions, camera expressions, step functions, interpolate, decision logic (`match`, `case`), color scales. |
-| [**events.md**](events.md) | Event handling, pointer tracking, and spatial queries. | `click`, `mousemove`, `mouseenter`, `mouseleave`, `queryRenderedFeatures`, hover states. |
-| [**frameworks.md**](frameworks.md) | Production integration guides for frontend frameworks. | React (`react-map-gl/maplibre`), Next.js (SSR bypass), Vue 3, Svelte (`svelte-maplibre`), Angular. |
-| [**geocoding-and-services.md**](geocoding-and-services.md) | MapTiler Cloud REST API integration. | Forward search, reverse geocoding, autocomplete, static maps, elevation endpoints. |
-| [**patterns-gotchas.md**](patterns-gotchas.md) | Common pitfalls and definitive solutions. | `[lng, lat]` coordinate order, container zero-height CSS, missing CSS link, context loss prevention. |
-| [**prompt-benchmarks.md**](prompt-benchmarks.md) | AI assistant prompt benchmarks and test scenarios. | Standardized evaluation prompts and expected code generation patterns. |
+| **Official Task Examples** | `examples-maplibre-*` | Atomic, copy-pasteable tutorials with full HTML, CSS, and native `maplibregl` JS (Vector map, FlyTo, 3D Terrain, 3D Buildings, Clustering, Hover state, Gradient line, Three.js, PMTiles) |
+| **Core API & Architecture** | `api-*`, `architecture-*`, `style-spec-*` | Specifications for MapLibre classes, controls, style spec v8, and WebGL lifecycle |
+| **Basemaps, Schemas & Services**| `basemaps-*`, `vector-tile-*`, `geocoding-*` | MapTiler Planet v4 tile URLs, vector schemas, and REST endpoints |
 
 ---
 
-## 2. Topic Routing by User Request
+## 📑 Complete Catalog
 
-| If the user asks for... | Consult these references |
-| :--- | :--- |
-| **Adding a vector or raster basemap** | [basemaps-and-terrain.md](basemaps-and-terrain.md) & [style-spec-reference.md](style-spec-reference.md) |
-| **Custom 3D terrain elevation or hillshade** | [basemaps-and-terrain.md](basemaps-and-terrain.md) & [architecture-and-guides.md](architecture-and-guides.md) |
-| **Styling vector tile layers (buildings, roads, water)** | [vector-tile-schemas.md](vector-tile-schemas.md) & [sources-layers.md](sources-layers.md) |
-| **Complex data-driven expressions (colors, scales, filters)** | [expressions.md](expressions.md) & [style-spec-reference.md](style-spec-reference.md) |
-| **Search bars, address autocomplete, or geocoding** | [plugins-catalog.md](plugins-catalog.md) & [geocoding-and-services.md](geocoding-and-services.md) |
-| **Large-scale point data, clustering, or heatmaps** | [sources-layers.md](sources-layers.md) & [architecture-and-guides.md](architecture-and-guides.md) |
-| **Drawing or editing polygons, lines, points** | [plugins-catalog.md](plugins-catalog.md) (`terra-draw`) |
-| **Custom 3D models or Three.js scenes** | [architecture-and-guides.md](architecture-and-guides.md) & [plugins-catalog.md](plugins-catalog.md) |
-| **PMTiles or serverless cloud-native tiles** | [architecture-and-guides.md](architecture-and-guides.md) & [plugins-catalog.md](plugins-catalog.md) |
-| **Integrating into React / Next.js / Vue / Svelte** | [frameworks.md](frameworks.md) & [architecture-and-guides.md](architecture-and-guides.md) |
-| **Finding official examples or code templates** | [official-examples-catalog.md](official-examples-catalog.md) |
+### 1. Official Step-by-Step Examples (`examples-maplibre-*`):
+1. **[examples-maplibre-display-vector-map.md](examples-maplibre-display-vector-map.md)** — Display vector map, NavigationControl, FullscreenControl, ScaleControl, and Streets v4.
+2. **[examples-maplibre-fly-to-camera.md](examples-maplibre-fly-to-camera.md)** — Cinematic camera flight navigation, pitch/bearing 3D tilt, and viewport padding margins.
+3. **[examples-maplibre-animate-point-along-route.md](examples-maplibre-animate-point-along-route.md)** — Smooth vehicle motion along a LineString route using `requestAnimationFrame`.
+4. **[examples-maplibre-3d-terrain-elevation.md](examples-maplibre-3d-terrain-elevation.md)** — 3D digital elevation models with Terrain-RGB, exaggeration, and hillshading.
+5. **[examples-maplibre-3d-buildings-extrusion.md](examples-maplibre-3d-buildings-extrusion.md)** — Extruded 3D buildings (`fill-extrusion`), zoom interpolation, and directional sunlight.
+6. **[examples-maplibre-marker-clustering.md](examples-maplibre-marker-clustering.md)** — GeoJSON point clustering, step-function radius/color ramps, and cluster expansion zoom.
+7. **[examples-maplibre-hover-feature-state.md](examples-maplibre-hover-feature-state.md)** — 60 FPS polygon hover highlight using `map.setFeatureState` and paint expressions.
+8. **[examples-maplibre-gradient-line.md](examples-maplibre-gradient-line.md)** — Linear color gradient along a polyline length with `lineMetrics: true` and `line-gradient`.
+9. **[examples-maplibre-spatial-query-inspector.md](examples-maplibre-spatial-query-inspector.md)** — `map.queryRenderedFeatures` bounding box inspection and property readout popups.
+10. **[examples-maplibre-custom-html-markers.md](examples-maplibre-custom-html-markers.md)** — Custom HTML markers with animated CSS radar pulse beacons and popups.
+11. **[examples-maplibre-custom-layer-threejs.md](examples-maplibre-custom-layer-threejs.md)** — Custom WebGL layer embedding a Three.js 3D model with `MercatorCoordinate`.
+12. **[examples-maplibre-pmtiles-protocol.md](examples-maplibre-pmtiles-protocol.md)** — Streaming serverless vector tiles using `maplibregl.addProtocol` and PMTiles.
+
+### 2. Core API Specifications & Guides:
+13. **[api-classes-and-controls.md](api-classes-and-controls.md)** — `Map` methods, custom `IControl` interface, runtime styling (`setPaintProperty`), `Marker`, `Popup`.
+14. **[style-spec-reference.md](style-spec-reference.md)** — MapLibre Style Specification v8, root properties, 9 layer types, expressions DSL.
+15. **[sources-layers.md](sources-layers.md)** — Dynamic source/layer management (`vector`, `raster`, `raster-dem`, `geojson`, `image`, `video`).
+16. **[expressions.md](expressions.md)** — Comprehensive expression syntax guide (interpolate, step, case, match, math).
+17. **[architecture-and-guides.md](architecture-and-guides.md)** — WebGL 16-context cleanup pattern, Three.js layer integration, custom protocols.
+18. **[plugins-catalog.md](plugins-catalog.md)** — Directory of third-party plugins (`@maptiler/geocoding-control`, `terra-draw`, compare).
+19. **[frameworks.md](frameworks.md)** — React (`react-map-gl/maplibre`), Next.js SSR fix, Vue 3, Svelte (`svelte-maplibre`), Angular.
+20. **[events.md](events.md)** — Pointer tracking, layer events, spatial query listeners.
+21. **[patterns-gotchas.md](patterns-gotchas.md)** — Solutions for the top 10 MapLibre bugs (`[lng, lat]` order, missing CSS, context loss).
+22. **[prompt-benchmarks.md](prompt-benchmarks.md)** — Standardized MapLibre evaluation prompts and patterns.
+
+### 3. Basemaps, Schemas & Services:
+23. **[vector-tile-schemas.md](vector-tile-schemas.md)** — Planet v4 vector tile schema (transportation, building, water, place, poi).
+24. **[basemaps-and-terrain.md](basemaps-and-terrain.md)** — Production endpoints for `streets-v4`, `dataviz-v4-dark`, `outdoor-v4`, `satellite-v4`.
+25. **[geocoding-and-services.md](geocoding-and-services.md)** — Forward/reverse geocoding, autocomplete search, static maps, and elevation.
