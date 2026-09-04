@@ -1,6 +1,6 @@
 # MapLibre GL JS Plugins Catalog 🔌
 
-> The comprehensive catalog of third-party plugins, controls, layer extensions, utility libraries, and framework integrations for **MapLibre GL JS (v3–v5)**.
+> The comprehensive catalog of third-party plugins, controls, layer extensions, utility libraries, and framework integrations for **MapLibre GL JS v6.7.0**.
 
 Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospatial snippets, guides, and agent tools.
 
@@ -51,7 +51,7 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 
 | Plugin | Package / Repository | Description |
 | :--- | :--- | :--- |
-| **Deck.gl MapboxOverlay** | `@deck.gl/mapbox` | High-performance WebGL2/WebGPU overlay for massive data layers (Hexagon, Arc, Scatterplot, Trips, H3). Attaches directly via `map.addControl(overlay)`. |
+| **MapLibre Contour** | `maplibre-contour` | Client-side contour line and elevation isoline generation from Terrain-RGB DEM tiles. |
 | **Three.js Custom Layer** | `three` + `CustomLayerInterface` | Full 3D rendering pipeline for glTF/GLB models, ambient shadows, animations, and custom shaders synchronized with camera view matrices. |
 | **PMTiles Protocol** | `pmtiles` | Serverless single-file archive format for vector and raster tiles. Enables zero-backend global map hosting from S3 or Cloudflare R2. |
 | **COG Protocol (Cloud Optimized GeoTIFF)** | `@geotiff/geotiff` / `cog-protocol` | Directly stream and decode tiled GeoTIFF raster imagery into MapLibre raster sources without tile servers. |
