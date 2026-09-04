@@ -6,14 +6,20 @@ description: >-
 
 # MapLibre GL JS + MapTiler — Agent Skill
 
-## Reference Guides
+## Reference Guides & Executable Examples
 
 Deep architectural and schema reference files live under `references/` and should be loaded on demand:
+- [references/INDEX.md](references/INDEX.md) — **Master topic index & router** for all MapLibre references and guides.
+- [references/plugins-catalog.md](references/plugins-catalog.md) — Complete catalog of plugins, controls, layer extensions, drawing tools, and framework bridges.
+- [references/style-spec-reference.md](references/style-spec-reference.md) — Exhaustive MapLibre Style Specification v8 reference (sources, all 9 layer types, expressions, light, terrain).
+- [references/architecture-and-guides.md](references/architecture-and-guides.md) — Deep technical guides on WebGL context management (16 context limit), custom layers (Three.js), and protocol extensions.
+- [references/official-examples-catalog.md](references/official-examples-catalog.md) — Complete directory of 70+ official MapLibre examples grouped by category.
 - [references/vector-tile-schemas.md](references/vector-tile-schemas.md) — Planet v4 source layers (`transportation`, `building`, `water`, `place`, `poi`, `boundary`, `contour`) and exact field attributes.
 - [references/basemaps-and-terrain.md](references/basemaps-and-terrain.md) — Map styles (`streets-v4`, `outdoor-v4`, `satellite-v4`), high-DPI raster tiles, and 3D Terrain-RGB DEM.
 - [references/geocoding-and-services.md](references/geocoding-and-services.md) — Forward/reverse geocoding, search autocomplete, and point elevation REST endpoints.
 - [references/patterns-gotchas.md](references/patterns-gotchas.md) — Common lifecycle, coordinate inversion, and context loss gotchas.
 - [references/frameworks.md](references/frameworks.md) — React, Next.js, Vue, and Svelte integration patterns.
+- [examples/README.md](examples/README.md) — **Standalone executable HTML examples** (vector basemaps, 3D terrain/extrusions, GeoJSON styling, clustering, PMTiles).
 
 
 > **Important for code generation:** When generating code, always write complete, self-contained HTML files. Do not output code as inline text or markdown code blocks without creating a file.
