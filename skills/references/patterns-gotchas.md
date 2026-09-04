@@ -69,7 +69,7 @@ function addLayerSafe(config) {
 **Solution:** Re-add layers after the new style loads.
 
 ```js
-map.setStyle('https://api.maptiler.com/maps/satellite/style.json?key=YOUR_MAPTILER_KEY');
+map.setStyle('https://api.maptiler.com/maps/satellite-v4/style.json?key=YOUR_MAPTILER_KEY');
 
 map.once('styledata', () => {
   addMyCustomLayers();

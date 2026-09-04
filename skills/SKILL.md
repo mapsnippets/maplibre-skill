@@ -8,7 +8,21 @@ metadata:
   homepage: https://mapsnippets.org/
 ---
 
-# MapLibre GL JS + MapTiler — Agent Skill
+# MapLibre GL JS — Agent Skill 🗺️⚡
+
+> The authoritative AI coding standard for building fast, hardware-accelerated vector web maps with **MapLibre GL JS (v3–v5)** using MapTiler as the primary basemap and geospatial data source.
+
+Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospatial snippets, guides, and agent tools.
+
+---
+
+## ⚡ Architectural Scope & Data Reference Invariants
+
+* **Native Library Focus:** This skill focuses strictly on pure, native **MapLibre GL JS** (`maplibregl.Map`, layers, sources, style specification, WebGL context, expressions, controls). All generated code must be 100% native MapLibre code without proprietary SDK wrappers.
+* **MapTiler as Data Source:** MapTiler Cloud provides vector tile styles, raster tiles, 3D Terrain-RGB DEM, and geocoding services.
+* **Upstream Reference Authority:** All MapTiler style endpoints, raster tiles, terrain DEMs, and vector tile schemas (Planet v4) conform to the authoritative specifications established in the [maptiler/maptiler-skills](https://github.com/maptiler/maptiler-skills) repository. For MapTiler SDK JS wrappers (`@maptiler/sdk`), native mobile SDKs, or on-premise infrastructure, refer to `maptiler-skills`.
+
+---
 
 ## Reference Guides & Executable Examples
 
@@ -19,7 +33,7 @@ Deep architectural and schema reference files live under `references/` and shoul
 - [references/architecture-and-guides.md](references/architecture-and-guides.md) — Deep technical guides on WebGL context management (16 context limit), custom layers (Three.js), and protocol extensions.
 - [references/official-examples-catalog.md](references/official-examples-catalog.md) — Complete directory of 70+ official MapLibre examples grouped by category.
 - [references/vector-tile-schemas.md](references/vector-tile-schemas.md) — Planet v4 source layers (`transportation`, `building`, `water`, `place`, `poi`, `boundary`, `contour`) and exact field attributes.
-- [references/basemaps-and-terrain.md](references/basemaps-and-terrain.md) — Map styles (`streets-v4`, `outdoor-v4`, `satellite-v4`), high-DPI raster tiles, and 3D Terrain-RGB DEM.
+- [references/basemaps-and-terrain.md](references/basemaps-and-terrain.md) — Map styles (`streets-v4`, `outdoor-v4`, `satellite-v4`, `dataviz-v4-dark`), high-DPI raster tiles, and 3D Terrain-RGB DEM.
 - [references/geocoding-and-services.md](references/geocoding-and-services.md) — Forward/reverse geocoding, search autocomplete, and point elevation REST endpoints.
 - [references/patterns-gotchas.md](references/patterns-gotchas.md) — Common lifecycle, coordinate inversion, and context loss gotchas.
 - [references/frameworks.md](references/frameworks.md) — React, Next.js, Vue, and Svelte integration patterns.
@@ -30,13 +44,13 @@ Deep architectural and schema reference files live under `references/` and shoul
 
 > [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/) v4.7.1 · [NPM](https://www.npmjs.com/package/maplibre-gl) · [GitHub](https://github.com/maplibre/maplibre-gl-js) · [MapTiler MapLibre Docs](https://docs.maptiler.com/maplibre-gl-js/)
 
-MapLibre GL JS is an open-source TypeScript library for rendering interactive vector maps using WebGL/WebGPU. This skill covers using MapLibre GL JS with **MapTiler Cloud** for vector styles, tiles, geocoding, and other map services.
+MapLibre GL JS is an open-source TypeScript library for rendering interactive vector maps using WebGL/WebGPU. This skill covers using MapLibre GL JS with **MapTiler Cloud** as the data and basemap provider for vector styles, tiles, 3D terrain, and geocoding services.
 
 ---
 
 ## 1. Why MapLibre GL JS + MapTiler
 
-MapLibre GL JS is the community-maintained fork of Mapbox GL JS v1 — fully open-source (BSD-3-Clause), with no proprietary restrictions. Combined with MapTiler Cloud:
+MapLibre GL JS is the community-maintained fork of Mapbox GL JS v1 — fully open-source (BSD-3-Clause), with no proprietary restrictions. Combined with MapTiler Cloud as the data provider:
 
 - **Vector tile styles** — Streets, Satellite, Outdoor, Topo, Dataviz, and 16+ styles as style.json
 - **Source/layer architecture** — add GeoJSON, vector, raster, image sources with typed layers
@@ -49,9 +63,7 @@ MapLibre GL JS is the community-maintained fork of Mapbox GL JS v1 — fully ope
 - **Geocoding API** — forward/reverse search via MapTiler REST endpoints
 - **60fps WebGL rendering** — hardware-accelerated, smooth camera animations
 
-**When to use MapLibre GL JS vs MapTiler SDK:** Use raw MapLibre GL JS when you want full control, minimal dependencies, or are integrating with an existing MapLibre codebase. Use MapTiler SDK when you want convenience wrappers (helpers, auto-API key, MapStyle enum, session billing). The SDK extends MapLibre — everything in this skill works with the SDK too.
-
-**When to use MapLibre vs Leaflet:** Use MapLibre for vector tiles, 3D terrain, globe view, data-driven styling, fill-extrusions, or 1000+ points. Use Leaflet for lightweight raster maps, maximum plugin ecosystem, or simple 2D use cases.
+**When to use MapLibre GL JS vs Leaflet:** Use MapLibre for vector tiles, 3D terrain, globe view, data-driven styling, fill-extrusions, or 1000+ points. Use Leaflet for lightweight raster maps, maximum plugin ecosystem, or simple 2D use cases.
 
 ---
 
@@ -130,13 +142,13 @@ MapTiler provides style.json files that configure sources, layers, fonts, and sp
 | Streets v4 | `maps/streets-v4/style.json` |
 | Streets v4 Dark | `maps/streets-v4-dark/style.json` |
 | Streets v4 Light | `maps/streets-v4-light/style.json` |
-| Satellite | `maps/satellite/style.json` |
-| Hybrid | `maps/hybrid/style.json` |
+| Satellite v4 | `maps/satellite-v4/style.json` |
+| Hybrid v4 | `maps/hybrid-v4/style.json` |
 | Outdoor v4 | `maps/outdoor-v4/style.json` |
 | Topo v4 | `maps/topo-v4/style.json` |
-| Dataviz | `maps/dataviz/style.json` |
-| Dataviz Dark | `maps/dataviz-dark/style.json` |
-| Dataviz Light | `maps/dataviz-light/style.json` |
+| Dataviz v4 | `maps/dataviz-v4/style.json` |
+| Dataviz v4 Dark | `maps/dataviz-v4-dark/style.json` |
+| Dataviz v4 Light | `maps/dataviz-v4-light/style.json` |
 | Base v4 | `maps/base-v4/style.json` |
 | Bright v4 | `maps/bright-v4/style.json` |
 | Ocean | `maps/ocean/style.json` |
@@ -148,10 +160,10 @@ All URLs are prefixed with `https://api.maptiler.com/` and suffixed with `?key=Y
 
 ```js
 // Example: switching to satellite
-map.setStyle('https://api.maptiler.com/maps/satellite/style.json?key=YOUR_MAPTILER_KEY');
+map.setStyle('https://api.maptiler.com/maps/satellite-v4/style.json?key=YOUR_MAPTILER_KEY');
 ```
 
-> Full style URL reference: `references/maptiler-styles.md`
+> Full style URL reference: `references/basemaps-and-terrain.md`
 
 ### Source and Layer Architecture
 
@@ -500,7 +512,7 @@ map.on('load', () => {
 ```js
 const map = new maplibregl.Map({
   container: 'map',
-  style: 'https://api.maptiler.com/maps/satellite/style.json?key=YOUR_MAPTILER_KEY',
+  style: 'https://api.maptiler.com/maps/satellite-v4/style.json?key=YOUR_MAPTILER_KEY',
   center: [0, 20],
   zoom: 1.5,
   projection: 'globe'     // 'mercator' (default) or 'globe'
@@ -704,7 +716,8 @@ const data = await response.json();
 // data.features[0].place_name → "Prague, Czech Republic"
 ```
 
-> Full API reference: `references/maptiler-apis.md`
+> Full API reference: `references/geocoding-and-services.md`
+> Upstream platform reference: [`maptiler/maptiler-skills`](https://github.com/maptiler/maptiler-skills)
 
 ---
 
@@ -787,10 +800,12 @@ map.on('moveend', () => {
 
 ## Reference Files
 
-- `references/maptiler-styles.md` — All MapTiler style.json URLs for MapLibre
+- `references/INDEX.md` — Master topic index and navigation guide
+- `references/basemaps-and-terrain.md` — All MapTiler v4 style.json URLs, raster tiles, and 3D terrain DEM
 - `references/sources-layers.md` — Source types, layer types, and common patterns
 - `references/expressions.md` — Expression syntax for data-driven styling
 - `references/patterns-gotchas.md` — 12 gotchas + 12 reusable code patterns
 - `references/events.md` — Lifecycle, camera, interaction, data events
-- `references/maptiler-apis.md` — MapTiler Cloud REST API usage with fetch()
+- `references/geocoding-and-services.md` — MapTiler Cloud REST API usage with fetch()
 - `references/frameworks.md` — React (react-map-gl), Vue, Svelte, Angular patterns
+- `references/vector-tile-schemas.md` — Planet v4 source layers and attribute specifications

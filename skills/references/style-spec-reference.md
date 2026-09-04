@@ -259,8 +259,12 @@ Always use official MapTiler Cloud vector styles with standard API key parameter
 | Style | Style URL Template |
 | :--- | :--- |
 | **Streets v4** | `https://api.maptiler.com/maps/streets-v4/style.json?key=YOUR_KEY` |
-| **Dataviz Dark** | `https://api.maptiler.com/maps/dataviz-dark/style.json?key=YOUR_KEY` |
-| **Dataviz Light** | `https://api.maptiler.com/maps/dataviz-light/style.json?key=YOUR_KEY` |
+| **Dataviz v4 Dark** | `https://api.maptiler.com/maps/dataviz-v4-dark/style.json?key=YOUR_KEY` |
+| **Dataviz v4 Light** | `https://api.maptiler.com/maps/dataviz-v4-light/style.json?key=YOUR_KEY` |
 | **Outdoor v4** | `https://api.maptiler.com/maps/outdoor-v4/style.json?key=YOUR_KEY` |
-| **Satellite Hybrid** | `https://api.maptiler.com/maps/hybrid/style.json?key=YOUR_KEY` |
-| **Basic v4** | `https://api.maptiler.com/maps/basic-v4/style.json?key=YOUR_KEY` |
+| **Satellite v4** | `https://api.maptiler.com/maps/satellite-v4/style.json?key=YOUR_KEY` |
+| **Satellite Hybrid v4** | `https://api.maptiler.com/maps/hybrid-v4/style.json?key=YOUR_KEY` |
+| **Base v4** | `https://api.maptiler.com/maps/base-v4/style.json?key=YOUR_KEY` |
+| **Topo v4** | `https://api.maptiler.com/maps/topo-v4/style.json?key=YOUR_KEY` |
+
+> Reference: For full style catalog and options, see [basemaps-and-terrain.md](basemaps-and-terrain.md) and upstream [`maptiler/maptiler-skills`](https://github.com/maptiler/maptiler-skills).
