@@ -1,307 +1,223 @@
-# MapLibre GL JS — Core Classes, Controls & API Methods Reference 🏛️
+# MapLibre GL JS Classes, Controls & API Encyclopedia 🏛️
 
-> Authoritative API reference for `maplibregl` classes, UI controls, custom `IControl` extensions, camera navigation, runtime styling methods, feature state, coordinate mathematics, and query methods.
-
-Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospatial snippets, guides, and agent tools.
+> The authoritative API reference for **MapLibre GL JS (v4–v5+)**, covering `Map`, camera physics, layer & source methods, built-in controls, markers, popups, and spatial mathematics.
 
 ---
 
-## 1. Built-in UI Controls (`maplibregl.*Control`)
+## 1. `maplibregl.Map`
 
-Add controls to the map using `map.addControl(control, position)`.
-Available positions: `'top-left'`, `'top-right'`, `'bottom-left'`, `'bottom-right'`.
+The central class representing an interactive WebGL map instance.
 
-### A. NavigationControl
-Provides zoom buttons and an interactive compass pitch/rotation ring:
+```javascript
+import maplibregl from 'maplibre-gl';
+
+const map = new maplibregl.Map({
+  container: 'map',
+  style: 'https://api.maptiler.com/maps/streets-v4/style.json?key=YOUR_KEY',
+  center: [8.5417, 47.3769],
+  zoom: 12,
+  pitch: 45,
+  bearing: 0,
+  maxPitch: 85,
+  antialias: true
+});
+```
+
+### Complete Constructor Options Table
+
+| Option | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| **`container`** | `String \| HTMLElement` | **Required** | The HTML element ID or DOM node where the map will be initialized. |
+| **`style`** | `String \| Object` | **Required** | MapLibre style JSON URL or inline JSON style object. |
+| **`center`** | `LngLatLike` | `[0, 0]` | Initial geographical center point `[lng, lat]`. |
+| **`zoom`** | `Number` | `0` | Initial zoom level (`0`–`24`). |
+| **`minZoom`** | `Number` | `0` | Minimum zoom constraint. |
+| **`maxZoom`** | `Number` | `24` | Maximum zoom constraint. |
+| **`bearing`** | `Number` | `0` | Camera rotation angle in degrees clockwise from North. |
+| **`pitch`** | `Number` | `0` | Camera tilt angle in degrees (`0`–`85`). |
+| **`minPitch`** | `Number` | `0` | Minimum allowable camera pitch. |
+| **`maxPitch`** | `Number` | `85` | Maximum allowable camera pitch (default `60`, up to `85`). |
+| **`bounds`** | `LngLatBoundsLike` | `undefined` | Initial viewport bounds to fit upon initialization. |
+| **`fitBoundsOptions`**| `Object` | `{}` | Options passed to initial `fitBounds` (e.g. `padding`). |
+| **`antialias`** | `Boolean` | `false` | Enables WebGL multisample antialiasing (MSAA) for smoother lines. |
+| **`preserveDrawingBuffer`**| `Boolean` | `false` | Required `true` if taking canvas screenshots (`toDataURL()`). |
+| **`cooperativeGestures`**| `Boolean` | `false` | Requires Command/Ctrl + scroll to zoom on desktop, two-finger pan on mobile. |
+| **`attributionControl`**| `Boolean \| Object` | `true` | When `false`, suppresses the default bottom-right attribution bar. |
+| **`hash`** | `Boolean \| String` | `false` | Synchronizes center, zoom, pitch, and bearing with URL hash fragment. |
+| **`interactive`** | `Boolean` | `true` | Enables or disables all mouse, touch, and keyboard interactions. |
+| **`transformRequest`**| `Function` | `undefined` | Callback invoked before any external HTTP request is made. |
+
+---
+
+## 2. Camera & Animation Methods
+
+### `map.flyTo(options)`
+Performs smooth, cinematic flight arcs between locations with automatic zooming out and back in:
+```javascript
+map.flyTo({
+  center: [13.4050, 52.5200], // Berlin
+  zoom: 14,
+  pitch: 60,
+  bearing: -30,
+  speed: 1.2,          // Curve flight velocity (default 1.2)
+  curve: 1.42,         // Flight path arc height (default 1.42)
+  essential: true      // Honors user's prefers-reduced-motion preference
+});
+```
+
+### `map.easeTo(options)`
+Smooth linear or eased transition without high-altitude arc zooming:
+```javascript
+map.easeTo({
+  center: [2.3522, 48.8566],
+  zoom: 15,
+  duration: 2000,
+  easing: (t) => t * (2 - t)
+});
+```
+
+### `map.fitBounds(bounds, options)`
+Pans and zooms the camera to encompass a geographical bounding box:
+```javascript
+const bounds = [
+  [-122.52, 37.70], // Southwest [lng, lat]
+  [-122.35, 37.82]  // Northeast [lng, lat]
+];
+
+map.fitBounds(bounds, {
+  padding: { top: 50, bottom: 50, left: 350, right: 50 }, // Asymmetric padding for UI sidebars
+  maxZoom: 16,
+  duration: 1500
+});
+```
+
+---
+
+## 3. Dynamic Layer & Source Methods
+
+### Layer Mutation
+* **`map.addLayer(layerObject, beforeId?)`**: Inserts a new style layer. Passing `beforeId` places the new layer underneath an existing layer (crucial for keeping labels on top).
+* **`map.removeLayer(id)`**: Destroys the layer.
+* **`map.getLayer(id)`**: Returns the layer configuration object.
+* **`map.moveLayer(id, beforeId?)`**: Re-orders layer in the rendering stack.
+* **`map.setFilter(layerId, filterExpression)`**: Updates attribute filter without reloading source data.
+* **`map.setPaintProperty(layerId, name, value)`**: Updates paint property dynamically.
+* **`map.setLayoutProperty(layerId, name, value)`**: Updates layout property (e.g. `'visibility'`, `'none'`).
+
+### High-Speed Feature State (GPU Hover/Select)
+* **`map.setFeatureState({ source, sourceLayer?, id }, stateObject)`**: Updates GPU shader uniform values for a specific feature ID at 60 FPS without re-parsing vector tiles.
+* **`map.getFeatureState({ source, sourceLayer?, id })`**: Reads current runtime state.
+* **`map.removeFeatureState({ source, sourceLayer?, id }, key?)`**: Clears runtime feature state.
+
+---
+
+## 4. Built-in Map Controls
+
+All controls inherit from `maplibregl.IControl` and are added via `map.addControl(control, position)`:
+* Positions: `'top-left'`, `'top-right'`, `'bottom-left'`, `'bottom-right'`.
+
+### 1. `maplibregl.NavigationControl`
+Provides zoom in/out buttons and a 3D compass orientation reset ring:
 ```javascript
 const nav = new maplibregl.NavigationControl({
-  showCompass: true,     // Display rotation compass (default: true)
-  showZoom: true,        // Display zoom +/- buttons (default: true)
-  visualizePitch: true   // Tilt compass when map pitch changes (default: false)
+  showCompass: true,
+  showZoom: true,
+  visualizePitch: true // Tilts compass needle to reflect camera pitch
 });
 map.addControl(nav, 'top-right');
 ```
 
-### B. GeolocateControl
-Tracks user location via the browser Geolocation API:
+### 2. `maplibregl.GeolocateControl`
+High-accuracy GPS location tracker with heading indicators:
 ```javascript
 const geolocate = new maplibregl.GeolocateControl({
-  positionOptions: {
-    enableHighAccuracy: true
-  },
-  trackUserLocation: true,    // Continuously follow user movement
-  showAccuracyCircle: true,   // Display 95% confidence radius circle
-  showUserLocation: true      // Render glowing user position dot
+  positionOptions: { enableHighAccuracy: true },
+  trackUserLocation: true,
+  showUserHeading: true,
+  fitBoundsOptions: { maxZoom: 16 }
 });
 map.addControl(geolocate, 'top-right');
-
-geolocate.on('geolocate', (e) => {
-  console.log('User coordinates:', e.coords.longitude, e.coords.latitude);
-});
 ```
 
-### C. ScaleControl
-Displays dynamic distance scale bar:
+### 3. `maplibregl.ScaleControl`
+Dynamic metric, imperial, or nautical scale bar:
 ```javascript
 const scale = new maplibregl.ScaleControl({
-  maxWidth: 100,             // Max width in pixels (default: 100)
-  unit: 'metric'             // 'metric' (km/m), 'imperial' (mi/ft), or 'nautical' (nm)
+  maxWidth: 150,
+  unit: 'metric' // 'metric' | 'imperial' | 'nautical'
 });
 map.addControl(scale, 'bottom-left');
 ```
 
-### D. FullscreenControl & AttributionControl
+### 4. `maplibregl.TerrainControl`
+One-click UI button toggling 3D terrain on and off:
 ```javascript
-// Fullscreen button
-map.addControl(new maplibregl.FullscreenControl(), 'top-right');
-
-// Attribution control with compact folding for mobile
-map.addControl(new maplibregl.AttributionControl({
-  compact: true,
-  customAttribution: '<a href="https://mapsnippets.org/" target="_blank">&copy; MapSnippets</a>'
-}), 'bottom-right');
+const terrainControl = new maplibregl.TerrainControl({
+  source: 'maptiler-terrain',
+  exaggeration: 1.2
+});
+map.addControl(terrainControl, 'top-right');
 ```
 
 ---
 
-## 2. Custom UI Controls (`IControl` Interface)
+## 5. `Marker` & `Popup` Components
 
-Every custom control in MapLibre implements the `IControl` interface with two lifecycle methods: `onAdd(map)` and `onRemove()`.
-
+### `maplibregl.Marker`
+Anchors interactive HTML DOM nodes onto geographical coordinates:
 ```javascript
-class ResetNorthControl {
-  onAdd(map) {
-    this._map = map;
-    this._container = document.createElement('div');
-    this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
-    
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.title = 'Reset Bearing to North';
-    button.innerHTML = '🧭';
-    button.style.fontSize = '14px';
-    button.style.width = '29px';
-    button.style.height = '29px';
-    button.style.cursor = 'pointer';
+// Custom glowing DOM element
+const el = document.createElement('div');
+el.className = 'radar-beacon';
 
-    button.addEventListener('click', () => {
-      this._map.resetNorthPitch({ duration: 800 });
-    });
-
-    this._container.appendChild(button);
-    return this._container;
-  }
-
-  onRemove() {
-    this._container.parentNode.removeChild(this._container);
-    this._map = undefined;
-  }
-}
-
-// Add custom control
-map.addControl(new ResetNorthControl(), 'top-right');
-```
-
----
-
-## 3. `maplibregl.Map` Core Methods
-
-### A. Camera & Viewport Animations
-* **`map.flyTo(options)`**: Smooth cinematic flight with arc zoom.
-  ```javascript
-  map.flyTo({
-    center: [14.4378, 50.0755],
-    zoom: 14,
-    pitch: 45,
-    bearing: 90,
-    speed: 1.2,       // Curve speed multiplier
-    curve: 1.42,      // Flight curve rate
-    essential: true   // Respects prefers-reduced-motion if false
-  });
-  ```
-* **`map.easeTo(options)`**: Linear or easing camera transition without arc zoom.
-* **`map.jumpTo(options)`**: Instant camera repositioning without animation.
-* **`map.fitBounds(bounds, options)`**: Fits bounding box in view:
-  ```javascript
-  map.fitBounds([
-    [14.2, 49.9], // Southwest [lng, lat]
-    [14.7, 50.2]  // Northeast [lng, lat]
-  ], {
-    padding: { top: 50, bottom: 50, left: 30, right: 30 },
-    maxZoom: 16,
-    duration: 1500
-  });
-  ```
-
-### B. Dynamic Styling & Runtime Mutation
-* **`map.setPaintProperty(layerId, name, value)`**: Update paint properties without re-parsing style.
-  ```javascript
-  map.setPaintProperty('buildings-3d', 'fill-extrusion-opacity', 0.85);
-  map.setPaintProperty('route-line', 'line-color', '#FF6B00');
-  ```
-* **`map.setLayoutProperty(layerId, name, value)`**: Toggle visibility or text/icon layout.
-  ```javascript
-  // Toggle layer visibility
-  const visibility = map.getLayoutProperty('labels-layer', 'visibility');
-  map.setLayoutProperty('labels-layer', 'visibility', visibility === 'none' ? 'visible' : 'none');
-  ```
-* **`map.setFilter(layerId, filterExpression)`**: Dynamically filter visible features.
-  ```javascript
-  map.setFilter('airports', ['==', ['get', 'type'], 'international']);
-  ```
-
-### C. High-Performance Feature State (Hover & Selection)
-**Never update GeoJSON sources on mousemove!** Use feature-state for 60 FPS updates:
-```javascript
-let hoveredFeatureId = null;
-
-map.on('mousemove', 'parcels-fill', (e) => {
-  if (e.features.length > 0) {
-    if (hoveredFeatureId !== null) {
-      map.setFeatureState(
-        { source: 'parcels', id: hoveredFeatureId },
-        { hover: false }
-      );
-    }
-    hoveredFeatureId = e.features[0].id;
-    map.setFeatureState(
-      { source: 'parcels', id: hoveredFeatureId },
-      { hover: true }
-    );
-  }
-});
-
-map.on('mouseleave', 'parcels-fill', () => {
-  if (hoveredFeatureId !== null) {
-    map.setFeatureState(
-      { source: 'parcels', id: hoveredFeatureId },
-      { hover: false }
-    );
-  }
-  hoveredFeatureId = null;
-});
-```
-
-### D. 3D Terrain, Sky & Globe Runtime Methods
-```javascript
-// 1. Enable 3D Terrain with Raster-DEM
-map.setTerrain({ source: 'maptiler-terrain', exaggeration: 1.5 });
-
-// 2. Disable 3D Terrain
-// map.setTerrain(null);
-
-// 3. Switch Projection to 3D Globe (MapLibre v4+)
-map.setProjection({ type: 'globe' });
-
-// 4. Configure Atmospheric Sky & Fog
-map.setSky({
-  'sky-color': '#0084FF',
-  'horizon-color': '#ffffff',
-  'fog-color': '#1e293b',
-  'fog-ground-blend': 0.5
-});
-```
-
-### E. Spatial Feature Querying
-* **`map.queryRenderedFeatures(pointOrBox, options)`**:
-  Query visible rendered vector/GeoJSON features at a pixel coordinate or bounding box:
-  ```javascript
-  map.on('click', (e) => {
-    const bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
-    const features = map.queryRenderedFeatures(bbox, {
-      layers: ['poi-layer', 'transportation-layer']
-    });
-    if (features.length) {
-      console.log('Clicked feature properties:', features[0].properties);
-    }
-  });
-  ```
-* **`map.querySourceFeatures(sourceId, options)`**:
-  Query features in a source across all loaded tiles (regardless of visibility).
-
-### F. Pixel & Coordinate Conversion
-* **`map.project(lngLat)`**: Converts `[lng, lat]` coordinates to screen pixel coordinates `Point { x, y }`.
-* **`map.unproject(point)`**: Converts screen pixel coordinates `[x, y]` to geographic `LngLat { lng, lat }`.
-
-### G. Custom Image & Sprite Loading
-```javascript
-map.loadImage('https://docs.maptiler.com/assets/marker.png', (error, image) => {
-  if (error) throw error;
-  if (!map.hasImage('custom-marker')) {
-    map.addImage('custom-marker', image, { pixelRatio: 2 });
-  }
-});
-```
-
-### H. Lifecycle & Cleanup
-* **`map.remove()`**: **Mandatory cleanup method** in Single Page Applications (React `useEffect`, Vue `onUnmounted`, Svelte `onDestroy`). Tears down the WebGL context, detaches event listeners, and prevents browser context loss crashes.
-
----
-
-## 4. UI Markers & Popups
-
-### A. Marker (`maplibregl.Marker`)
-```javascript
-// 1. Default SVG Pin
 const marker = new maplibregl.Marker({
-  color: '#0084FF',
-  draggable: true
+  element: el,
+  anchor: 'bottom',
+  draggable: true,
+  rotationAlignment: 'map'
 })
-  .setLngLat([14.4378, 50.0755])
+  .setLngLat([8.5417, 47.3769])
   .addTo(map);
 
 marker.on('dragend', () => {
-  const newPos = marker.getLngLat();
-  console.log('Dragged to:', newPos.lng, newPos.lat);
+  const lngLat = marker.getLngLat();
+  console.log('New marker coordinate:', lngLat);
 });
-
-// 2. Custom HTML Element Marker with CSS Pulse
-const el = document.createElement('div');
-el.className = 'custom-pulsing-marker';
-el.style.width = '20px';
-el.style.height = '20px';
-el.style.background = '#0084FF';
-el.style.border = '2px solid #ffffff';
-el.style.borderRadius = '50%';
-el.style.boxShadow = '0 0 10px rgba(0, 132, 255, 0.8)';
-
-new maplibregl.Marker({ element: el, anchor: 'center' })
-  .setLngLat([14.4378, 50.0755])
-  .setPopup(new maplibregl.Popup({ offset: 20 }).setHTML('<h4>Prague HQ</h4>'))
-  .addTo(map);
 ```
 
-### B. Popup (`maplibregl.Popup`)
+### `maplibregl.Popup`
+Anchored informational bubble cards with automatic collision pan:
 ```javascript
 const popup = new maplibregl.Popup({
   closeButton: true,
   closeOnClick: false,
   maxWidth: '320px',
-  offset: 15
+  offset: 25
 })
-  .setLngLat([14.4378, 50.0755])
+  .setLngLat([8.5417, 47.3769])
   .setHTML(`
-    <div style="font-family: system-ui; padding: 4px;">
-      <h4 style="margin: 0 0 4px; color: #0084FF;">Prague</h4>
-      <p style="margin: 0; color: #475569; font-size: 13px;">Operations & Engineering Hub</p>
+    <div style="font-family: sans-serif; padding: 4px;">
+      <strong style="color: #0084FF;">Zurich Head Office</strong>
+      <p style="margin: 4px 0 0; color: #64748b; font-size: 12px;">MapTiler Engineering Hub</p>
     </div>
   `)
   .addTo(map);
+
+// Bind directly to marker
+marker.setPopup(popup);
 ```
 
 ---
 
-## 5. Coordinate Mathematics & Geometry Types
+## 6. Custom Streaming Protocol Handlers (`addProtocol`)
 
-* **`maplibregl.LngLat(lng, lat)`**:
-  * `lngLat.wrap()`: Normalizes longitude to `[-180, 180]`.
-  * `lngLat.toArray()`: Returns `[lng, lat]`.
-  * `lngLat.distanceTo(otherLngLat)`: Great-circle distance in meters.
-* **`maplibregl.LngLatBounds(sw, ne)`**:
-  * `bounds.extend(lngLat)`: Expands bounding box to include coordinate.
-  * `bounds.getCenter()`: Returns center `LngLat`.
-  * `bounds.contains(lngLat)`: Returns `true` if coordinate is inside.
-* **`maplibregl.MercatorCoordinate(x, y, z)`**:
-  * Project WGS84 geographic coordinates to WebGL normalized 3D space (`[0, 1]`):
-  * `MercatorCoordinate.fromLngLat([lng, lat], altitudeInMeters)`.
-  * Essential for custom Three.js layers and WebGL shader matrix integration.
+Enables custom URL schemes (e.g. `pmtiles://`, `cog://`, `custom://`):
+```javascript
+maplibregl.addProtocol('custom-source', (params, abortController) => {
+  return fetch(params.url.replace('custom-source://', 'https://'), {
+    signal: abortController.signal
+  })
+    .then((res) => res.arrayBuffer())
+    .then((data) => ({ data: data }));
+});
+```

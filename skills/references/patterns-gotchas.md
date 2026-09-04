@@ -1,473 +1,163 @@
-# MapLibre GL JS + MapTiler — Common Patterns & Gotchas
+# MapLibre GL JS Production Patterns & Gotchas ⚠️⚡
 
-Quick reference for solving common issues and implementing standard patterns.
+> Architectural guidelines, critical failure modes, performance benchmarks, and production gotchas for deploying **MapLibre GL JS** applications with MapTiler Cloud basemaps.
 
 ---
 
-## Gotchas
+## 1. Top 7 Critical Gotchas & Architectural Pitfalls
 
-### 1. Map Container Must Have Dimensions
+### 1. `[lng, lat]` vs `[lat, lng]` Coordinate Inversion Trap
+* **Gotcha**: Leaflet uses `[lat, lng]`. MapLibre GL JS, GeoJSON, and Turf.js strictly enforce **`[longitude, latitude]`** order.
+* **Symptom**: Map centers in Antarctica or oceans, or throws coordinate out of range errors (`latitude must be between -90 and 90`).
+* **Fix**: Always specify `[longitude, latitude]`:
+  ```javascript
+  // CORRECT: [lng, lat]
+  map.setCenter([8.5417, 47.3769]); // Zurich
+  ```
 
-**Problem:** Map shows as blank/empty.
+---
 
-**Solution:** The container element must have explicit width and height.
+### 2. Asynchronous Style Loading Race Conditions
+* **Gotcha**: Calling `map.addSource()` or `map.addLayer()` immediately after `new maplibregl.Map()` will throw:
+  `Error: Style is not done loading`.
+* **Fix**: Always defer custom layers until the style has finished downloading:
+  ```javascript
+  // Pattern A: On initial map load
+  map.on('load', () => {
+    map.addSource('custom-data', { ... });
+  });
 
-```css
-/* Option 1: Fill viewport */
-#map { position: absolute; inset: 0; }
-
-/* Option 2: Fixed size */
-#map { width: 800px; height: 600px; }
-
-/* Option 3: Full viewport height */
-#map { width: 100%; height: 100vh; }
-```
-
-### 2. Coordinates Are [lng, lat] Not [lat, lng]
-
-**Problem:** Map shows wrong location or markers appear in the ocean.
-
-**Solution:** MapLibre uses `[longitude, latitude]` order — same as GeoJSON.
-
-```js
-// WRONG (Google Maps / Leaflet order)
-center: [50.1167, 14.4178]
-
-// CORRECT (MapLibre / GeoJSON order)
-center: [14.4178, 50.1167]   // [lng, lat] — Prague
-```
-
-This applies everywhere: `setLngLat()`, `flyTo()`, `fitBounds()`, GeoJSON coordinates, marker positions.
-
-### 3. "Style not loaded" Errors
-
-**Problem:** Adding layers before map is ready throws errors.
-
-**Solution:** Wait for `load` event or check `isStyleLoaded()`.
-
-```js
-// Option 1: Wait for load (recommended)
-map.on('load', () => {
-  map.addSource(...);
-  map.addLayer(...);
-});
-
-// Option 2: Guard check
-function addLayerSafe(config) {
-  if (map.isStyleLoaded()) {
-    map.addLayer(config);
-  } else {
-    map.once('load', () => map.addLayer(config));
+  // Pattern B: Safe helper check
+  function ensureLayer(map, layerConfig) {
+    if (map.isStyleLoaded()) {
+      map.addLayer(layerConfig);
+    } else {
+      map.once('load', () => map.addLayer(layerConfig));
+    }
   }
-}
-```
+  ```
 
-### 4. Layers Disappear After Style Change
+---
 
-**Problem:** Custom layers vanish when calling `setStyle()`.
+### 3. Reactive State Proxy Wrapping in React / Vue
+* **Gotcha**: Putting the MapLibre `map` instance into reactive framework state (e.g. React `useState()`, Vue `ref()`, Pinia store) wraps the instance in a JavaScript `Proxy`.
+* **Symptom**: Massive FPS drop, memory leaks, and cryptic WebGL crashes (`TypeError: Cannot read properties of undefined`).
+* **Fix**: Use non-reactive containers:
+  * **React**: Use `useRef(null)`.
+  * **Vue 3**: Use `shallowRef()` or `markRaw(map)`.
+  * **Svelte**: Use a standard `let map` variable outside stores.
 
-**Solution:** Re-add layers after the new style loads.
+```typescript
+// React Example (CORRECT)
+const mapContainer = useRef<HTMLDivElement | null>(null);
+const mapInstance = useRef<maplibregl.Map | null>(null);
 
-```js
-map.setStyle('https://api.maptiler.com/maps/satellite-v4/style.json?key=YOUR_MAPTILER_KEY');
-
-map.once('styledata', () => {
-  addMyCustomLayers();
-});
-```
-
-### 5. Duplicate Source/Layer Errors
-
-**Problem:** "Source/Layer already exists" when re-adding.
-
-**Solution:** Remove before adding.
-
-```js
-function safeAddSource(id, config) {
-  if (map.getSource(id)) map.removeSource(id);
-  map.addSource(id, config);
-}
-
-function safeAddLayer(id, config) {
-  if (map.getLayer(id)) map.removeLayer(id);
-  // Must also remove source if re-creating
-  map.addLayer({ id, ...config });
-}
-```
-
-### 6. Data Layers Cover Labels
-
-**Problem:** Fill layers or lines render on top of place names and road labels.
-
-**Solution:** Use the `beforeId` parameter to insert below labels. However, **label layer IDs vary between MapTiler styles** — not all styles have `'waterway-label'` or other specific label layers. Always detect available label layers at runtime rather than hardcoding.
-
-```js
-// WRONG: polygon covers all labels
-map.addLayer({
-  id: 'my-polygon',
-  type: 'fill',
-  source: 'my-source',
-  paint: { 'fill-color': '#ff0000', 'fill-opacity': 0.5 }
-});
-
-// SAFE: detect first label layer and insert before it
-const layers = map.getStyle().layers;
-const firstLabelLayer = layers.find(l => l.type === 'symbol' && /label/.test(l.id));
-map.addLayer({
-  id: 'my-polygon',
-  type: 'fill',
-  source: 'my-source',
-  paint: { 'fill-color': '#ff0000', 'fill-opacity': 0.5 }
-}, firstLabelLayer ? firstLabelLayer.id : undefined);
-```
-
-**Tip:** To see what label layers a style has, run: `map.getStyle().layers.filter(l => l.id.includes('label')).map(l => l.id)`
-
-### 7. Line Gradient Not Working
-
-**Problem:** `line-gradient` paint property has no effect.
-
-**Solution:** Set `lineMetrics: true` on the GeoJSON source. This is required for MapLibre to compute line-progress values.
-
-```js
-map.addSource('route', {
-  type: 'geojson',
-  lineMetrics: true,   // REQUIRED for line-gradient
-  data: routeGeoJSON
-});
-```
-
-### 8. text-font Errors
-
-**Problem:** `'text-font': ['Arial']` causes rendering errors.
-
-**Solution:** Use fonts available in the MapTiler style. Most MapTiler styles include:
-
-```js
-'text-font': ['Noto Sans Regular']   // safe default
-'text-font': ['Noto Sans Bold']
-'text-font': ['Noto Sans Italic']
-```
-
-### 9. Memory Leaks in SPAs (React/Vue/Angular)
-
-**Problem:** App slows down after navigating between pages with maps.
-
-**Solution:** Always call `map.remove()` when component unmounts.
-
-```js
-// React
 useEffect(() => {
-  const map = new maplibregl.Map({ ... });
-  return () => map.remove();  // CRITICAL
-}, []);
+  if (!mapContainer.current) return;
+  mapInstance.current = new maplibregl.Map({ ... });
 
-// Vue
-onUnmounted(() => { map?.remove(); map = null; });
-```
-
-### 10. Using mapboxgl Instead of maplibregl
-
-**Problem:** Code uses `mapboxgl.Map()` or `mapboxgl.Marker()`.
-
-**Solution:** MapLibre is a separate library. Always use the `maplibregl` namespace.
-
-```js
-// WRONG
-const map = new mapboxgl.Map({ ... });
-
-// CORRECT
-const map = new maplibregl.Map({ ... });
-```
-
-### 11. Terrain Not Showing
-
-**Problem:** `setTerrain()` called but map remains flat.
-
-**Solution:** Add the raster-dem source first, and call `setTerrain()` inside the `load` event.
-
-```js
-map.on('load', () => {
-  map.addSource('terrain', {
-    type: 'raster-dem',
-    url: 'https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key=YOUR_MAPTILER_KEY',
-    tileSize: 256
-  });
-
-  map.setTerrain({ source: 'terrain', exaggeration: 1.5 });
-});
-```
-
-Also ensure `pitch > 0` to see the 3D effect.
-
-### 12. Feature State Not Working
-
-**Problem:** `setFeatureState()` / `getFeatureState()` returns nothing.
-
-**Solution:** Features need IDs. Either your GeoJSON features must have `id` properties, or enable `generateId: true` on the source.
-
-```js
-map.addSource('points', {
-  type: 'geojson',
-  data: geojson,
-  generateId: true   // auto-assigns numeric IDs
-});
-```
-
----
-
-## Common Patterns
-
-### Pattern: Popup on Layer Click
-
-```js
-map.on('click', 'my-layer', (e) => {
-  const feature = e.features[0];
-  const coords = feature.geometry.coordinates.slice();
-
-  // Adjust for antimeridian wrapping
-  while (Math.abs(e.lngLat.lng - coords[0]) > 180) {
-    coords[0] += e.lngLat.lng > coords[0] ? 360 : -360;
-  }
-
-  new maplibregl.Popup()
-    .setLngLat(coords)
-    .setHTML(`<h3>${feature.properties.name}</h3>`)
-    .addTo(map);
-});
-```
-
-### Pattern: Hover Effect with Feature State
-
-```js
-let hoveredId = null;
-
-map.on('mousemove', 'my-layer', (e) => {
-  if (e.features.length > 0) {
-    if (hoveredId !== null) {
-      map.setFeatureState({ source: 'my-source', id: hoveredId }, { hover: false });
-    }
-    hoveredId = e.features[0].id;
-    map.setFeatureState({ source: 'my-source', id: hoveredId }, { hover: true });
-  }
-});
-
-map.on('mouseleave', 'my-layer', () => {
-  if (hoveredId !== null) {
-    map.setFeatureState({ source: 'my-source', id: hoveredId }, { hover: false });
-    hoveredId = null;
-  }
-});
-
-// In layer paint — respond to feature state
-paint: {
-  'fill-color': [
-    'case',
-    ['boolean', ['feature-state', 'hover'], false],
-    '#ff0000',
-    '#0000ff'
-  ]
-}
-```
-
-### Pattern: Hover Cursor Change
-
-```js
-map.on('mouseenter', 'my-layer', () => {
-  map.getCanvas().style.cursor = 'pointer';
-});
-
-map.on('mouseleave', 'my-layer', () => {
-  map.getCanvas().style.cursor = '';
-});
-```
-
-### Pattern: Layer Visibility Toggle
-
-```js
-function toggleLayer(layerId, visible) {
-  if (map.getLayer(layerId)) {
-    map.setLayoutProperty(layerId, 'visibility', visible ? 'visible' : 'none');
-  }
-}
-```
-
-### Pattern: Update GeoJSON Data
-
-```js
-function updateSourceData(sourceId, newData) {
-  const source = map.getSource(sourceId);
-  if (source) {
-    source.setData(newData);
-  }
-}
-```
-
-### Pattern: Fit Map to GeoJSON Bounds
-
-```js
-function fitToGeoJSON(geojson) {
-  const bounds = new maplibregl.LngLatBounds();
-
-  geojson.features.forEach(feature => {
-    if (feature.geometry.type === 'Point') {
-      bounds.extend(feature.geometry.coordinates);
-    } else if (feature.geometry.type === 'LineString') {
-      feature.geometry.coordinates.forEach(coord => bounds.extend(coord));
-    } else if (feature.geometry.type === 'Polygon') {
-      feature.geometry.coordinates[0].forEach(coord => bounds.extend(coord));
-    }
-  });
-
-  map.fitBounds(bounds, { padding: 50 });
-}
-```
-
-### Pattern: Geocoding + Fly To + Marker
-
-```js
-async function searchAndFlyTo(query) {
-  const response = await fetch(
-    `https://api.maptiler.com/geocoding/${encodeURIComponent(query)}.json?key=YOUR_MAPTILER_KEY&limit=1`
-  );
-  const data = await response.json();
-  if (data.features.length === 0) return;
-
-  const coords = data.features[0].geometry.coordinates;
-
-  map.flyTo({ center: coords, zoom: 14, essential: true });
-
-  new maplibregl.Marker({ color: '#0891b2' })
-    .setLngLat(coords)
-    .setPopup(new maplibregl.Popup().setHTML(`<b>${data.features[0].place_name}</b>`))
-    .addTo(map);
-}
-```
-
-### Pattern: Debounced Move Handler
-
-```js
-let moveTimeout;
-
-map.on('moveend', () => {
-  clearTimeout(moveTimeout);
-  moveTimeout = setTimeout(() => {
-    const center = map.getCenter();
-    const zoom = map.getZoom();
-    loadDataForView(center, zoom);
-  }, 200);
-});
-```
-
-### Pattern: Save/Restore Map State
-
-```js
-function saveMapState() {
-  return {
-    center: map.getCenter().toArray(),
-    zoom: map.getZoom(),
-    pitch: map.getPitch(),
-    bearing: map.getBearing()
+  return () => {
+    mapInstance.current?.remove(); // Cleanup WebGL context
   };
+}, []);
+```
+
+---
+
+### 4. High-Frequency GeoJSON Animation Trap
+* **Gotcha**: Calling `source.setData()` at 60 FPS inside `requestAnimationFrame` forces the browser's web workers to re-triangulate and re-tessellate geometries on every single frame, causing stutter and CPU exhaustion.
+* **Fix**:
+  * **For moving vehicle icons**: Use DOM `maplibregl.Marker` and call `marker.setLngLat([lng, lat])` (zero tile tessellation overhead).
+  * **For hover/selection polygon highlights**: Use `map.setFeatureState()` which modifies uniforms directly on the GPU without touching the geometry buffer.
+
+---
+
+### 5. The `generateId` / `promoteId` Requirement for `feature-state`
+* **Gotcha**: Calling `map.setFeatureState({ source: 'places', id: feat.id }, { hover: true })` does nothing if features in GeoJSON lack a top-level numeric `id`.
+* **Symptom**: Polygon hover effects fail to illuminate.
+* **Fix**:
+  ```javascript
+  map.addSource('places', {
+    type: 'geojson',
+    data: '/api/places.geojson',
+    generateId: true // Generates sequential unique numeric IDs
+    // OR promote an existing property:
+    // promoteId: 'osm_id'
+  });
+  ```
+
+---
+
+### 6. Canvas Export / Screenshot Blank Image Trap
+* **Gotcha**: Trying to export map canvas images via `map.getCanvas().toDataURL()` returns a completely blank or black image.
+* **Why**: WebGL automatically clears the drawing buffer after each frame render to conserve GPU memory.
+* **Fix**: Pass `preserveDrawingBuffer: true` in the constructor:
+  ```javascript
+  const map = new maplibregl.Map({
+    container: 'map',
+    style: styleUrl,
+    preserveDrawingBuffer: true // Required for image capture
+  });
+
+  function exportPng() {
+    const dataUrl = map.getCanvas().toDataURL('image/png');
+    // Download or save dataUrl
+  }
+  ```
+
+---
+
+### 7. PMTiles / Custom Protocol `slice of null` Crash
+* **Gotcha**: Forgetting to register the PMTiles protocol handler before loading a style that uses a `pmtiles://` source causes an unhandled rejection.
+* **Fix**: Register the protocol globally before initializing `Map`:
+  ```javascript
+  import { Protocol } from 'pmtiles';
+  const protocol = new Protocol();
+  maplibregl.addProtocol('pmtiles', protocol.tile);
+  ```
+
+---
+
+## 2. WebGL Context Loss & Memory Management
+
+In dynamic web applications where maps are frequently created and destroyed (e.g. tabs, modals, dynamic routes), failing to dispose of WebGL instances will quickly trigger:
+`WARNING: Too many active WebGL contexts. Oldest context will be lost`.
+
+### Safe Teardown Protocol
+```javascript
+function teardownMap(map) {
+  if (!map) return;
+  // 1. Remove all active interval/RAF timers
+  // 2. Remove all custom controls
+  // 3. Destroy WebGL canvas and terminate web worker pools
+  map.remove();
 }
-
-function restoreMapState(state) {
-  map.jumpTo({
-    center: state.center,
-    zoom: state.zoom,
-    pitch: state.pitch,
-    bearing: state.bearing
-  });
-}
-
-localStorage.setItem('mapState', JSON.stringify(saveMapState()));
-const saved = localStorage.getItem('mapState');
-if (saved) restoreMapState(JSON.parse(saved));
 ```
 
-### Pattern: Resize Handler
-
-```js
-// Call when container size changes
-const resizeObserver = new ResizeObserver(() => {
-  map.resize();
+### Listening for WebGL Context Loss & Recovery
+```javascript
+map.getCanvas().addEventListener('webglcontextlost', (event) => {
+  event.preventDefault();
+  console.warn('WebGL context lost! Waiting for restoration...');
 });
-resizeObserver.observe(document.getElementById('map'));
-```
 
-### Pattern: Query Features at Point
-
-```js
-map.on('click', (e) => {
-  // All features at click point
-  const allFeatures = map.queryRenderedFeatures(e.point);
-
-  // Features from specific layer
-  const layerFeatures = map.queryRenderedFeatures(e.point, {
-    layers: ['my-layer']
-  });
-
-  console.log('Features:', layerFeatures);
-});
-```
-
-### Pattern: Add Image to Map (for icon-image)
-
-```js
-map.loadImage('https://example.com/icon.png', (error, image) => {
-  if (error) throw error;
-  map.addImage('my-icon', image);
-
-  map.addLayer({
-    id: 'icons',
-    type: 'symbol',
-    source: 'my-source',
-    layout: {
-      'icon-image': 'my-icon',
-      'icon-size': 0.5
-    }
-  });
+map.getCanvas().addEventListener('webglcontextrestored', () => {
+  console.log('WebGL context restored. Reloading style...');
+  map.setStyle(map.getStyle());
 });
 ```
 
 ---
 
-## Debugging Tips
+## 3. High-Performance Mobile Optimization Checklist
 
-### Log All Map Events
-
-```js
-['load', 'styledata', 'error', 'click', 'moveend'].forEach(event => {
-  map.on(event, (e) => console.log(`Event: ${event}`, e));
-});
-```
-
-### Check What Layers Exist
-
-```js
-console.log('Layers:', map.getStyle().layers.map(l => l.id));
-```
-
-### Check What Sources Exist
-
-```js
-console.log('Sources:', Object.keys(map.getStyle().sources));
-```
-
-### Inspect Features at Point
-
-```js
-map.on('click', (e) => {
-  const features = map.queryRenderedFeatures(e.point);
-  console.log('Features at click:', features);
-});
-```
-
-### Find Label Layers for beforeId
-
-```js
-const labelLayers = map.getStyle().layers
-  .filter(l => l.id.includes('label'))
-  .map(l => l.id);
-console.log('Label layers:', labelLayers);
-```
+1. **Enable Cooperative Gestures**: Prevents page scroll trapping on touch screens:
+   ```javascript
+   cooperativeGestures: true
+   ```
+2. **Cap Maximum Pitch**: High pitch angles (> 70°) render vast horizons requiring extra tile requests. Cap pitch on mobile:
+   ```javascript
+   maxPitch: 60
+   ```
+3. **Limit Terrain Exaggeration**: On low-powered mobile GPUs, reduce DEM resolution or keep `exaggeration` around `1.0` to avoid fill-rate bottlenecks.
+4. **Use Symbol Clustering**: Aggregate dense point clouds at zoom levels < 14 using `cluster: true` and `clusterRadius: 50`.

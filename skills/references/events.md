@@ -1,341 +1,113 @@
-# MapLibre GL JS — Events Reference
+# MapLibre GL JS Events & Lifecycle Reference 📡
 
-Complete reference for all map events with signatures and usage examples.
-
-> [MapLibre Events Docs](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/MapEventType/)
+> Complete technical dictionary for all **MapLibre GL JS events**, payload signatures, lifecycle phases, and event-driven patterns.
 
 ---
 
-## Lifecycle Events
+## 1. Event Category Overview
 
-### load
-
-Fired when the map has finished loading all resources (style, tiles, etc.). **This is the safest place to add sources and layers.**
-
-```js
-map.on('load', () => {
-  map.addSource('my-source', { ... });
-  map.addLayer({ ... });
-});
-```
-
-### style.load
-
-Fired when the style has finished loading. Fires before `load`.
-
-```js
-map.on('style.load', () => {
-  console.log('Style loaded');
-});
-```
-
-### styledata
-
-Fired when the style is changed via `setStyle()`. **Critical for re-adding custom layers after style change.**
-
-```js
-map.once('styledata', () => {
-  reAddCustomLayers();
-});
-```
-
-### idle
-
-Fired when the map enters an idle state (nothing loading, no animations).
-
-```js
-map.on('idle', () => {
-  console.log('Map is idle');
-});
-```
-
-### remove
-
-Fired when the map is destroyed via `map.remove()`.
-
-```js
-map.on('remove', () => {
-  // Cleanup custom resources
-});
-```
-
-### render
-
-Fired on each frame render. Use sparingly — fires very often.
-
-```js
-map.on('render', () => {
-  // Called every frame
-});
-```
+MapLibre GL JS organizes events into 4 primary domains:
+1. **Lifecycle & Render Events**: Map initialization, style loading, data arrival, and WebGL rendering.
+2. **Camera & Movement Events**: Viewport panning, zooming, rotation, and pitch changes.
+3. **User Interaction Events**: Mouse clicks, touches, hovers, drags, and gesture events.
+4. **Layer-Scoped Events**: Spatial interaction filtered strictly to geometries in a specific layer.
 
 ---
 
-## Camera Events
+## 2. Lifecycle & Render Events
 
-### move / movestart / moveend
+| Event Name | Trigger Condition | Common Production Usage |
+| :--- | :--- | :--- |
+| **`load`** | Fires immediately after all initial resources (style, sprites, fonts) have loaded and the first visual frame renders. | Adding custom sources, layers, markers, and controls. |
+| **`idle`** | Fires when the map enters an idle state: no animations in progress, all tiles downloaded, and rendering complete. | Taking automated UI test snapshots, hiding loading spinners. |
+| **`render`** | Fires immediately after the map canvas finishes drawing a frame to the screen. | Synchronizing custom WebGL or canvas overlays. |
+| **`error`** | Fires when an error occurs (e.g. 404 tile request, malformed GeoJSON, invalid style expression). | Error boundary logging and toast notifications. |
+| **`data`** | Fires when any map data (style, source, tile) begins loading or finishes loading. | Tracking granular asset download progress. |
+| **`dataloading`**| Fires when data begins loading. | Displaying network progress bars. |
+| **`styledata`** | Fires when the map's style loads or changes. | Synchronizing UI theme toggles. |
+| **`sourcedata`** | Fires when one of the map's sources loads or changes, or when a tile finishes loading. | Detecting when a specific GeoJSON source is ready for queries. |
+| **`styleimagemissing`**| Fires when a symbol layer requests an icon from the sprite that does not exist. | Generating dynamic canvas icons on-the-fly via `map.addImage()`. |
+| **`remove`** | Fires immediately after `map.remove()` is called. | Cleaning up parent component memory. |
+| **`webglcontextlost`**| Fires when the browser's GPU context is killed. | Preventing uncaught WebGL errors. |
+| **`webglcontextrestored`**| Fires when GPU context is recovered. | Calling `map.setStyle()` to re-instantiate WebGL pipelines. |
 
-Fired during camera movement (pan, zoom, rotate, pitch).
+---
 
-```js
-map.on('movestart', () => {
-  console.log('Camera movement started');
-});
+## 3. Camera Movement Events
 
+Camera events fire during user gestures (drag, scroll) and programmatic animations (`flyTo`, `easeTo`):
+
+| Event | Description |
+| :--- | :--- |
+| **`movestart`** | Fired just before the map begins moving. |
+| **`move`** | Fired repeatedly at 60 FPS while the map center changes. |
+| **`moveend`** | Fired when camera movement concludes. |
+| **`zoomstart`** | Fired when camera zoom starts changing. |
+| **`zoom`** | Fired repeatedly during zoom level changes. |
+| **`zoomend`** | Fired when zooming concludes. |
+| **`rotatestart`**| Fired when camera bearing begins changing. |
+| **`rotate`** | Fired during camera bearing rotation. |
+| **`rotateend`** | Fired when camera rotation ends. |
+| **`pitchstart`** | Fired when camera tilt/pitch begins changing. |
+| **`pitch`** | Fired repeatedly as camera tilt changes. |
+| **`pitchend`** | Fired when camera tilt movement ends. |
+
+```javascript
+// Synchronizing a coordinate HUD during camera movement
 map.on('move', () => {
-  console.log('Moving...', map.getCenter());
-});
-
-map.on('moveend', () => {
-  console.log('Camera stopped at:', map.getCenter());
-});
-```
-
-### zoom / zoomstart / zoomend
-
-Fired specifically during zoom changes.
-
-```js
-map.on('zoomend', () => {
-  console.log('Zoom level:', map.getZoom());
-});
-```
-
-### rotate / rotatestart / rotateend
-
-Fired during bearing changes.
-
-```js
-map.on('rotateend', () => {
-  console.log('Bearing:', map.getBearing());
-});
-```
-
-### pitch / pitchstart / pitchend
-
-Fired during pitch (tilt) changes.
-
-```js
-map.on('pitchend', () => {
-  console.log('Pitch:', map.getPitch());
+  const center = map.getCenter();
+  const zoom = map.getZoom().toFixed(2);
+  document.getElementById('hud').textContent = 
+    `Lng: ${center.lng.toFixed(4)}, Lat: ${center.lat.toFixed(4)} | Zoom: ${zoom}`;
 });
 ```
 
 ---
 
-## Interaction Events
+## 4. User Interaction & Layer-Scoped Events
 
-### click
+### Global vs Layer-Scoped Listeners
+* **Global Listener**: `map.on('click', (e) => { ... })` — Fires anywhere on the canvas.
+* **Layer-Scoped Listener**: `map.on('click', 'layer-id', (e) => { ... })` — Fires ONLY when the user clicks directly on geometry belonging to `'layer-id'`.
 
-Fired on map click. Use layer-specific version for feature clicks.
+### Layer Mouse Hover Cursor Pattern
+```javascript
+const layerId = 'poi-markers';
 
-```js
-// Click anywhere on map
-map.on('click', (e) => {
-  console.log('Clicked at:', e.lngLat.lng, e.lngLat.lat);
-  console.log('Screen point:', e.point.x, e.point.y);
+// Change cursor to pointer on hover
+map.on('mouseenter', layerId, () => {
+  map.getCanvas().style.cursor = 'pointer';
 });
 
-// Click on specific layer
-map.on('click', 'my-layer', (e) => {
-  const feature = e.features[0];
-  console.log('Clicked feature:', feature.properties);
+// Reset cursor on exit
+map.on('mouseleave', layerId, () => {
+  map.getCanvas().style.cursor = '';
+});
 
+// Click popups on layer features
+map.on('click', layerId, (e) => {
+  const feature = e.features[0];
   new maplibregl.Popup()
     .setLngLat(e.lngLat)
-    .setHTML(`<h3>${feature.properties.name}</h3>`)
+    .setHTML(`<strong>${feature.properties.name}</strong>`)
     .addTo(map);
 });
 ```
 
-### dblclick
-
-Fired on double-click. Default behavior zooms in.
-
-```js
-map.on('dblclick', (e) => {
-  e.preventDefault();  // Prevent zoom
-  console.log('Double-clicked at:', e.lngLat);
-});
-```
-
-### contextmenu
-
-Fired on right-click.
-
-```js
-map.on('contextmenu', (e) => {
-  showCustomMenu(e.lngLat);
-});
-```
-
-### mouseenter / mouseleave
-
-Fired when mouse enters/leaves a layer's features. **Essential for hover effects.**
-
-```js
-map.on('mouseenter', 'my-layer', (e) => {
-  map.getCanvas().style.cursor = 'pointer';
-});
-
-map.on('mouseleave', 'my-layer', () => {
-  map.getCanvas().style.cursor = '';
-});
-```
-
-### mousemove
-
-Fired on mouse move over map.
-
-```js
-// Map-level — track cursor
-map.on('mousemove', (e) => {
-  coordsDisplay.textContent =
-    `${e.lngLat.lng.toFixed(4)}, ${e.lngLat.lat.toFixed(4)}`;
-});
-
-// Layer-specific — feature interaction
-map.on('mousemove', 'my-layer', (e) => {
-  const feature = e.features[0];
-  // Use for hover highlighting
-});
-```
-
-### mousedown / mouseup
-
-```js
-map.on('mousedown', (e) => {
-  console.log('Mouse down at:', e.lngLat);
-});
-```
-
 ---
 
-## Touch Events
+## 5. Event Object Signatures
 
-### touchstart / touchend / touchcancel
+### `MapMouseEvent` Payload
+Available on `click`, `mousedown`, `mouseup`, `mousemove`:
+* **`e.point`**: Screen pixel coordinates `{ x: number, y: number }` relative to the map container.
+* **`e.lngLat`**: Geographical coordinate `{ lng: number, lat: number }`.
+* **`e.originalEvent`**: Native browser `MouseEvent`.
+* **`e.features`**: Array of GeoJSON features rendered at `e.point` (only present in layer-scoped callbacks).
 
-Touch equivalents for mobile devices.
-
-```js
-map.on('touchstart', (e) => {
-  console.log('Touch at:', e.lngLat);
-});
-```
-
----
-
-## Data Events
-
-### data
-
-Fired when any data (style, source, tile) changes.
-
-```js
-map.on('data', (e) => {
-  if (e.dataType === 'source') {
-    console.log('Source data changed:', e.sourceId);
-  }
-});
-```
-
-### sourcedata
-
-Fired when a source's data changes.
-
-```js
-map.on('sourcedata', (e) => {
-  if (e.sourceId === 'my-source' && e.isSourceLoaded) {
-    console.log('My source finished loading');
-  }
-});
-```
-
-### dataloading / sourcedataloading
-
-Fired when data/source loading begins.
-
----
-
-## Terrain Events
-
-### terrain
-
-Fired when terrain is added/removed.
-
-```js
-map.on('terrain', () => {
-  console.log('Terrain state changed');
-});
-```
-
----
-
-## Error Events
-
-### error
-
-Fired when an error occurs.
-
-```js
-map.on('error', (e) => {
-  console.error('Map error:', e.error);
-});
-```
-
----
-
-## Event Object Properties
-
-All mouse/touch events include:
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `type` | string | Event type name |
-| `target` | Map | The map instance |
-| `originalEvent` | Event | Original DOM event |
-| `point` | Point | Screen coordinates `{x, y}` |
-| `lngLat` | LngLat | Geographic coordinates `{lng, lat}` |
-| `features` | Feature[] | Features at point (layer-specific events only) |
-| `preventDefault()` | function | Prevent default behavior |
-
----
-
-## Removing Event Listeners
-
-```js
-// Named function (recommended for removal)
-function handleClick(e) {
-  console.log('Clicked');
-}
-
-map.on('click', handleClick);
-map.off('click', handleClick);
-
-// One-time listener
-map.once('load', () => {
-  // Only fires once, auto-removes
-});
-
-// Layer-specific removal
-map.on('click', 'my-layer', handleLayerClick);
-map.off('click', 'my-layer', handleLayerClick);
-```
-
----
-
-## Event Quick Reference
-
-| Event | When | Common Use |
-|-------|------|-----------|
-| `load` | Style + tiles ready | Add sources/layers |
-| `styledata` | Style changed | Re-add custom layers |
-| `idle` | Nothing loading | Screenshots, exports |
-| `click` | Map clicked | Place markers, show info |
-| `click` (layer) | Feature clicked | Popups, selection |
-| `mouseenter` (layer) | Mouse on feature | Cursor change, highlight |
-| `mouseleave` (layer) | Mouse off feature | Reset cursor/highlight |
-| `mousemove` | Mouse moves | Coordinate display |
-| `moveend` | Camera stops | Load data for view |
-| `zoomend` | Zoom stops | Zoom-dependent logic |
-| `error` | Error occurs | Error handling |
+### `MapTouchEvent` Payload
+Available on `touchstart`, `touchend`, `touchmove`, `touchcancel`:
+* **`e.point`**: Screen coordinates of primary touch.
+* **`e.points`**: Array of all active touch points.
+* **`e.lngLat`**: Geographical coordinate of primary touch.
+* **`e.originalEvent`**: Native browser `TouchEvent`.

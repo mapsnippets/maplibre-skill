@@ -1,377 +1,254 @@
-# MapLibre GL JS — Expressions Reference
+# MapLibre Expressions Reference & Operator Encyclopedia 🧮
 
-Expressions are the core of data-driven styling in MapLibre. They are JSON arrays that compute values at render time based on feature properties, zoom level, and other inputs.
-
-> [Expression Specification](https://maplibre.org/maplibre-style-spec/expressions/)
+> The definitive technical dictionary of the **MapLibre Style Specification Expression DSL**. Expressions evaluate directly within GPU WebGL shaders and worker tile parsers, enabling dynamic, 60 FPS data-driven cartography.
 
 ---
 
-## Syntax
+## 1. Syntax Architecture & Evaluation Rules
 
-Expressions are arrays: `[operator, ...arguments]`
+An expression is defined as a JSON array where the first element is an **operator string**, followed by zero or more **arguments**:
 
-```js
-// Simple: get a property value
-['get', 'name']
+```json
+["operator", "argument_1", "argument_2", "..."]
+```
 
-// Nested: interpolate color by zoom
-['interpolate', ['linear'], ['zoom'], 10, '#0000ff', 15, '#ff0000']
+Arguments may themselves be nested expressions, literals, or property references:
+```json
+[
+  "interpolate",
+  ["linear"],
+  ["zoom"],
+  10, ["*", ["get", "lanes"], 1.5],
+  16, ["*", ["get", "lanes"], 4.0]
+]
+```
+
+### Expression Evaluation Contexts
+1. **Property Expressions**: Evaluated on feature attributes (`["get", "population"]`, `["geometry-type"]`).
+2. **Camera Expressions**: Evaluated on camera state (`["zoom"]`, `["pitch"]`, `["distance-from-center"]`).
+3. **Composite Expressions**: Evaluated across both feature data and camera state simultaneously.
+4. **Feature-State Expressions**: Evaluated dynamically on GPU feature state (`["feature-state", "hover"]`) without re-parsing tiles.
+
+---
+
+## 2. Complete Operator Dictionary by Category
+
+### A. Feature Data & State Inspection
+
+| Operator | Signature | Return Type | Description & Example |
+| :--- | :--- | :--- | :--- |
+| **`get`** | `["get", property, object?]` | `Value` | Retrieves property value from current feature or object.<br>`["get", "class"]` |
+| **`has`** | `["has", property, object?]` | `Boolean` | Returns `true` if property key exists.<br>`["has", "render_height"]` |
+| **`id`** | `["id"]` | `Value` | Returns the feature's unique ID (integer or string).<br>`["==", ["id"], 1042]` |
+| **`geometry-type`** | `["geometry-type"]` | `String` | Returns `"Point"`, `"MultiPoint"`, `"LineString"`, `"MultiLineString"`, `"Polygon"`, or `"MultiPolygon"`.<br>`["==", ["geometry-type"], "Polygon"]` |
+| **`properties`** | `["properties"]` | `Object` | Returns the complete properties map of the feature. |
+| **`feature-state`** | `["feature-state", stateKey]` | `Value` | Reads dynamic runtime state set via `map.setFeatureState()`.<br>`["boolean", ["feature-state", "hover"], false]` |
+
+---
+
+### B. Control Flow & Decision Logic
+
+#### 1. `case` (If / Else-If / Else)
+Evaluates conditions sequentially, returning the value of the first condition that evaluates to `true`:
+```json
+[
+  "case",
+  ["boolean", ["feature-state", "hover"], false], "#00D2FF",
+  [">", ["get", "population"], 1000000], "#0084FF",
+  [">", ["get", "population"], 250000], "#38bdf8",
+  "#94a3b8" // Default fallback
+]
+```
+
+#### 2. `match` (Switch / Case)
+Compares an input expression against label values:
+```json
+[
+  "match",
+  ["get", "class"],
+  ["motorway", "trunk"], "#ef4444",
+  ["primary", "secondary"], "#f59e0b",
+  "tertiary", "#3b82f6",
+  "#64748b" // Fallback default
+]
+```
+
+#### 3. `coalesce` (Nullish Coalescing)
+Evaluates arguments in order and returns the first non-null value:
+```json
+[
+  "coalesce",
+  ["get", "name:en"],
+  ["get", "name:latin"],
+  ["get", "name"],
+  "Unnamed Landmark"
+]
 ```
 
 ---
 
-## Data Access
+### C. Comparison & Boolean Operators
 
-### get
+| Operator | Signature | Return Type | Description |
+| :--- | :--- | :--- | :--- |
+| **`==`** | `["==", a, b]` | `Boolean` | Returns `true` if `a` equals `b`. |
+| **`!=`** | `["!=", a, b]` | `Boolean` | Returns `true` if `a` does not equal `b`. |
+| **`<`** | `["<", a, b]` | `Boolean` | Returns `true` if `a < b`. |
+| **`<=`** | `["<=", a, b]` | `Boolean` | Returns `true` if `a <= b`. |
+| **`>`** | `[">", a, b]` | `Boolean` | Returns `true` if `a > b`. |
+| **`>=`** | `[">=", a, b]` | `Boolean` | Returns `true` if `a >= b`. |
+| **`!`** | `["!", a]` | `Boolean` | Logical NOT inversion. |
+| **`all`** | `["all", c1, c2, ...]` | `Boolean` | Logical AND. Returns `true` if all conditions evaluate to `true`. |
+| **`any`** | `["any", c1, c2, ...]` | `Boolean` | Logical OR. Returns `true` if at least one condition evaluates to `true`. |
 
-Read feature property.
+---
 
-```js
-['get', 'name']                    // → feature.properties.name
-['get', 'value', ['properties']]   // explicit object access
+### D. Continuous Curves & Stepped Ramps
+
+#### 1. `interpolate` (Smooth Curves)
+Computes smooth transitions between input-output pairs.
+```json
+[
+  "interpolate",
+  ["interpolation-type"],
+  ["input-expression"],
+  stop_input_1, stop_output_1,
+  stop_input_2, stop_output_2,
+  "..."
+]
 ```
 
-### has
+* **Interpolation Types:**
+  * `["linear"]`: Straight-line linear interpolation between stops.
+  * `["exponential", base]`: Exponential curve where `base` dictates curvature (e.g. `["exponential", 1.5]`).
+  * `["cubic-bezier", x1, y1, x2, y2]`: Custom cubic bezier timing curve.
 
-Check if property exists.
-
-```js
-['has', 'point_count']   // true for clustered features
+* **Example: Zoom-dependent Line Width:**
+```json
+"line-width": [
+  "interpolate",
+  ["exponential", 1.4],
+  ["zoom"],
+  5, 0.5,
+  10, 2.0,
+  14, 6.0,
+  18, 16.0
+]
 ```
 
-### at / length
-
-Array access.
-
-```js
-['at', 0, ['get', 'colors']]   // first element
-['length', ['get', 'tags']]     // array length
-```
-
-### geometry-type / id
-
-```js
-['geometry-type']   // 'Point', 'LineString', 'Polygon'
-['id']              // feature id
+#### 2. `step` (Discontinuous Stepped Ramps)
+Produces stepped discrete values without blending. Ideal for discrete class buckets:
+```json
+"circle-color": [
+  "step",
+  ["get", "point_count"],
+  "#00D2FF",   // Default (count < 10)
+  10, "#0084FF", // 10 <= count < 50
+  50, "#ef4444"  // count >= 50
+]
 ```
 
 ---
 
-## Feature State
+### E. Mathematical & Arithmetic Operators
 
-Access state set by `map.setFeatureState()`.
+| Operator | Syntax | Description |
+| :--- | :--- | :--- |
+| **`+`** | `["+", a, b, ...]` | Sum of arguments. |
+| **`-`** | `["-", a, b]` | Subtraction (`a - b`) or negation `["-", a]`. |
+| **`*`** | `["*", a, b, ...]` | Multiplication of arguments. |
+| **`/`** | `["/", a, b]` | Floating point division (`a / b`). |
+| **`%`** | `["%", a, b]` | Modulo remainder (`a % b`). |
+| **`^`** | `["^", a, b]` | Power exponentiation ($a^b$). |
+| **`sqrt`** | `["sqrt", a]` | Square root of $a$. |
+| **`abs`** | `["abs", a]` | Absolute value of $a$. |
+| **`min`** | `["min", a, b, ...]` | Minimum argument value. |
+| **`max`** | `["max", a, b, ...]` | Maximum argument value. |
+| **`round`** | `["round", a]` | Nearest integer rounding. |
+| **`floor`** | `["floor", a]` | Floor rounding down. |
+| **`ceil`** | `["ceil", a]` | Ceiling rounding up. |
+| **`ln`** | `["ln", a]` | Natural logarithm ($\ln a$). |
+| **`log10`** | `["log10", a]` | Base-10 logarithm ($\log_{10} a$). |
+| **`sin` / `cos` / `tan`** | `["sin", rad]` | Trigonometric functions in radians. |
 
-```js
-['feature-state', 'hover']     // read 'hover' state
-['feature-state', 'selected']
+---
+
+### F. String & Typography Formatting
+
+#### 1. `concat`
+Concatenates strings into a single string:
+```json
+"text-field": [
+  "concat",
+  ["get", "name"],
+  " (Elev: ",
+  ["to-string", ["get", "ele"]],
+  "m)"
+]
 ```
 
-Usage in layer paint:
+#### 2. `format` (Rich Multi-Style Text)
+Combines text segments with distinct fonts, colors, and font scales inside a single label:
+```json
+"text-field": [
+  "format",
+  ["get", "name"], { "font-scale": 1.2, "text-color": "#0084FF" },
+  "
+", {},
+  ["concat", "Pop: ", ["to-string", ["get", "population"]]], {
+    "font-scale": 0.85,
+    "text-color": "#64748b"
+  }
+]
+```
 
-```js
-paint: {
-  'circle-color': [
-    'case',
-    ['boolean', ['feature-state', 'hover'], false],
-    '#ff0000',   // hovered
-    '#0000ff'    // default
+---
+
+### G. Type Assertions & Conversions
+
+| Operator | Syntax | Description |
+| :--- | :--- | :--- |
+| **`to-number`** | `["to-number", val, fallback?]` | Converts string/boolean to number. |
+| **`to-string`** | `["to-string", val]` | Converts value to string representation. |
+| **`to-boolean`** | `["to-boolean", val]` | Converts value to boolean. |
+| **`to-color`** | `["to-color", val, fallback?]` | Parses CSS color string into WebGL Color. |
+| **`typeof`** | `["typeof", val]` | Returns `"string"`, `"number"`, `"boolean"`, `"null"`, `"array"`, `"object"`. |
+
+---
+
+## 3. Production Recipe Patterns
+
+### Dynamic 3D Building Heights with Fallbacks
+```json
+"fill-extrusion-height": [
+  "interpolate", ["linear"], ["zoom"],
+  14, 0,
+  14.5, [
+    "coalesce",
+    ["get", "render_height"],
+    ["*", ["coalesce", ["get", "levels"], 1], 3.5]
   ]
-}
-```
-
----
-
-## Lookup / Decision
-
-### case
-
-If/else chain.
-
-```js
-[
-  'case',
-  ['==', ['get', 'type'], 'park'], '#00ff00',
-  ['==', ['get', 'type'], 'water'], '#0000ff',
-  '#cccccc'   // fallback
 ]
 ```
 
-### match
-
-Switch on exact values (more efficient than case for many values).
-
-```js
-[
-  'match', ['get', 'category'],
-  'food', '#ff0000',
-  'shop', '#0000ff',
-  'hotel', '#00ff00',
-  '#888888'   // fallback
+### 60 FPS GPU Hover Highlight via Feature State
+```json
+"fill-opacity": [
+  "case",
+  ["boolean", ["feature-state", "hover"], false], 0.85,
+  ["boolean", ["feature-state", "selected"], false], 0.95,
+  0.25
 ]
 ```
 
-### step
-
-Discrete value ranges (no interpolation).
-
-```js
-[
-  'step', ['get', 'point_count'],
-  '#51bbd6',       // default: count < 100
-  100, '#f1f075',  // 100 <= count < 750
-  750, '#f28cb1'   // count >= 750
-]
-```
-
-### coalesce
-
-First non-null value.
-
-```js
-['coalesce', ['get', 'name_en'], ['get', 'name'], 'Unknown']
-```
-
----
-
-## Interpolation
-
-### interpolate
-
-Smooth transition between stops.
-
-```js
-// Linear interpolation by zoom
-[
-  'interpolate', ['linear'], ['zoom'],
-  10, 2,    // zoom 10 → value 2
-  15, 20    // zoom 15 → value 20
-]
-
-// Exponential interpolation
-[
-  'interpolate', ['exponential', 1.5], ['zoom'],
-  10, 2,
-  15, 20
-]
-
-// Cubic bezier
-[
-  'interpolate', ['cubic-bezier', 0.42, 0, 0.58, 1], ['zoom'],
-  10, 2,
-  15, 20
-]
-```
-
-### interpolate-hcl / interpolate-lab
-
-Color space interpolation (smoother color transitions).
-
-```js
-[
-  'interpolate-hcl', ['linear'], ['get', 'temperature'],
-  0, '#0000ff',
-  50, '#ff0000'
-]
-```
-
----
-
-## Zoom and Heatmap
-
-### zoom
-
-Current map zoom level. Only available as input to `interpolate` and `step` at the top level.
-
-```js
-['interpolate', ['linear'], ['zoom'], 10, 5, 15, 20]
-```
-
-### heatmap-density
-
-Value from 0-1 representing heatmap kernel density. Only for heatmap-color.
-
-```js
-[
-  'interpolate', ['linear'], ['heatmap-density'],
-  0, 'transparent',
-  0.5, 'yellow',
-  1, 'red'
-]
-```
-
-### line-progress
-
-Value from 0-1 along a line. Only for line-gradient.
-
-```js
-[
-  'interpolate', ['linear'], ['line-progress'],
-  0, 'blue',
-  1, 'red'
-]
-```
-
----
-
-## Comparison
-
-```js
-['==', ['get', 'type'], 'park']       // equals
-['!=', ['get', 'type'], 'park']       // not equals
-['>', ['get', 'population'], 1000000] // greater than
-['>=', ['get', 'population'], 1000000]
-['<', ['get', 'year'], 2000]
-['<=', ['get', 'year'], 2000]
-```
-
----
-
-## Boolean Logic
-
-```js
-['all', expr1, expr2]     // AND
-['any', expr1, expr2]     // OR
-['!', expr]               // NOT
-['boolean', value, fallback]  // coerce to boolean
-```
-
-### Filters using expressions
-
-```js
-// Filter: only show restaurants
-filter: ['==', ['get', 'type'], 'restaurant']
-
-// Multiple conditions
-filter: ['all',
-  ['==', ['get', 'type'], 'restaurant'],
-  ['>', ['get', 'rating'], 4]
-]
-
-// In a set of values
-filter: ['in', ['get', 'type'], ['literal', ['restaurant', 'cafe', 'bar']]]
-
-// Clustered features filter
-filter: ['has', 'point_count']       // only clusters
-filter: ['!', ['has', 'point_count']] // only unclustered
-```
-
----
-
-## Math
-
-```js
-['+', a, b]          // addition
-['-', a, b]          // subtraction
-['*', a, b]          // multiplication
-['/', a, b]          // division
-['%', a, b]          // modulo
-['^', a, b]          // exponent
-['abs', value]
-['ceil', value]
-['floor', value]
-['round', value]
-['min', a, b, c]
-['max', a, b, c]
-['sqrt', value]
-['log2', value]
-['log10', value]
-['ln', value]
-['sin', value]       // radians
-['cos', value]
-['tan', value]
-['asin', value]
-['acos', value]
-['atan', value]
-['e']                // Euler's number
-['pi']
-```
-
----
-
-## String
-
-```js
-['concat', 'Hello ', ['get', 'name']]
-['upcase', ['get', 'name']]
-['downcase', ['get', 'name']]
-['to-string', ['get', 'value']]
-['number-format', ['get', 'price'], { 'min-fraction-digits': 2, 'max-fraction-digits': 2 }]
-['slice', ['get', 'name'], 0, 3]    // substring
-['index-of', 'a', ['get', 'name']]  // find character
-```
-
----
-
-## Type Conversion
-
-```js
-['to-number', value]
-['to-string', value]
-['to-boolean', value]
-['to-color', value]
-['typeof', value]          // 'string', 'number', 'boolean', etc.
-['to-rgba', color]         // [r, g, b, a] array
-['rgb', r, g, b]           // color from components
-['rgba', r, g, b, a]
-```
-
----
-
-## Common Expression Recipes
-
-### Circle size by zoom + property
-
-```js
-'circle-radius': [
-  'interpolate', ['linear'], ['zoom'],
-  10, ['*', ['get', 'magnitude'], 1],
-  15, ['*', ['get', 'magnitude'], 4]
-]
-```
-
-### Color by category
-
-```js
-'fill-color': [
-  'match', ['get', 'landuse'],
-  'residential', '#e8d8c8',
-  'commercial', '#c8d8e8',
-  'industrial', '#d8c8c8',
-  'park', '#c8e8c8',
-  '#f0f0f0'   // default
-]
-```
-
-### Opacity by zoom (fade in)
-
-```js
-'fill-opacity': [
-  'interpolate', ['linear'], ['zoom'],
-  10, 0,       // invisible at zoom 10
-  12, 0.5,     // half opacity at 12
-  14, 1        // full opacity at 14
-]
-```
-
-### Conditional text label
-
-```js
-'text-field': [
-  'case',
-  ['has', 'name_en'], ['get', 'name_en'],
-  ['has', 'name'], ['get', 'name'],
-  'No name'
-]
-```
-
-### Dynamic icon based on property
-
-```js
-'icon-image': [
-  'match', ['get', 'amenity'],
-  'restaurant', 'restaurant-icon',
-  'hospital', 'hospital-icon',
-  'school', 'school-icon',
-  'default-icon'
+### Multi-Color Route Gradient (`line-gradient`)
+```json
+"line-gradient": [
+  "interpolate",
+  ["linear"],
+  ["line-progress"],
+  0.0, "#00D2FF",
+  0.5, "#0084FF",
+  1.0, "#ef4444"
 ]
 ```
