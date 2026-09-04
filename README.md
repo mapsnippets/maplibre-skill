@@ -25,11 +25,10 @@ An **Agent Skill** is on-demand domain expertise: AI assistants load it dynamica
 When activated for **MapLibre GL JS**, this skill guides the agent to:
 
 - **Generate pure native MapLibre GL JS code** (v6.7.0 ESM / v6+) using modern lifecycle practices (WebGL container sizing, canvas resizing, event delegation, and resource cleanup).
-- **Configure high-performance vector basemaps** with modern vector tile styles (`streets-v4`, `outdoor-v4`, `satellite-v4`, `dataviz-v4-dark`, `base-v4`) and clean typography.
+- **Configure high-performance vector basemaps** with modern vector tile styles (streets, outdoor, satellite, dark) and clean typography.
 - **Author complex data-driven expressions** (`interpolate`, `step`, `match`, `case`, `feature-state`) with strict type safety and zero syntax errors.
 - **Handle GeoJSON layers & spatial clustering** — spatial clustering, expansion zoom, unclustered point popups, and high-frequency `setData` mutations.
 - **Implement 3D terrain, hillshade & globe projections** — Terrain-RGB raster-dem sources, sky layers, pitch & bearing camera animations, and projection transitions.
-- **Full MapTiler ecosystem integration** — High-resolution MapTiler Planet v4 vector basemaps, Terrain-RGB elevation, elevation contours, hillshading, and custom WebGL layers.
 - **Prevent common hallucination traps** — eliminates deprecated Mapbox endpoints, fixes coordinate order inversions (`[lng, lat]` vs `[lat, lng]`), and guarantees layers wait for map `load` before injection.
 
 <br>
@@ -151,9 +150,9 @@ map.on("load", () => {
 
 ## 🔑 Basemap API Keys
 
-The vector tile recipes in this skill use MapTiler Planet v4 vector basemap styles. To run recipes with live vector tiles:
-- Follow the guide on [how to get a free MapTiler API Key](https://docs.maptiler.com/cloud/api/authentication-key/) (free tier includes 100,000 monthly requests).
-- Replace `YOUR_API_KEY` in the snippet with your active key.
+The examples and recipes in this skill utilize basemaps from **MapTiler**, which is free for use:
+- Get a free API key at [MapTiler Cloud](https://docs.maptiler.com/cloud/api/authentication-key/) (the free tier includes 100,000 requests/month with no credit card required).
+- Replace `YOUR_API_KEY` in the snippets with your active key to load live basemaps.
 
 <br>
 
