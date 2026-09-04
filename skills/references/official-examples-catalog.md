@@ -1,164 +1,383 @@
-# Official MapLibre GL JS Examples Directory 📚
+# MapLibre GL JS — Official Examples & Architectural Recipes 📚🛠️
 
-> The complete catalog of official **MapLibre GL JS (v3–v5)** examples organized by architectural domain, featuring direct documentation links, implementation patterns, and MapTiler vector basemap configurations.
+> Production-ready code recipes and implementation patterns representing the most essential MapLibre GL JS examples, covering camera physics, dynamic data feeds, data-driven shader styling, 3D terrain, and spatial interactivity.
 
 Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospatial snippets, guides, and agent tools.
 
 ---
 
-## 1. Map Basics & Camera Control
+## 1. Camera Animations
 
-| Example | Official Documentation | Key API / Pattern Used |
-| :--- | :--- | :--- |
-| **Display a map** | [display-a-map/](https://maplibre.org/maplibre-gl-js/docs/examples/display-a-map/) | Official MapLibre implementation |
-| **Display a satellite map** | [display-a-satellite-map/](https://maplibre.org/maplibre-gl-js/docs/examples/display-a-satellite-map/) | Official MapLibre implementation |
-| **Display a non-interactive map** | [display-a-non-interactive-map/](https://maplibre.org/maplibre-gl-js/docs/examples/display-a-non-interactive-map/) | Official MapLibre implementation |
-| **Fly to a location** | [fly-to-a-location/](https://maplibre.org/maplibre-gl-js/docs/examples/fly-to-a-location/) | Official MapLibre implementation |
-| **Jump to a series of locations** | [jump-to-a-series-of-locations/](https://maplibre.org/maplibre-gl-js/docs/examples/jump-to-a-series-of-locations/) | Official MapLibre implementation |
-| **Slowly fly to a location** | [slowly-fly-to-a-location/](https://maplibre.org/maplibre-gl-js/docs/examples/slowly-fly-to-a-location/) | Official MapLibre implementation |
-| **Set pitch and bearing** | [set-pitch-and-bearing/](https://maplibre.org/maplibre-gl-js/docs/examples/set-pitch-and-bearing/) | Official MapLibre implementation |
-| **Fit a map to a bounding box** | [fit-a-map-to-a-bounding-box/](https://maplibre.org/maplibre-gl-js/docs/examples/fit-a-map-to-a-bounding-box/) | Official MapLibre implementation |
-| **Fit to the bounds of a LineString** | [fit-to-the-bounds-of-a-linestring/](https://maplibre.org/maplibre-gl-js/docs/examples/fit-to-the-bounds-of-a-linestring/) | Official MapLibre implementation |
-| **Animate map camera around a point** | [animate-map-camera-around-a-point/](https://maplibre.org/maplibre-gl-js/docs/examples/animate-map-camera-around-a-point/) | Official MapLibre implementation |
-| **Animate a point along a route** | [animate-a-point-along-a-route/](https://maplibre.org/maplibre-gl-js/docs/examples/animate-a-point-along-a-route/) | Official MapLibre implementation |
-| **Animate a line** | [animate-a-line/](https://maplibre.org/maplibre-gl-js/docs/examples/animate-a-line/) | Official MapLibre implementation |
-| **Customize camera animations** | [customize-camera-animations/](https://maplibre.org/maplibre-gl-js/docs/examples/customize-camera-animations/) | Official MapLibre implementation |
-| **Offset the vanishing point using padding** | [offset-the-vanishing-point-using-padding/](https://maplibre.org/maplibre-gl-js/docs/examples/offset-the-vanishing-point-using-padding/) | Official MapLibre implementation |
-| **Render world copies** | [render-world-copies/](https://maplibre.org/maplibre-gl-js/docs/examples/render-world-copies/) | Official MapLibre implementation |
-| **Restrict map panning to an area** | [restrict-map-panning-to-an-area/](https://maplibre.org/maplibre-gl-js/docs/examples/restrict-map-panning-to-an-area/) | Official MapLibre implementation |
-| **Enter a 360° photosphere** | [enter-a-360-photosphere/](https://maplibre.org/maplibre-gl-js/docs/examples/enter-a-360-photosphere/) | Official MapLibre implementation |
-| **Walk around a map in first person** | [walk-around-a-map-in-first-person/](https://maplibre.org/maplibre-gl-js/docs/examples/walk-around-a-map-in-first-person/) | Official MapLibre implementation |
+### A. Animate a Point Along a Route
 
----
+Smoothly animates a vehicle or marker along a multi-vertex GeoJSON `LineString`:
 
-## 2. User Interface Controls & Navigation
+```javascript
+import maplibregl from 'maplibre-gl';
 
-| Example | Official Documentation | Key API / Pattern Used |
-| :--- | :--- | :--- |
-| **Display map navigation controls** | [display-map-navigation-controls/](https://maplibre.org/maplibre-gl-js/docs/examples/display-map-navigation-controls/) | Official MapLibre implementation |
-| **Locate the user** | [locate-the-user/](https://maplibre.org/maplibre-gl-js/docs/examples/locate-the-user/) | Official MapLibre implementation |
-| **View a fullscreen map** | [view-a-fullscreen-map/](https://maplibre.org/maplibre-gl-js/docs/examples/view-a-fullscreen-map/) | Official MapLibre implementation |
-| **Cooperative gestures** | [cooperative-gestures/](https://maplibre.org/maplibre-gl-js/docs/examples/cooperative-gestures/) | Official MapLibre implementation |
-| **Disable map rotation** | [disable-map-rotation/](https://maplibre.org/maplibre-gl-js/docs/examples/disable-map-rotation/) | Official MapLibre implementation |
-| **Disable scroll zoom** | [disable-scroll-zoom/](https://maplibre.org/maplibre-gl-js/docs/examples/disable-scroll-zoom/) | Official MapLibre implementation |
-| **Toggle interactions** | [toggle-interactions/](https://maplibre.org/maplibre-gl-js/docs/examples/toggle-interactions/) | Official MapLibre implementation |
-| **Change the default position for attribution** | [change-the-default-position-for-attribution/](https://maplibre.org/maplibre-gl-js/docs/examples/change-the-default-position-for-attribution/) | Official MapLibre implementation |
-| **Navigate the map with game-like controls** | [navigate-the-map-with-game-like-controls/](https://maplibre.org/maplibre-gl-js/docs/examples/navigate-the-map-with-game-like-controls/) | Official MapLibre implementation |
+const routeCoordinates = [
+  [14.4207, 50.0880],
+  [14.4250, 50.0850],
+  [14.4300, 50.0820],
+  [14.4378, 50.0755]
+];
 
----
+// Add point source
+map.addSource('moving-vehicle', {
+  type: 'geojson',
+  data: {
+    type: 'Feature',
+    geometry: { type: 'Point', coordinates: routeCoordinates[0] }
+  }
+});
 
-## 3. Sources & Data Feeds
+map.addLayer({
+  id: 'vehicle-point',
+  type: 'circle',
+  source: 'moving-vehicle',
+  paint: {
+    'circle-radius': 8,
+    'circle-color': '#0084FF',
+    'circle-stroke-width': 3,
+    'circle-stroke-color': '#ffffff'
+  }
+});
 
-| Example | Official Documentation | Key API / Pattern Used |
-| :--- | :--- | :--- |
-| **Add a vector tile source** | [add-a-vector-tile-source/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-vector-tile-source/) | Official MapLibre implementation |
-| **Add a GeoJSON line** | [add-a-geojson-line/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-geojson-line/) | Official MapLibre implementation |
-| **Add a GeoJSON polygon** | [add-a-geojson-polygon/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-geojson-polygon/) | Official MapLibre implementation |
-| **Draw GeoJSON points** | [draw-geojson-points/](https://maplibre.org/maplibre-gl-js/docs/examples/draw-geojson-points/) | Official MapLibre implementation |
-| **Add multiple geometries from one GeoJSON source** | [add-multiple-geometries-from-one-geojson-source/](https://maplibre.org/maplibre-gl-js/docs/examples/add-multiple-geometries-from-one-geojson-source/) | Official MapLibre implementation |
-| **Add a raster tile source** | [add-a-raster-tile-source/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-raster-tile-source/) | Official MapLibre implementation |
-| **Add a WMS source** | [add-a-wms-source/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-wms-source/) | Official MapLibre implementation |
-| **Add a canvas source** | [add-a-canvas-source/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-canvas-source/) | Official MapLibre implementation |
-| **Add a COG raster source** | [add-a-cog-raster-source/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-cog-raster-source/) | Official MapLibre implementation |
-| **Add a video** | [add-a-video/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-video/) | Official MapLibre implementation |
-| **Add live realtime data** | [add-live-realtime-data/](https://maplibre.org/maplibre-gl-js/docs/examples/add-live-realtime-data/) | Official MapLibre implementation |
-| **Update a feature in realtime** | [update-a-feature-in-realtime/](https://maplibre.org/maplibre-gl-js/docs/examples/update-a-feature-in-realtime/) | Official MapLibre implementation |
-| **Update GeoJSON polygons** | [update-geojson-polygons/](https://maplibre.org/maplibre-gl-js/docs/examples/update-geojson-polygons/) | Official MapLibre implementation |
-| **Animate a series of images** | [animate-a-series-of-images/](https://maplibre.org/maplibre-gl-js/docs/examples/animate-a-series-of-images/) | Official MapLibre implementation |
-| **View local GeoJSON** | [view-local-geojson/](https://maplibre.org/maplibre-gl-js/docs/examples/view-local-geojson/) | Official MapLibre implementation |
-| **PMTiles source and protocol** | [pmtiles-source-and-protocol/](https://maplibre.org/maplibre-gl-js/docs/examples/pmtiles-source-and-protocol/) | Official MapLibre implementation |
+let step = 0;
+function animatePoint() {
+  step = (step + 1) % routeCoordinates.length;
+  map.getSource('moving-vehicle').setData({
+    type: 'Feature',
+    geometry: { type: 'Point', coordinates: routeCoordinates[step] }
+  });
+  requestAnimationFrame(animatePoint);
+}
+// Start loop
+// animatePoint();
+```
 
----
+### B. 360° Cinematic Camera Orbit Around a Coordinate
 
-## 4. Layers & Styling Expressions
+Rotates the camera smoothly around a point of interest (e.g. a mountain peak or 3D monument):
 
-| Example | Official Documentation | Key API / Pattern Used |
-| :--- | :--- | :--- |
-| **Add an icon to the map** | [add-an-icon-to-the-map/](https://maplibre.org/maplibre-gl-js/docs/examples/add-an-icon-to-the-map/) | Official MapLibre implementation |
-| **Add a generated icon to the map** | [add-a-generated-icon-to-the-map/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-generated-icon-to-the-map/) | Official MapLibre implementation |
-| **Add a stretchable image to the map** | [add-a-stretchable-image-to-the-map/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-stretchable-image-to-the-map/) | Official MapLibre implementation |
-| **Add an animated icon to the map** | [add-an-animated-icon-to-the-map/](https://maplibre.org/maplibre-gl-js/docs/examples/add-an-animated-icon-to-the-map/) | Official MapLibre implementation |
-| **Change a layer's color with buttons** | [change-a-layers-color-with-buttons/](https://maplibre.org/maplibre-gl-js/docs/examples/change-a-layers-color-with-buttons/) | Official MapLibre implementation |
-| **Add a new layer below labels** | [add-a-new-layer-below-labels/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-new-layer-below-labels/) | Official MapLibre implementation |
-| **Add a custom style layer** | [add-a-custom-style-layer/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-custom-style-layer/) | Official MapLibre implementation |
-| **Add a pattern to a polygon** | [add-a-pattern-to-a-polygon/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-pattern-to-a-polygon/) | Official MapLibre implementation |
-| **Style lines with a data-driven property** | [style-lines-with-a-data-driven-property/](https://maplibre.org/maplibre-gl-js/docs/examples/style-lines-with-a-data-driven-property/) | Official MapLibre implementation |
-| **Change building color based on zoom level** | [change-building-color-based-on-zoom-level/](https://maplibre.org/maplibre-gl-js/docs/examples/change-building-color-based-on-zoom-level/) | Official MapLibre implementation |
-| **Create a gradient dashed line using an expression** | [create-a-gradient-dashed-line-using-an-expression/](https://maplibre.org/maplibre-gl-js/docs/examples/create-a-gradient-dashed-line-using-an-expression/) | Official MapLibre implementation |
-| **Create a gradient line using an expression** | [create-a-gradient-line-using-an-expression/](https://maplibre.org/maplibre-gl-js/docs/examples/create-a-gradient-line-using-an-expression/) | Official MapLibre implementation |
-| **Create a heatmap layer** | [create-a-heatmap-layer/](https://maplibre.org/maplibre-gl-js/docs/examples/create-a-heatmap-layer/) | Official MapLibre implementation |
-| **Create and style clusters** | [create-and-style-clusters/](https://maplibre.org/maplibre-gl-js/docs/examples/create-and-style-clusters/) | Official MapLibre implementation |
-| **Display HTML clusters with custom properties** | [display-html-clusters-with-custom-properties/](https://maplibre.org/maplibre-gl-js/docs/examples/display-html-clusters-with-custom-properties/) | Official MapLibre implementation |
-| **Visualize population density** | [visualize-population-density/](https://maplibre.org/maplibre-gl-js/docs/examples/visualize-population-density/) | Official MapLibre implementation |
-| **Filter within a Layer** | [filter-within-a-layer/](https://maplibre.org/maplibre-gl-js/docs/examples/filter-within-a-layer/) | Official MapLibre implementation |
-| **Filter symbols by text input** | [filter-symbols-by-text-input/](https://maplibre.org/maplibre-gl-js/docs/examples/filter-symbols-by-text-input/) | Official MapLibre implementation |
-| **Filter layer symbols using global state** | [filter-layer-symbols-using-global-state/](https://maplibre.org/maplibre-gl-js/docs/examples/filter-layer-symbols-using-global-state/) | Official MapLibre implementation |
+```javascript
+function rotateCamera(timestamp) {
+  // Clamp rotation speed
+  map.rotateTo((timestamp / 100) % 360, { duration: 0 });
+  requestAnimationFrame(rotateCamera);
+}
+
+// Center camera and tilt for 3D perspective
+map.jumpTo({ center: [14.4378, 50.0755], zoom: 15, pitch: 60 });
+// requestAnimationFrame(rotateCamera);
+```
 
 ---
 
-## 5. 3D Terrain, Models & Globe View
+## 2. Dynamic Data Feeds & Real-Time Updates
 
-| Example | Official Documentation | Key API / Pattern Used |
-| :--- | :--- | :--- |
-| **Add a hillshade layer** | [add-a-hillshade-layer/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-hillshade-layer/) | Official MapLibre implementation |
-| **Add 3D terrain from quantized-mesh tiles** | [add-3d-terrain-from-quantized-mesh-tiles/](https://maplibre.org/maplibre-gl-js/docs/examples/add-3d-terrain-from-quantized-mesh-tiles/) | Official MapLibre implementation |
-| **Add a color relief layer** | [add-a-color-relief-layer/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-color-relief-layer/) | Official MapLibre implementation |
-| **Add a multidirectional hillshade layer** | [add-a-multidirectional-hillshade-layer/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-multidirectional-hillshade-layer/) | Official MapLibre implementation |
-| **Add Contour Lines** | [add-contour-lines/](https://maplibre.org/maplibre-gl-js/docs/examples/add-contour-lines/) | Official MapLibre implementation |
-| **Display buildings in 3D** | [display-buildings-in-3d/](https://maplibre.org/maplibre-gl-js/docs/examples/display-buildings-in-3d/) | Official MapLibre implementation |
-| **Display a hybrid satellite map with terrain elevation** | [display-a-hybrid-satellite-map-with-terrain-elevation/](https://maplibre.org/maplibre-gl-js/docs/examples/display-a-hybrid-satellite-map-with-terrain-elevation/) | Official MapLibre implementation |
-| **Sky, Fog, Terrain** | [sky-fog-terrain/](https://maplibre.org/maplibre-gl-js/docs/examples/sky-fog-terrain/) | Official MapLibre implementation |
-| **Add a 3D model using three.js** | [add-a-3d-model-using-three.js/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-3d-model-using-three.js/) | Official MapLibre implementation |
-| **Add 3D tiles using three.js** | [add-3d-tiles-using-three.js/](https://maplibre.org/maplibre-gl-js/docs/examples/add-3d-tiles-using-three.js/) | Official MapLibre implementation |
-| **Add a 3D model to globe using three.js** | [add-a-3d-model-to-globe-using-three.js/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-3d-model-to-globe-using-three.js/) | Official MapLibre implementation |
-| **Add a 3D model with babylon.js** | [add-a-3d-model-with-babylon.js/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-3d-model-with-babylon.js/) | Official MapLibre implementation |
-| **Adding 3D models using three.js on terrain** | [adding-3d-models-using-three.js-on-terrain/](https://maplibre.org/maplibre-gl-js/docs/examples/adding-3d-models-using-three.js-on-terrain/) | Official MapLibre implementation |
-| **Extrude polygons for 3D indoor mapping** | [extrude-polygons-for-3d-indoor-mapping/](https://maplibre.org/maplibre-gl-js/docs/examples/extrude-polygons-for-3d-indoor-mapping/) | Official MapLibre implementation |
-| **Fill extrusion rounded corners** | [fill-extrusion-rounded-corners/](https://maplibre.org/maplibre-gl-js/docs/examples/fill-extrusion-rounded-corners/) | Official MapLibre implementation |
-| **Display a globe with a vector map** | [display-a-globe-with-a-vector-map/](https://maplibre.org/maplibre-gl-js/docs/examples/display-a-globe-with-a-vector-map/) | Official MapLibre implementation |
-| **Display a globe with an atmosphere** | [display-a-globe-with-an-atmosphere/](https://maplibre.org/maplibre-gl-js/docs/examples/display-a-globe-with-an-atmosphere/) | Official MapLibre implementation |
-| **Add a custom layer with tiles to a globe** | [add-a-custom-layer-with-tiles-to-a-globe/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-custom-layer-with-tiles-to-a-globe/) | Official MapLibre implementation |
-| **Create a Heatmap layer on a globe with terrain elevation** | [create-a-heatmap-layer-on-a-globe-with-terrain-elevation/](https://maplibre.org/maplibre-gl-js/docs/examples/create-a-heatmap-layer-on-a-globe-with-terrain-elevation/) | Official MapLibre implementation |
-| **Display a globe with a fill extrusion layer** | [display-a-globe-with-a-fill-extrusion-layer/](https://maplibre.org/maplibre-gl-js/docs/examples/display-a-globe-with-a-fill-extrusion-layer/) | Official MapLibre implementation |
+### A. Live GeoJSON Streaming
+
+Update coordinates or feature attributes without triggering WebGL re-initialization:
+
+```javascript
+// Add empty source with auto-generated IDs for feature state
+map.addSource('realtime-fleet', {
+  type: 'geojson',
+  data: { type: 'FeatureCollection', features: [] },
+  generateId: true
+});
+
+map.addLayer({
+  id: 'fleet-symbols',
+  type: 'symbol',
+  source: 'realtime-fleet',
+  layout: {
+    'icon-image': 'car-15',
+    'icon-size': 1.2,
+    'text-field': '{name}',
+    'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+    'text-offset': [0, 1],
+    'text-size': 12
+  }
+});
+
+// Periodic fetch and update
+async function pollFleetPositions() {
+  try {
+    const res = await fetch('/api/fleet/positions');
+    const geojson = await res.json();
+    map.getSource('realtime-fleet').setData(geojson);
+  } catch (err) {
+    console.error('Fleet polling failed:', err);
+  }
+}
+setInterval(pollFleetPositions, 3000);
+```
+
+### B. Animated Gradient Line (`line-gradient`)
+
+Renders a continuous color ramp along a route (requires `lineMetrics: true` on the GeoJSON source):
+
+```javascript
+map.addSource('route-source', {
+  type: 'geojson',
+  lineMetrics: true, // MANDATORY for line-gradient expressions
+  data: {
+    type: 'Feature',
+    geometry: {
+      type: 'LineString',
+      coordinates: [
+        [14.4207, 50.0880],
+        [14.4250, 50.0850],
+        [14.4300, 50.0820],
+        [14.4378, 50.0755]
+      ]
+    }
+  }
+});
+
+map.addLayer({
+  id: 'gradient-route',
+  type: 'line',
+  source: 'route-source',
+  layout: {
+    'line-join': 'round',
+    'line-cap': 'round'
+  },
+  paint: {
+    'line-width': 6,
+    'line-gradient': [
+      'interpolate',
+      ['linear'],
+      ['line-progress'],
+      0.0, '#00D2FF',  // Start: Cyan
+      0.5, '#0084FF',  // Mid: MapTiler Electric Blue
+      1.0, '#ef4444'   // End: Red
+    ]
+  }
+});
+```
 
 ---
 
-## 6. Annotations, Popups & Internationalization
+## 3. High-Performance Feature State (Hover & Selection)
 
-| Example | Official Documentation | Key API / Pattern Used |
-| :--- | :--- | :--- |
-| **Add a default marker** | [add-a-default-marker/](https://maplibre.org/maplibre-gl-js/docs/examples/add-a-default-marker/) | Official MapLibre implementation |
-| **Add custom icons with Markers** | [add-custom-icons-with-markers/](https://maplibre.org/maplibre-gl-js/docs/examples/add-custom-icons-with-markers/) | Official MapLibre implementation |
-| **Create a draggable Marker** | [create-a-draggable-marker/](https://maplibre.org/maplibre-gl-js/docs/examples/create-a-draggable-marker/) | Official MapLibre implementation |
-| **Animate a marker** | [animate-a-marker/](https://maplibre.org/maplibre-gl-js/docs/examples/animate-a-marker/) | Official MapLibre implementation |
-| **Create a draggable point** | [create-a-draggable-point/](https://maplibre.org/maplibre-gl-js/docs/examples/create-a-draggable-point/) | Official MapLibre implementation |
-| **Display a popup** | [display-a-popup/](https://maplibre.org/maplibre-gl-js/docs/examples/display-a-popup/) | Official MapLibre implementation |
-| **Display a popup on click** | [display-a-popup-on-click/](https://maplibre.org/maplibre-gl-js/docs/examples/display-a-popup-on-click/) | Official MapLibre implementation |
-| **Display a popup on hover** | [display-a-popup-on-hover/](https://maplibre.org/maplibre-gl-js/docs/examples/display-a-popup-on-hover/) | Official MapLibre implementation |
-| **Attach a popup to a marker instance** | [attach-a-popup-to-a-marker-instance/](https://maplibre.org/maplibre-gl-js/docs/examples/attach-a-popup-to-a-marker-instance/) | Official MapLibre implementation |
-| **Display and style rich text labels** | [display-and-style-rich-text-labels/](https://maplibre.org/maplibre-gl-js/docs/examples/display-and-style-rich-text-labels/) | Official MapLibre implementation |
-| **Style labels with Web fonts** | [style-labels-with-web-fonts/](https://maplibre.org/maplibre-gl-js/docs/examples/style-labels-with-web-fonts/) | Official MapLibre implementation |
-| **Variable label placement** | [variable-label-placement/](https://maplibre.org/maplibre-gl-js/docs/examples/variable-label-placement/) | Official MapLibre implementation |
-| **Change a map's language** | [change-a-maps-language/](https://maplibre.org/maplibre-gl-js/docs/examples/change-a-maps-language/) | Official MapLibre implementation |
-| **Add support for right-to-left scripts** | [add-support-for-right-to-left-scripts/](https://maplibre.org/maplibre-gl-js/docs/examples/add-support-for-right-to-left-scripts/) | Official MapLibre implementation |
-| **Locale switching** | [locale-switching/](https://maplibre.org/maplibre-gl-js/docs/examples/locale-switching/) | Official MapLibre implementation |
+Avoid calling `setData()` on every mousemove. Feature state toggles attributes directly inside the GPU shader at 60 FPS:
+
+```javascript
+map.addSource('states', {
+  type: 'geojson',
+  data: 'https://raw.githubusercontent.com/datasets/geo-boundaries-world-110m/master/countries.geojson',
+  generateId: true // Generates numeric feature IDs if missing
+});
+
+map.addLayer({
+  id: 'states-fill',
+  type: 'fill',
+  source: 'states',
+  paint: {
+    'fill-color': '#0084FF',
+    'fill-opacity': [
+      'case',
+      ['boolean', ['feature-state', 'hover'], false],
+      0.8,  // Opacity when hovered
+      0.25  // Default opacity
+    ]
+  }
+});
+
+map.addLayer({
+  id: 'states-borders',
+  type: 'line',
+  source: 'states',
+  paint: {
+    'line-color': '#0084FF',
+    'line-width': [
+      'case',
+      ['boolean', ['feature-state', 'hover'], false],
+      2.5,
+      0.8
+    ]
+  }
+});
+
+let hoveredId = null;
+
+map.on('mousemove', 'states-fill', (e) => {
+  if (e.features.length > 0) {
+    if (hoveredId !== null) {
+      map.setFeatureState({ source: 'states', id: hoveredId }, { hover: false });
+    }
+    hoveredId = e.features[0].id;
+    map.setFeatureState({ source: 'states', id: hoveredId }, { hover: true });
+    map.getCanvas().style.cursor = 'pointer';
+  }
+});
+
+map.on('mouseleave', 'states-fill', () => {
+  if (hoveredId !== null) {
+    map.setFeatureState({ source: 'states', id: hoveredId }, { hover: false });
+  }
+  hoveredId = null;
+  map.getCanvas().style.cursor = '';
+});
+```
 
 ---
 
-## 7. Interactivity, Spatial Querying & Extensions
+## 4. 3D Terrain, Buildings & Atmosphere
 
-| Example | Official Documentation | Key API / Pattern Used |
-| :--- | :--- | :--- |
-| **Get features under the mouse pointer** | [get-features-under-the-mouse-pointer/](https://maplibre.org/maplibre-gl-js/docs/examples/get-features-under-the-mouse-pointer/) | Official MapLibre implementation |
-| **Create a hover effect** | [create-a-hover-effect/](https://maplibre.org/maplibre-gl-js/docs/examples/create-a-hover-effect/) | Official MapLibre implementation |
-| **Center the map on a clicked symbol** | [center-the-map-on-a-clicked-symbol/](https://maplibre.org/maplibre-gl-js/docs/examples/center-the-map-on-a-clicked-symbol/) | Official MapLibre implementation |
-| **Get coordinates of the mouse pointer** | [get-coordinates-of-the-mouse-pointer/](https://maplibre.org/maplibre-gl-js/docs/examples/get-coordinates-of-the-mouse-pointer/) | Official MapLibre implementation |
-| **Show polygon information on click** | [show-polygon-information-on-click/](https://maplibre.org/maplibre-gl-js/docs/examples/show-polygon-information-on-click/) | Official MapLibre implementation |
-| **Measure distances** | [measure-distances/](https://maplibre.org/maplibre-gl-js/docs/examples/measure-distances/) | Official MapLibre implementation |
-| **Create a time slider** | [create-a-time-slider/](https://maplibre.org/maplibre-gl-js/docs/examples/create-a-time-slider/) | Official MapLibre implementation |
-| **Draw geometries with terra-draw** | [draw-geometries-with-terra-draw/](https://maplibre.org/maplibre-gl-js/docs/examples/draw-geometries-with-terra-draw/) | Official MapLibre implementation |
-| **Draw polygon with mapbox-gl-draw** | [draw-polygon-with-mapbox-gl-draw/](https://maplibre.org/maplibre-gl-js/docs/examples/draw-polygon-with-mapbox-gl-draw/) | Official MapLibre implementation |
-| **Sync movement of multiple maps** | [sync-movement-of-multiple-maps/](https://maplibre.org/maplibre-gl-js/docs/examples/sync-movement-of-multiple-maps/) | Official MapLibre implementation |
-| **Use addProtocol to Transform Feature Properties** | [use-addprotocol-to-transform-feature-properties/](https://maplibre.org/maplibre-gl-js/docs/examples/use-addprotocol-to-transform-feature-properties/) | Official MapLibre implementation |
+### 3D Building Extrusions with Dynamic Sun Direction
+
+```javascript
+map.on('load', () => {
+  // Add 3D Extruded Buildings beneath label layers
+  map.addLayer({
+    id: '3d-buildings',
+    source: 'openmaptiles', // Or the primary vector source from style
+    'source-layer': 'building',
+    filter: ['!=', ['get', 'hide_3d'], true],
+    type: 'fill-extrusion',
+    minzoom: 14,
+    paint: {
+      'fill-extrusion-color': '#cbd5e1',
+      'fill-extrusion-height': [
+        'interpolate', ['linear'], ['zoom'],
+        14, 0,
+        14.05, ['get', 'render_height']
+      ],
+      'fill-extrusion-base': [
+        'interpolate', ['linear'], ['zoom'],
+        14, 0,
+        14.05, ['get', 'render_min_height']
+      ],
+      'fill-extrusion-opacity': 0.85
+    }
+  });
+
+  // Set directional sunlight
+  map.setLight({
+    anchor: 'viewport',
+    color: '#ffffff',
+    intensity: 0.35,
+    position: [1.15, 210, 30] // [radial coordinate, azimuthal angle, polar angle]
+  });
+});
+```
 
 ---
+
+## 5. Clustering with Spiderfy & Zoom-to-Bounds
+
+```javascript
+map.addSource('earthquakes', {
+  type: 'geojson',
+  data: 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson',
+  cluster: true,
+  clusterMaxZoom: 14,
+  clusterRadius: 50
+});
+
+// Cluster circles with step-function size and color
+map.addLayer({
+  id: 'clusters',
+  type: 'circle',
+  source: 'earthquakes',
+  filter: ['has', 'point_count'],
+  paint: {
+    'circle-color': [
+      'step',
+      ['get', 'point_count'],
+      '#00D2FF', // < 10 items
+      10, '#0084FF', // 10 - 49
+      50, '#ef4444'  // >= 50
+    ],
+    'circle-radius': [
+      'step',
+      ['get', 'point_count'],
+      18,
+      10, 24,
+      50, 32
+    ],
+    'circle-stroke-width': 2,
+    'circle-stroke-color': '#ffffff'
+  }
+});
+
+// Cluster count labels
+map.addLayer({
+  id: 'cluster-count',
+  type: 'symbol',
+  source: 'earthquakes',
+  filter: ['has', 'point_count'],
+  layout: {
+    'text-field': '{point_count_abbreviated}',
+    'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+    'text-size': 12
+  },
+  paint: {
+    'text-color': '#ffffff'
+  }
+});
+
+// Unclustered individual points
+map.addLayer({
+  id: 'unclustered-point',
+  type: 'circle',
+  source: 'earthquakes',
+  filter: ['!', ['has', 'point_count']],
+  paint: {
+    'circle-color': '#FF6B00',
+    'circle-radius': 6,
+    'circle-stroke-width': 1.5,
+    'circle-stroke-color': '#fff'
+  }
+});
+
+// Zoom to cluster bounds on click
+map.on('click', 'clusters', async (e) => {
+  const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+  const clusterId = features[0].properties.cluster_id;
+  
+  const zoom = await map.getSource('earthquakes').getClusterExpansionZoom(clusterId);
+  map.easeTo({
+    center: features[0].geometry.coordinates,
+    zoom: zoom
+  });
+});
+```
+
+---
+
+## 6. Spatial Querying (`queryRenderedFeatures`)
+
+Query features interactively across visible vector or GeoJSON layers:
+
+```javascript
+map.on('click', (e) => {
+  // Query a 10px bounding box around mouse click
+  const bbox = [
+    [e.point.x - 5, e.point.y - 5],
+    [e.point.x + 5, e.point.y + 5]
+  ];
+
+  const features = map.queryRenderedFeatures(bbox, {
+    layers: ['unclustered-point', 'states-fill']
+  });
+
+  if (!features.length) return;
+
+  const feature = features[0];
+  new maplibregl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML(`
+      <div style="font-family: system-ui; font-size: 13px;">
+        <strong style="color: #0084FF;">Feature Inspector</strong><br/>
+        <b>Layer:</b> ${feature.layer.id}<br/>
+        <b>Properties:</b> <pre style="margin: 4px 0 0; font-size: 11px;">${JSON.stringify(feature.properties, null, 2)}</pre>
+      </div>
+    `)
+    .addTo(map);
+});
+```
