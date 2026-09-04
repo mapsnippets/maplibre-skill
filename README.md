@@ -168,7 +168,7 @@ This skill includes an automated evaluation benchmark suite in `skills/maplibre/
 To validate compliance against the Agent Skills specification using the reference validator:
 
 ```bash
-npx @agentskills/skills-ref validate skills/maplibre
+npx -y skills-ref validate skills/maplibre
 ```
 
 <br>
