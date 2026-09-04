@@ -1,12 +1,18 @@
 # MapLibre GL JS — Agent Skill 🗺️🤖
 
-> Official **MapLibre GL JS** skill for AI coding assistants (Cursor, Claude Code, Antigravity, GitHub Copilot, Windsurf, Cline).
+[![Agent Skills Specification](https://img.shields.io/badge/Agent_Skills-Specification_Compliant-0084FF?logo=anthropic&logoColor=white)](https://agentskills.io/specification)
+[![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-Plugin_v1.1.0-7952B3?logo=anthropic&logoColor=white)](https://code.claude.com)
+[![Skills CLI](https://img.shields.io/badge/Skills_CLI-npx_skills_add-success)](https://github.com/vercel-labs/skills)
+[![MapLibre GL JS](https://img.shields.io/badge/MapLibre_GL_JS-v6.7.0_(ESM)-brightgreen)](https://maplibre.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE.md)
+
+> Official **MapLibre GL JS** AI skill for coding assistants (Claude Code, Cursor, Antigravity, GitHub Copilot, Windsurf, Roo Code, Gemini CLI). Built in accordance with the open **[Agent Skills Specification](https://agentskills.io/)**.
 
 Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospatial snippets, guides, and agent tools.
 
 ---
 
-🌐 [Website](https://mapsnippets.org/) &nbsp; 📚 [MapLibre Documentation](https://maplibre.org/maplibre-gl-js/docs/)
+🌐 [Website](https://mapsnippets.org/) &nbsp; 📚 [MapLibre GL JS Documentation](https://maplibre.org/maplibre-gl-js/docs/) &nbsp; 📋 [Agent Skills Standard](https://agentskills.io/)
 
 ---
 
@@ -15,12 +21,14 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 <details>
 <summary><b>Table of Contents</b></summary>
 <ul>
-<li><a href="#what-it-does">What it does</a></li>
-<li><a href="#how-skills-plugins-and-agents-fit-together">How skills, plugins, and agents fit together</a></li>
+<li><a href="#-overview--capabilities">Overview & Capabilities</a></li>
+<li><a href="#-how-agent-skills-work">How Agent Skills Work</a></li>
+<li><a href="#-example-prompts-that-trigger-this-skill">Example Prompts That Trigger This Skill</a></li>
 <li><a href="#-installation">Installation</a></li>
-<li><a href="#-repository-layout">Repository layout</a></li>
+<li><a href="#-repository-architecture">Repository Architecture</a></li>
 <li><a href="#-quickstart-example">Quickstart Example</a></li>
 <li><a href="#-basemap-api-keys">Basemap API Keys</a></li>
+<li><a href="#-evaluation--validation">Evaluation & Validation</a></li>
 <li><a href="#links">Links</a></li>
 <li><a href="#-contributing">Contributing</a></li>
 <li><a href="#-license">License</a></li>
@@ -29,40 +37,65 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 
 <br>
 
-## What it does
+## 💡 Overview & Capabilities
 
-A skill is on-demand expertise: the agent loads it only when your request matches the skill's description, then follows its instructions instead of guessing. When you ask for MapLibre maps, vector layers, styling expressions, clustering, or 3D terrain, this skill makes the agent:
+An **Agent Skill** is on-demand domain expertise: AI assistants load it dynamically when a task requires specialized geospatial knowledge, replacing guesswork and hallucinated legacy APIs with verified patterns.
 
-- **Generate pure native MapLibre GL JS code** (v3–v5) with modern lifecycle handling (WebGL container sizing, cleanup, event delegation, canvas resize).
-- **Configure high-performance vector basemaps** with modern vector tile styles (`streets-v4`, `outdoor-v4`, `satellite-v4`) and clean typography.
-- **Author complex data-driven expressions** (`interpolate`, `step`, `match`, `case`, `feature-state`) without syntax errors or type mismatches.
-- **Handle GeoJSON layers & clustering correctly** — spatial clustering, expansion zoom, unclustered point popups, and source updates (`setData`).
-- **Implement 3D terrain & globe projections** — Terrain-RGB raster-dem sources, sky layers, pitch & bearing animations, and projection switching.
-- **Prevent common hallucination traps** — avoids legacy Mapbox endpoints, eliminates coordinate order inversion (`[lng, lat]` vs `[lat, lng]`), and ensures layers wait for map `load` events.
+When activated for **MapLibre GL JS**, this skill guides the agent to:
+
+- **Generate pure native MapLibre GL JS code** (v3–v5) using modern lifecycle practices (WebGL container sizing, canvas resizing, event delegation, and resource cleanup).
+- **Configure high-performance vector basemaps** with modern vector tile styles (`streets-v4`, `outdoor-v4`, `satellite-v4`, `dataviz-v4-dark`, `base-v4`) and clean typography.
+- **Author complex data-driven expressions** (`interpolate`, `step`, `match`, `case`, `feature-state`) with strict type safety and zero syntax errors.
+- **Handle GeoJSON layers & spatial clustering** — spatial clustering, expansion zoom, unclustered point popups, and high-frequency `setData` mutations.
+- **Implement 3D terrain, hillshade & globe projections** — Terrain-RGB raster-dem sources, sky layers, pitch & bearing camera animations, and projection transitions.
+- **Support enterprise protocols & formats** — Cloud-Optimized PMTiles archives via `pmtiles.Protocol`, MapLibre Contour elevation lines, and custom WebGL layers.
+- **Prevent common hallucination traps** — eliminates deprecated Mapbox endpoints, fixes coordinate order inversions (`[lng, lat]` vs `[lat, lng]`), and guarantees layers wait for map `load` before injection.
 
 <br>
 
-## How skills, plugins, and agents fit together
+## 🧠 How Agent Skills Work
 
-1. **The skill** is the portable content: a `SKILL.md` plus a `references/` folder. This is what every AI agent reads.
-2. **The plugin** is a Claude Code–specific wrapper for distributing the skill through a marketplace.
-3. **The agent** (Claude Code, Gemini CLI, Cursor, Antigravity, Windsurf…) loads the skill from its designated skills directory.
+This skill follows the **[Agent Skills open format](https://agentskills.io/)**, utilizing a **three-tier progressive disclosure model** to minimize context overhead:
+
+```mermaid
+graph LR
+    A[1. Discovery<br/>Startup] -->|Match Query| B[2. Activation<br/>Load SKILL.md]
+    B -->|As Needed| C[3. Execution<br/>Modular References & Examples]
+```
+
+1. **Discovery (Startup)**: The agent only inspects the YAML frontmatter `name` and `description` (~50 tokens).
+2. **Activation (Task Identified)**: When your prompt mentions MapLibre, vector tiles, 3D maps, or geospatial styling, the agent loads `skills/maplibre/SKILL.md` (< 2,500 tokens).
+3. **Execution (Deep Dive)**: The agent traverses targeted guides in `references/` or runnable recipes in `examples/` on demand, without polluting your context window.
+
+<br>
+
+## 🎯 Example Prompts That Trigger This Skill
+
+You don't need special commands to use this skill. Any natural language request matching its capabilities will trigger it:
+
+- *"Create an interactive MapLibre map centered on Tokyo with 3D buildings extrusion that change color based on height."*
+- *"Add a GeoJSON earthquake feed to my map with cluster circles and popups showing magnitude on click."*
+- *"How do I render a PMTiles vector archive locally in MapLibre GL JS without a tile server?"*
+- *"Implement a smooth flyTo camera animation between five scenic waypoints in 3D terrain mode."*
+- *"Build a split-screen swipe map comparing satellite-v4 imagery with outdoor-v4 topographic tiles."*
 
 <br>
 
 ## 📦 Installation
 
-### Universal — via Skills CLI
+### Option 1: Universal — via Skills CLI (Recommended)
 
-Works with Claude Code, Cursor, Gemini CLI, Windsurf, and dozens of other agents. The [Skills CLI](https://github.com/vercel-labs/skills) auto-detects which agents you have installed:
+Works across Claude Code, Cursor, Windsurf, Gemini CLI, Antigravity, and dozens of other AI coding tools. The [Skills CLI](https://github.com/vercel-labs/skills) auto-detects your active environments:
 
 ```bash
 npx skills add mapsnippets/maplibre-skill
 ```
 
-### Claude Code — as a plugin
+<br>
 
-Add the marketplace, install the plugin, then reload:
+### Option 2: Claude Code Plugin
+
+Install directly via the official Claude Code plugin marketplace:
 
 ```bash
 /plugin marketplace add mapsnippets/maplibre-skill
@@ -70,62 +103,46 @@ Add the marketplace, install the plugin, then reload:
 /reload-plugins
 ```
 
-### Gemini CLI & Antigravity
+<br>
 
-Install directly from the repository:
+### Option 3: Manual Installation by Client
 
-#### Windows (PowerShell)
-```powershell
-git clone https://github.com/mapsnippets/maplibre-skill.git; mkdir "$HOME\.gemini\skills" -Force; cp -Recurse maplibre-skill\skills\maplibre "$HOME\.gemini\skills\"; rm -Recurse -Force maplibre-skill
-```
+Copy or symlink the `skills/maplibre` directory into your agent's configured skills path:
 
-#### Linux & macOS (bash)
-```bash
-git clone https://github.com/mapsnippets/maplibre-skill.git && mkdir -p ~/.gemini/skills && cp -r maplibre-skill/skills/maplibre ~/.gemini/skills/ && rm -rf maplibre-skill
-```
-
-### Cursor
-
-Project-scoped. Copy the skill folder into your project's skills directory:
-
-```bash
-mkdir -p .cursor/skills && cp -r skills/maplibre .cursor/skills/
-```
-
-### VS Code & GitHub Copilot
-
-Project-scoped. Place the skill folder into `.agents/skills/`:
-
-```bash
-mkdir -p .agents/skills && cp -r skills/maplibre .agents/skills/
-```
-
-### Windsurf
-
-Project-scoped, read by Cascade:
-
-```bash
-mkdir -p .windsurf/skills && cp -r skills/maplibre .windsurf/skills/
-```
-
----
+| Agent / Tool | Target Directory | Install Command |
+| :--- | :--- | :--- |
+| **Cursor** | `.cursor/skills/maplibre` | `mkdir -p .cursor/skills && cp -r skills/maplibre .cursor/skills/` |
+| **VS Code / Copilot** | `.agents/skills/maplibre` | `mkdir -p .agents/skills && cp -r skills/maplibre .agents/skills/` |
+| **Gemini CLI / Antigravity** | `~/.gemini/skills/maplibre` | `mkdir -p ~/.gemini/skills && cp -r skills/maplibre ~/.gemini/skills/` |
+| **Windsurf (Cascade)** | `.windsurf/skills/maplibre` | `mkdir -p .windsurf/skills && cp -r skills/maplibre .windsurf/skills/` |
+| **Roo Code / Cline** | `.roo/skills/maplibre` | `mkdir -p .roo/skills && cp -r skills/maplibre .roo/skills/` |
+| **OpenHands** | `.agents/skills/maplibre` | `mkdir -p .agents/skills && cp -r skills/maplibre .agents/skills/` |
 
 <br>
 
-## 📘 Repository layout
+## 📘 Repository Architecture
+
+This repository strictly conforms to the [Agent Skills specification](https://agentskills.io/specification) (`dir_name == name`):
 
 ```text
-.claude-plugin/
-  marketplace.json    — Claude Code marketplace manifest
-  plugin.json         — Claude Code plugin manifest
-skills/
-  maplibre/
-    SKILL.md          — Main skill prompt entry point & progressive disclosure router
-    evals/            — Standard benchmark evaluation suites (agentskills.io spec)
-    examples/         — 30 standalone runnable task examples (HTML/CSS/JS)
-    references/       — 15 deep technical reference guides & API specifications
-README.md             — Documentation & installation guide
-LICENSE.md            — MIT License
+mapsnippets/maplibre-skill/
+├── .claude-plugin/
+│   ├── marketplace.json    — Claude Code marketplace catalog manifest (v1.1.0)
+│   └── plugin.json         — Claude Code plugin manifest & metadata (v1.1.0)
+├── skills/
+│   └── maplibre/
+│       ├── SKILL.md        — Entry point prompt & progressive disclosure router (< 200 lines)
+│       ├── evals/
+│       │   └── evals.json  — Machine-readable evaluation benchmarks (5 core test cases)
+│       ├── examples/       — 41 standalone runnable recipes (HTML/CSS/JS)
+│       │   ├── INDEX.md    — Curated categorized catalog of all recipes
+│       │   └── ...         — 3D terrain, clustering, PMTiles, animations, swipe maps
+│       └── references/     — 15 deep technical reference guides & API specifications
+│           ├── INDEX.md    — Searchable index of references
+│           ├── versions.md — Single source of truth for library releases & styles
+│           └── ...         — expressions, layers, events, 3D terrain, PMTiles
+├── README.md               — Project documentation & setup guide
+└── LICENSE.md              — MIT License
 ```
 
 <br>
@@ -139,8 +156,12 @@ import "maplibre-gl/dist/maplibre-gl.css";
 const map = new maplibregl.Map({
   container: "map",
   style: "https://api.maptiler.com/maps/streets-v4/style.json?key=YOUR_API_KEY",
-  center: [14.4378, 50.0755], // [lng, lat]
+  center: [14.4378, 50.0755], // [longitude, latitude]
   zoom: 12
+});
+
+map.on("load", () => {
+  map.addControl(new maplibregl.NavigationControl(), "top-right");
 });
 ```
 
@@ -148,11 +169,26 @@ const map = new maplibregl.Map({
 
 ## 🔑 Basemap API Keys
 
-The vector tile examples in this skill utilize MapTiler vector basemap styles. To run the examples with live vector tiles:
-- Follow the guide on [how to get a free MapTiler API Key](https://docs.maptiler.com/cloud/api/authentication-key/) (includes a free plan with 100,000 monthly tile requests).
-- Replace `YOUR_API_KEY` in the snippet with your key.
+The vector tile recipes in this skill use MapTiler Planet v4 vector basemap styles. To run recipes with live vector tiles:
+- Follow the official guide on [how to get a free MapTiler API Key](https://docs.maptiler.com/cloud/api/authentication-key/) (free tier includes 100,000 monthly requests).
+- Replace `YOUR_API_KEY` in the snippet with your active key.
 
----
+<br>
+
+## 🧪 Evaluation & Validation
+
+This skill includes an automated evaluation benchmark suite in `skills/maplibre/evals/evals.json` covering:
+1. Basic Vector Map Initialization & Lifecycle
+2. 3D Terrain & Extruded Buildings
+3. GeoJSON Data-Driven Expressions
+4. Marker Clustering & Popups
+5. Custom PMTiles Protocol Integration
+
+To validate compliance against the official Agent Skills specification using the reference validator:
+
+```bash
+npx @agentskills/skills-ref validate skills/maplibre
+```
 
 <br>
 
@@ -160,15 +196,18 @@ The vector tile examples in this skill utilize MapTiler vector basemap styles. T
 
 - 🌐 [MapSnippets Community](https://mapsnippets.org/)
 - 🗺️ [MapLibre GL JS Documentation](https://maplibre.org/maplibre-gl-js/docs/)
+- 📋 [Agent Skills Specification](https://agentskills.io/)
 - 🐙 [GitHub Repository](https://github.com/mapsnippets/maplibre-skill)
-
----
 
 <br>
 
 ## 🤝 Contributing
 
-Contributions are welcome! Feel free to open issues or submit pull requests with improved snippets and documentation.
+Contributions are welcome! If you have optimized recipes, updated API references, or new evaluation benchmarks:
+1. Fork the repository.
+2. Ensure relative links in `skills/maplibre/SKILL.md` remain strictly valid.
+3. Validate your changes with `npx @agentskills/skills-ref validate skills/maplibre`.
+4. Submit a Pull Request.
 
 <br>
 
@@ -179,5 +218,5 @@ This project is licensed under the MIT License — see the [LICENSE](./LICENSE.m
 <br>
 
 <p align="center">
-  Maintained by <a href="https://mapsnippets.org/">MapSnippets</a> — Open web mapping tools & snippets.
+  Maintained with ❤️ by <a href="https://mapsnippets.org/">MapSnippets</a> — Open web mapping tools & agent skills.
 </p>
