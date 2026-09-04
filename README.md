@@ -73,11 +73,11 @@ graph LR
 
 You don't need special commands to use this skill. Any natural language request matching its capabilities will trigger it:
 
-- *"Create an interactive MapLibre map centered on Tokyo with 3D buildings extrusion that change color based on height."*
-- *"Add a GeoJSON earthquake feed to my map with cluster circles and popups showing magnitude on click."*
-- *"How do I combine MapTiler Satellite Hybrid tiles with 3D terrain elevation and contour lines in MapLibre GL JS?"*
+- *"Create an interactive map centered on Tokyo with 3D buildings that change color based on height."*
+- *"Add a live GeoJSON earthquake feed to my map with cluster circles and popups showing magnitude on click."*
+- *"How do I create a satellite map with 3D terrain elevation and contour lines in MapLibre GL JS?"*
 - *"Implement a smooth flyTo camera animation between five scenic waypoints in 3D terrain mode."*
-- *"Build a split-screen swipe map comparing satellite-v4 imagery with outdoor-v4 topographic tiles."*
+- *"Build a split-screen swipe map comparing satellite imagery with a topographic outdoor map."*
 
 <br>
 
