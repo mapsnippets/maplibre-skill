@@ -142,7 +142,7 @@ MapTiler provides style.json files that configure sources, layers, fonts, and sp
 |-------|----------|
 | Streets v4 | `maps/streets-v4/style.json` |
 | Streets v4 Dark | `maps/streets-v4-dark/style.json` |
-| Streets v4 Light | `maps/streets-v4-light/style.json` |
+| Streets v4 Pastel | `maps/streets-v4-pastel/style.json` |
 | Satellite v4 | `maps/satellite-v4/style.json` |
 | Hybrid v4 | `maps/hybrid-v4/style.json` |
 | Outdoor v4 | `maps/outdoor-v4/style.json` |
@@ -151,6 +151,8 @@ MapTiler provides style.json files that configure sources, layers, fonts, and sp
 | Dataviz v4 Dark | `maps/dataviz-v4-dark/style.json` |
 | Dataviz v4 Light | `maps/dataviz-v4-light/style.json` |
 | Base v4 | `maps/base-v4/style.json` |
+| Base v4 Dark | `maps/base-v4-dark/style.json` |
+| Base v4 Light | `maps/base-v4-light/style.json` |
 | Bright v4 | `maps/bright-v4/style.json` |
 | Ocean | `maps/ocean/style.json` |
 | Winter v4 | `maps/winter-v4/style.json` |
