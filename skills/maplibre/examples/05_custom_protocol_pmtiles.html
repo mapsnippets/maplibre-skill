@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MapLibre GL JS — Custom Protocols &amp; PMTiles Extension</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    #map { width: 100%; height: 100%; }
+    .hud-card {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
+      background: rgba(11, 17, 24, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 210, 255, 0.3);
+      border-radius: 8px;
+      padding: 14px 18px;
+      color: #ffffff;
+      max-width: 340px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+    .hud-title { font-size: 15px; font-weight: 700; color: #00D2FF; margin-bottom: 4px; }
+    .hud-desc { font-size: 12px; color: #94a3b8; line-height: 1.4; margin-bottom: 8px; }
+    .code-badge { font-family: monospace; font-size: 11px; background: rgba(0, 210, 255, 0.15); color: #00D2FF; padding: 2px 6px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="hud-card">
+    <div class="hud-title">🔌 Protocol Extensions</div>
+    <div class="hud-desc">Custom streaming protocol handler registered via <span class="code-badge">maplibregl.addProtocol()</span>.</div>
+  </div>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script src="https://unpkg.com/pmtiles@3.0.6/dist/pmtiles.js"></script>
+  <script>
+    const apiKey = new URLSearchParams(window.location.search).get('key') || 'YOUR_MAPTILER_API_KEY';
+
+    // 1. Register PMTiles Protocol Globally
+    const protocol = new pmtiles.Protocol();
+    maplibregl.addProtocol('pmtiles', protocol.tile);
+
+    // 2. Initialize Map with MapTiler Dataviz Dark
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: `https://api.maptiler.com/maps/dataviz-dark/style.json?key=${apiKey}`,
+      center: [-122.4194, 37.7749], // San Francisco
+      zoom: 12
+    });
+
+    map.addControl(new maplibregl.NavigationControl(), 'top-right');
+
+    map.on('load', () => {
+      // 3. Register a custom transform protocol demo (e.g. data interceptor)
+      maplibregl.addProtocol('mock-stream', (params, abortController) => {
+        return Promise.resolve({
+          data: {
+            type: 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                properties: { label: 'Streaming Node Alpha' },
+                geometry: { type: 'Point', coordinates: [-122.4194, 37.7749] }
+              },
+              {
+                type: 'Feature',
+                properties: { label: 'Streaming Node Beta' },
+                geometry: { type: 'Point', coordinates: [-122.4300, 37.7850] }
+              }
+            ]
+          }
+        });
+      });
+
+      // 4. Add GeoJSON source using our custom protocol scheme
+      map.addSource('custom-stream', {
+        type: 'geojson',
+        data: 'mock-stream://live-stream.json'
+      });
+
+      map.addLayer({
+        id: 'stream-nodes',
+        type: 'circle',
+        source: 'custom-stream',
+        paint: {
+          'circle-radius': 10,
+          'circle-color': '#00D2FF',
+          'circle-stroke-color': '#ffffff',
+          'circle-stroke-width': 2
+        }
+      });
+
+      map.on('click', 'stream-nodes', (e) => {
+        const props = e.features[0].properties;
+        new maplibregl.Popup()
+          .setLngLat(e.features[0].geometry.coordinates)
+          .setHTML(`<strong>${props.label}</strong><p>Fetched via custom streaming protocol.</p>`)
+          .addTo(map);
+      });
+    });
+  </script>
+</body>
+</html>
