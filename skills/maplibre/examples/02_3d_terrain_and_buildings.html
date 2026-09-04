@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MapLibre GL JS — 3D Terrain & Extruded Buildings (MapTiler)</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    #map { width: 100%; height: 100%; background: #0b1118; }
+    .hud-card {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
+      background: rgba(11, 17, 24, 0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 210, 255, 0.3);
+      border-radius: 8px;
+      padding: 14px 18px;
+      color: #ffffff;
+      max-width: 340px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+    .hud-title { font-size: 15px; font-weight: 700; color: #00D2FF; margin-bottom: 6px; }
+    .hud-desc { font-size: 12px; color: #94a3b8; line-height: 1.4; margin-bottom: 8px; }
+    .badge { display: inline-block; font-size: 11px; background: rgba(0, 132, 255, 0.2); color: #00D2FF; padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(0, 210, 255, 0.4); }
+  </style>
+</head>
+<body>
+  <div class="hud-card">
+    <div class="hud-title">🏔️ 3D Terrain &amp; Building Extrusions</div>
+    <div class="hud-desc">MapTiler Terrain-RGB v2 digital elevation model paired with Planet v4 3D building extrusions.</div>
+    <span class="badge">Pitch: 60° · Bearing: -25°</span>
+  </div>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script>
+    const apiKey = new URLSearchParams(window.location.search).get('key') || 'YOUR_MAPTILER_API_KEY';
+
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: `https://api.maptiler.com/maps/dataviz-dark/style.json?key=${apiKey}`,
+      center: [7.9838, 46.5385], // Swiss Alps (Jungfrau region)
+      zoom: 12.5,
+      pitch: 62,
+      bearing: -28,
+      maxPitch: 85
+    });
+
+    map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
+
+    map.on('load', () => {
+      // 1. Add 3D Terrain Elevation Source
+      map.addSource('maptiler-terrain', {
+        type: 'raster-dem',
+        url: `https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key=${apiKey}`,
+        tileSize: 256
+      });
+
+      // 2. Enable 3D Terrain
+      map.setTerrain({
+        source: 'maptiler-terrain',
+        exaggeration: 1.3
+      });
+
+      // 3. Add Dynamic Hillshading
+      map.addLayer({
+        id: 'hills',
+        type: 'hillshade',
+        source: 'maptiler-terrain',
+        layout: { visibility: 'visible' },
+        paint: {
+          'hillshade-shadow-color': '#05080c',
+          'hillshade-highlight-color': '#ffffff',
+          'hillshade-exaggeration': 0.4
+        }
+      });
+
+      // 4. Add 3D Building Extrusions (if building layer exists in style)
+      const layers = map.getStyle().layers;
+      const labelLayerId = layers.find(l => l.type === 'symbol' && l.layout && l.layout['text-field'])?.id;
+
+      map.addLayer({
+        id: '3d-buildings',
+        source: 'maptiler_planet',
+        'source-layer': 'building',
+        type: 'fill-extrusion',
+        minzoom: 14,
+        paint: {
+          'fill-extrusion-color': [
+            'interpolate', ['linear'], ['get', 'render_height'],
+            0, '#0084FF',
+            50, '#00D2FF',
+            150, '#ffffff'
+          ],
+          'fill-extrusion-height': ['coalesce', ['get', 'render_height'], 10],
+          'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0],
+          'fill-extrusion-opacity': 0.85
+        }
+      }, labelLayerId);
+    });
+  </script>
+</body>
+</html>
