@@ -6,15 +6,17 @@ This guide lists the current production versions of MapLibre GL JS, verified off
 
 ## 1. Core Library & Companion Plugins Matrix
 
-| Library / Package | Current Version | Ingestion / Type | Primary Purpose |
-| :--- | :--- | :--- | :--- |
-| **maplibre-gl** | `6.7.0` | ESM Module (`.mjs`) / NPM | Core WebGL2 vector mapping engine |
-| **pmtiles** | `3.2.0` | ESM / Protocol Handler | Serverless cloud-optimized archive tile extraction |
-| **maplibre-contour** | `0.1.0` | ESM / DemSource Plugin | Real-time client-side contour line & hillshade generation |
-| **@mapbox/mapbox-gl-draw** | `1.4.3` | UMD / ESM | Vector geometry drawing, editing, and CAD digitization |
-| **@turf/turf** | `7.2.0` | ESM / Standalone Script | Advanced geospatial calculations, clipping, and buffers |
-| **@maptiler/geocoding-control** | `2.1.4` | ESM / IControl | Address search, forward/reverse geocoding autocomplete |
-| **three** | `0.184.0` | ESM | Custom WebGL 3D mesh layers rendered into the map context |
+| Library / Package | Current Version | Ingestion / Type | Primary Purpose | Used in Recipe / Guide |
+| :--- | :--- | :--- | :--- | :--- |
+| **maplibre-gl** | `6.7.0` | ESM Module (`.mjs`) / NPM | Core WebGL2 vector mapping engine | Core basemaps & all 40 recipes |
+| **pmtiles** | `3.2.0` | ESM / Protocol Handler | Serverless cloud-optimized archive tile extraction | `pmtiles-protocol.md` |
+| **maplibre-contour** | `0.1.0` | ESM / DemSource Plugin | Real-time client-side contour line & hillshade generation | `vector-contour-lines.md` |
+| **@mapbox/mapbox-gl-draw** | `1.4.3` | UMD / ESM | Vector geometry drawing, editing, and CAD digitization | `plugins-catalog.md` |
+| **terra-draw** | `1.0.0` | ESM / NPM | Modern multi-engine map drawing library | `plugins-catalog.md` |
+| **@turf/turf** | `7.2.0` | ESM / Standalone Script | Advanced geospatial calculations, clipping, and buffers | `turf-distance-measurement.md` |
+| **@maptiler/geocoding-control** | `2.1.4` | ESM / IControl | Address search, forward/reverse geocoding autocomplete | `geocoding-and-services.md` |
+| **three** | `0.184.0` | ESM | Custom WebGL 3D mesh layers rendered into the map context | `custom-layer-threejs.md` |
+| **react-map-gl** | `7.1.7` | ESM / React Bindings | React component wrapper for MapLibre (`react-map-gl/maplibre`) | `frameworks.md` |
 
 > [!IMPORTANT]
 > **MapLibre GL JS v6 ESM Standard:**
@@ -51,6 +53,7 @@ This guide lists the current production versions of MapLibre GL JS, verified off
   - JS: `https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.js`
   - CSS: `https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.css`
 * **Turf.js v7.2.0:** `https://cdn.jsdelivr.net/npm/@turf/turf@7.2.0/turf.min.js`
+* **Three.js v0.184.0:** `https://unpkg.com/three@0.184.0/build/three.module.js`
 
 ---
 
