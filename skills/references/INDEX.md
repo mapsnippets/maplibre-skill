@@ -10,6 +10,7 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 
 | Document | Scope & Contents | Key Topics |
 | :--- | :--- | :--- |
+| [**api-classes-and-controls.md**](api-classes-and-controls.md) | Exhaustive reference for MapLibre core classes, UI controls, and methods. | `Map` methods (`flyTo`, `fitBounds`, `queryRenderedFeatures`, `project`), controls (`NavigationControl`, `GeolocateControl`, `ScaleControl`, `FullscreenControl`, `AttributionControl`), `Marker`, `Popup`, `LngLat`, `MercatorCoordinate`. |
 | [**plugins-catalog.md**](plugins-catalog.md) | Comprehensive directory of third-party plugins, controls, and layer extensions. | UI controls, `@maptiler/geocoding-control`, PMTiles protocol, Three.js 3D layers, `terra-draw`, `react-map-gl/maplibre`. |
 | [**style-spec-reference.md**](style-spec-reference.md) | Complete reference for MapLibre Style Specification v8. | Root properties, sources (`vector`, `raster`, `raster-dem`, `geojson`), 9 layer types (`fill`, `line`, `symbol`, `circle`, `heatmap`, `fill-extrusion`, `raster`, `hillshade`, `background`), expression DSL, light, terrain. |
 | [**architecture-and-guides.md**](architecture-and-guides.md) | Deep technical guide to architecture, WebGL lifecycle, and optimization. | WebGL context limits (16 context trap), React/Next.js lifecycle cleanup (`map.remove()`), camera math (`fitBounds`, padding), `CustomLayerInterface`, PMTiles protocol, feature-state hover patterns. |

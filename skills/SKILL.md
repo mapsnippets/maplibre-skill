@@ -28,6 +28,7 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 
 Deep architectural and schema reference files live under `references/` and should be loaded on demand:
 - [references/INDEX.md](references/INDEX.md) — **Master topic index & router** for all MapLibre references and guides.
+- [references/api-classes-and-controls.md](references/api-classes-and-controls.md) — Core `maplibregl` classes (`Map`, `Marker`, `Popup`), UI controls (`Navigation`, `Geolocate`, `Scale`, `Fullscreen`), and coordinate types.
 - [references/plugins-catalog.md](references/plugins-catalog.md) — Complete catalog of plugins, controls, layer extensions, drawing tools, and framework bridges.
 - [references/style-spec-reference.md](references/style-spec-reference.md) — Exhaustive MapLibre Style Specification v8 reference (sources, all 9 layer types, expressions, light, terrain).
 - [references/architecture-and-guides.md](references/architecture-and-guides.md) — Deep technical guides on WebGL context management (16 context limit), custom layers (Three.js), and protocol extensions.
@@ -801,6 +802,7 @@ map.on('moveend', () => {
 ## Reference Files
 
 - `references/INDEX.md` — Master topic index and navigation guide
+- `references/api-classes-and-controls.md` — Core `maplibregl` classes, UI controls, camera methods, and coordinate types
 - `references/basemaps-and-terrain.md` — All MapTiler v4 style.json URLs, raster tiles, and 3D terrain DEM
 - `references/sources-layers.md` — Source types, layer types, and common patterns
 - `references/expressions.md` — Expression syntax for data-driven styling
