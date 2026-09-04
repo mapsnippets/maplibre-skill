@@ -2,8 +2,6 @@
 
 This reference documents the complete suite of vector tile schemas and source layers available across MapTiler datasets. Use these exact layer names, attribute keys, and values when querying features, writing data-driven styling expressions, or applying layer filters.
 
-> **Upstream Authority:** All vector tile schemas and layer field definitions conform to the official specifications in [`maptiler/maptiler-skills`](https://github.com/maptiler/maptiler-skills).
-
 ---
 
 ## 📑 Catalog of Vector Schemas

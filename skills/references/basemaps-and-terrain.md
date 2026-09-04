@@ -2,8 +2,6 @@
 
 This reference provides the production-ready style JSON URLs, raster XYZ tile endpoints, and 3D Terrain-RGB configuration.
 
-> **Upstream Authority:** All MapTiler basemap styles, tile endpoints, and terrain DEM configurations conform to the official definitions in the [`maptiler/maptiler-skills`](https://github.com/maptiler/maptiler-skills) reference repository.
-
 ---
 
 ## 1. Vector Map Styles (`style.json`)

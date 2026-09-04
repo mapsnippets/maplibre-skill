@@ -2,8 +2,6 @@
 
 This reference provides direct REST API specifications for address search, autocomplete, reverse geocoding, static map images, IP geolocation, and elevation queries without requiring wrapper SDKs.
 
-> **Upstream Authority:** All MapTiler Cloud REST APIs and query parameters conform to the official definitions in [`maptiler/maptiler-skills`](https://github.com/maptiler/maptiler-skills).
-
 ---
 
 ## 1. Forward Geocoding & Address Autocomplete

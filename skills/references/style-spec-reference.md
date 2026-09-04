@@ -267,4 +267,4 @@ Always use official MapTiler Cloud vector styles with standard API key parameter
 | **Base v4** | `https://api.maptiler.com/maps/base-v4/style.json?key=YOUR_KEY` |
 | **Topo v4** | `https://api.maptiler.com/maps/topo-v4/style.json?key=YOUR_KEY` |
 
-> Reference: For full style catalog and options, see [basemaps-and-terrain.md](basemaps-and-terrain.md) and upstream [`maptiler/maptiler-skills`](https://github.com/maptiler/maptiler-skills).
+> Reference: For full style catalog and options, see [basemaps-and-terrain.md](basemaps-and-terrain.md).

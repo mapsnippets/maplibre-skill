@@ -20,7 +20,6 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 
 * **Native Library Focus:** This skill focuses strictly on pure, native **MapLibre GL JS** (`maplibregl.Map`, layers, sources, style specification, WebGL context, expressions, controls). All generated code must be 100% native MapLibre code without proprietary SDK wrappers.
 * **MapTiler as Data Source:** MapTiler Cloud provides vector tile styles, raster tiles, 3D Terrain-RGB DEM, and geocoding services.
-* **Upstream Reference Authority:** All MapTiler style endpoints, raster tiles, terrain DEMs, and vector tile schemas (Planet v4) conform to the authoritative specifications established in the [maptiler/maptiler-skills](https://github.com/maptiler/maptiler-skills) repository. For MapTiler SDK JS wrappers (`@maptiler/sdk`), native mobile SDKs, or on-premise infrastructure, refer to `maptiler-skills`.
 
 ---
 
@@ -720,7 +719,6 @@ const data = await response.json();
 ```
 
 > Full API reference: `references/geocoding-and-services.md`
-> Upstream platform reference: [`maptiler/maptiler-skills`](https://github.com/maptiler/maptiler-skills)
 
 ---
 
