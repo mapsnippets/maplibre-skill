@@ -89,7 +89,7 @@ git clone https://github.com/mapsnippets/maplibre-skill.git && mkdir -p ~/.gemin
 Project-scoped. Copy the skill folder into your project's skills directory:
 
 ```bash
-mkdir -p .cursor/skills && cp -r skills/maplibre .cursor/skills/
+mkdir -p .cursor/skills && cp -r skills .cursor/skills/
 ```
 
 ### Windsurf
@@ -97,7 +97,7 @@ mkdir -p .cursor/skills && cp -r skills/maplibre .cursor/skills/
 Project-scoped, read by Cascade:
 
 ```bash
-mkdir -p .windsurf/skills && cp -r skills/maplibre .windsurf/skills/
+mkdir -p .windsurf/skills && cp -r skills .windsurf/skills/
 ```
 
 ---
@@ -111,8 +111,7 @@ mkdir -p .windsurf/skills && cp -r skills/maplibre .windsurf/skills/
   marketplace.json    — Claude Code marketplace manifest
   plugin.json         — Claude Code plugin manifest
 skills/
-  maplibre/
-    SKILL.md          — Main skill prompt entry point
+  SKILL.md          — Main skill prompt entry point
     references/       — Deep technical reference guides (loaded on demand)
 README.md             — This guide
 LICENSE.md            — MIT License
