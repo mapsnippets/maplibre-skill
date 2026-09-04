@@ -76,12 +76,12 @@ Install directly from the repository:
 
 #### Windows (PowerShell)
 ```powershell
-git clone https://github.com/mapsnippets/maplibre-skill.git; mkdir "$HOME\.gemini\skills\maplibre" -Force; cp -Recurse maplibre-skill\skills\* "$HOME\.gemini\skills\maplibre\"; rm -Recurse -Force maplibre-skill
+git clone https://github.com/mapsnippets/maplibre-skill.git; mkdir "$HOME\.gemini\skills" -Force; cp -Recurse maplibre-skill\skills\maplibre "$HOME\.gemini\skills\"; rm -Recurse -Force maplibre-skill
 ```
 
 #### Linux & macOS (bash)
 ```bash
-git clone https://github.com/mapsnippets/maplibre-skill.git && mkdir -p ~/.gemini/skills/maplibre && cp -r maplibre-skill/skills/* ~/.gemini/skills/maplibre/ && rm -rf maplibre-skill
+git clone https://github.com/mapsnippets/maplibre-skill.git && mkdir -p ~/.gemini/skills && cp -r maplibre-skill/skills/maplibre ~/.gemini/skills/ && rm -rf maplibre-skill
 ```
 
 ### Cursor
@@ -89,7 +89,15 @@ git clone https://github.com/mapsnippets/maplibre-skill.git && mkdir -p ~/.gemin
 Project-scoped. Copy the skill folder into your project's skills directory:
 
 ```bash
-mkdir -p .cursor/skills && cp -r skills .cursor/skills/
+mkdir -p .cursor/skills && cp -r skills/maplibre .cursor/skills/
+```
+
+### VS Code & GitHub Copilot
+
+Project-scoped. Place the skill folder into `.agents/skills/`:
+
+```bash
+mkdir -p .agents/skills && cp -r skills/maplibre .agents/skills/
 ```
 
 ### Windsurf
@@ -97,7 +105,7 @@ mkdir -p .cursor/skills && cp -r skills .cursor/skills/
 Project-scoped, read by Cascade:
 
 ```bash
-mkdir -p .windsurf/skills && cp -r skills .windsurf/skills/
+mkdir -p .windsurf/skills && cp -r skills/maplibre .windsurf/skills/
 ```
 
 ---
@@ -111,9 +119,12 @@ mkdir -p .windsurf/skills && cp -r skills .windsurf/skills/
   marketplace.json    — Claude Code marketplace manifest
   plugin.json         — Claude Code plugin manifest
 skills/
-  SKILL.md          — Main skill prompt entry point
-    references/       — Deep technical reference guides (loaded on demand)
-README.md             — This guide
+  maplibre/
+    SKILL.md          — Main skill prompt entry point & progressive disclosure router
+    evals/            — Standard benchmark evaluation suites (agentskills.io spec)
+    examples/         — 30 standalone runnable task examples (HTML/CSS/JS)
+    references/       — 15 deep technical reference guides & API specifications
+README.md             — Documentation & installation guide
 LICENSE.md            — MIT License
 ```
 

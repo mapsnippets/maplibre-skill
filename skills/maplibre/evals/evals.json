@@ -1,0 +1,31 @@
+{
+  "skill_name": "maplibre",
+  "version": "1.0.0",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Create an interactive 3D terrain map centered on Mount Everest using MapLibre GL JS and MapTiler Terrain-RGB raster-dem tiles.",
+      "expected_output": "A complete, self-contained HTML page using native MapLibre GL JS with explicit container CSS height, raster-dem source loaded via MapTiler terrain-rgb tiles, map.setTerrain enabled with exaggeration, a sky layer configured, and proper [lng, lat] coordinate center."
+    },
+    {
+      "id": 2,
+      "prompt": "Build a MapLibre vector map showing earthquake locations with point clustering, dynamic cluster count bubbles, and click-to-zoom expansion.",
+      "expected_output": "A standalone HTML page using MapLibre GL JS with a GeoJSON source with cluster: true, clusterMaxZoom, clusterRadius, three circle layers styled using step expressions for count thresholds, symbol layer with text-field '{point_count_abbreviated}', and click handler querying getClusterExpansionZoom."
+    },
+    {
+      "id": 3,
+      "prompt": "Implement a 3D building extrusions map using MapLibre GL JS and MapTiler Planet v4 building vector tile layer.",
+      "expected_output": "A standalone HTML page with pitch set to 60 degrees, a fill-extrusion layer sourced from the vector tile 'building' source-layer, with fill-extrusion-height and fill-extrusion-base expressions, and fill-extrusion-color styling."
+    },
+    {
+      "id": 4,
+      "prompt": "Create a smooth animated marker moving along a GeoJSON delivery flight route at 60 FPS in MapLibre GL JS.",
+      "expected_output": "A standalone HTML page with a GeoJSON LineString route, Turf.js or interpolation math calculating coordinate positions over time, requestAnimationFrame loop updating a point GeoJSON source or marker coordinate, and bearing rotation."
+    },
+    {
+      "id": 5,
+      "prompt": "Create a serverless PMTiles map in MapLibre GL JS loading vector tiles from an archive using maplibregl.addProtocol.",
+      "expected_output": "A complete HTML page registering the PMTiles protocol via pmtiles.Protocol() and maplibregl.addProtocol, configuring a vector source with pmtiles:// URL, and rendering vector tile layers."
+    }
+  ]
+}
