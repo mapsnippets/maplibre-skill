@@ -4,29 +4,33 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Create an interactive 3D terrain map centered on Mount Everest using MapLibre GL JS and MapTiler Terrain-RGB raster-dem tiles.",
-      "expected_output": "A complete, self-contained HTML page using native MapLibre GL JS with explicit container CSS height, raster-dem source loaded via MapTiler terrain-rgb tiles, map.setTerrain enabled with exaggeration, a sky layer configured, and proper [lng, lat] coordinate center."
+      "name": "Interactive 3D Mountain Terrain",
+      "prompt": "Create an interactive 3D terrain map centered on Mount Everest with realistic elevation relief, atmospheric sky horizon, and camera pitch controls.",
+      "expected_output": "A complete, self-contained HTML page using native MapLibre GL JS with explicit container CSS height, configuring a raster-dem elevation source via MapTiler terrain-rgb tiles, enabling map.setTerrain with exaggeration, setting a sky layer, and using proper [lng, lat] coordinate center."
     },
     {
       "id": 2,
-      "prompt": "Build a MapLibre vector map showing earthquake locations with point clustering, dynamic cluster count bubbles, and click-to-zoom expansion.",
+      "name": "Point Clustering with Dynamic Bubbles",
+      "prompt": "Build an interactive vector map showing earthquake locations with point clustering, dynamic count badges, and click-to-zoom expansion.",
       "expected_output": "A standalone HTML page using MapLibre GL JS with a GeoJSON source with cluster: true, clusterMaxZoom, clusterRadius, three circle layers styled using step expressions for count thresholds, symbol layer with text-field '{point_count_abbreviated}', and click handler querying getClusterExpansionZoom."
     },
     {
       "id": 3,
-      "prompt": "Implement a 3D building extrusions map using MapLibre GL JS and MapTiler Planet v4 building vector tile layer.",
-      "expected_output": "A standalone HTML page with pitch set to 60 degrees, a fill-extrusion layer sourced from the vector tile 'building' source-layer, with fill-extrusion-height and fill-extrusion-base expressions, and fill-extrusion-color styling."
+      "name": "Extruded 3D Urban Buildings",
+      "prompt": "Create an interactive map of Tokyo with 3D buildings extrusion that change color based on height.",
+      "expected_output": "A standalone HTML page with pitch set to 60 degrees, a fill-extrusion layer sourced from the vector tile 'building' source-layer (MapTiler Planet v4), with fill-extrusion-height and fill-extrusion-base expressions, and fill-extrusion-color styling."
     },
     {
       "id": 4,
-      "prompt": "Create a smooth animated marker moving along a GeoJSON delivery flight route at 60 FPS in MapLibre GL JS.",
+      "name": "Smooth 60 FPS Route Marker Animation",
+      "prompt": "Create a smooth animated marker moving along a delivery flight route at 60 FPS in MapLibre GL JS.",
       "expected_output": "A standalone HTML page with a GeoJSON LineString route, Turf.js or interpolation math calculating coordinate positions over time, requestAnimationFrame loop updating a point GeoJSON source or marker coordinate, and bearing rotation."
     },
     {
       "id": 5,
-      "prompt": "Create an interactive MapTiler Satellite Hybrid map in MapLibre GL JS with 3D terrain elevation and vector contour lines using MapTiler Cloud.",
-      "expected_output": "A complete HTML page using MapLibre GL JS importing maplibre-gl CSS and JS, setting style to MapTiler hybrid-v4, adding a raster-dem terrain source with map.setTerrain, and configuring vector contour lines.",
-      "name": "MapTiler Satellite Hybrid with 3D Terrain"
+      "name": "Satellite Imagery with 3D Mountain Terrain",
+      "prompt": "Create an interactive satellite map with 3D mountain terrain elevation and topographic contour lines.",
+      "expected_output": "A complete HTML page using MapLibre GL JS importing maplibre-gl CSS and JS, setting style to MapTiler hybrid-v4, adding a raster-dem terrain source with map.setTerrain, and configuring vector contour lines."
     }
   ]
 }

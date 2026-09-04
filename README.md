@@ -178,11 +178,11 @@ The vector tile recipes in this skill use MapTiler Planet v4 vector basemap styl
 ## 🧪 Evaluation & Validation
 
 This skill includes an automated evaluation benchmark suite in `skills/maplibre/evals/evals.json` covering:
-1. Basic Vector Map Initialization & Lifecycle
-2. 3D Terrain & Extruded Buildings
-3. GeoJSON Data-Driven Expressions
-4. Marker Clustering & Popups
-5. MapTiler Satellite Hybrid with 3D Terrain & Contours
+1. Interactive 3D Mountain Terrain (DEM elevation, sky horizon, camera pitch)
+2. Point Clustering with Dynamic Bubbles (count badges, step styling, zoom expansion)
+3. Extruded 3D Urban Buildings (height expressions, 60° camera tilt)
+4. Smooth 60 FPS Route Marker Animation (Turf.js interpolation, bearing rotation)
+5. Satellite Imagery with 3D Terrain & Contours (photorealistic basemap with elevation)
 
 To validate compliance against the Agent Skills specification using the reference validator:
 
