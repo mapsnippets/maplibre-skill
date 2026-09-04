@@ -101,7 +101,7 @@ A MapLibre style document is a JSON object defining the visual appearance of a m
 ```json
 "satellite-tiles": {
   "type": "raster",
-  "url": "https://api.maptiler.com/tiles/satellite-v2/tiles.json?key=YOUR_KEY",
+  "url": "https://api.maptiler.com/tiles/satellite-v4/tiles.json?key=YOUR_KEY",
   "tileSize": 512
 }
 ```

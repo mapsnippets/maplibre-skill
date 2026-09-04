@@ -476,11 +476,11 @@ map.on('load', () => {
 
 ### 3D Building Extrusions
 
-MapTiler v2 styles use `maptiler_planet` as the vector source name (older styles used `openmaptiles`). To be safe, detect the source at runtime:
+MapTiler vector styles provide building footprints in the primary vector tile source (such as `maptiler_planet`). Detect the vector source at runtime:
 
 ```js
 map.on('load', () => {
-  // Detect the vector tile source name (varies by style version)
+  // Detect the active vector tile source name
   const sources = map.getStyle().sources;
   let vectorSource = null;
   for (const [name, src] of Object.entries(sources)) {

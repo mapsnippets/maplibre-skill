@@ -54,12 +54,12 @@ map.getSource('my-data').setData(newGeoJSON);
 
 Server-side vector tiles (MapTiler styles include these automatically).
 
-> **Note:** MapTiler v2 styles use `maptiler_planet` as the vector source name. Older styles used `openmaptiles`. When adding layers that reference the style's built-in vector source, detect the source name at runtime (see Fill-Extrusion example below).
+> **Note:** MapTiler styles provide vector features in the primary vector source (such as `maptiler_planet`). When adding layers that reference the style's built-in vector source, detect the source name at runtime (see Fill-Extrusion example below).
 
 ```js
 map.addSource('my-vector', {
   type: 'vector',
-  url: 'https://api.maptiler.com/tiles/v3/tiles.json?key=YOUR_MAPTILER_KEY'
+  url: 'https://api.maptiler.com/tiles/buildings/tiles.json?key=YOUR_MAPTILER_KEY'
 });
 
 // Access specific source-layer
@@ -79,7 +79,7 @@ For raster tile imagery.
 ```js
 map.addSource('satellite', {
   type: 'raster',
-  url: 'https://api.maptiler.com/tiles/satellite-v2/tiles.json?key=YOUR_MAPTILER_KEY',
+  url: 'https://api.maptiler.com/tiles/satellite-v4/tiles.json?key=YOUR_MAPTILER_KEY',
   tileSize: 256
 });
 
@@ -228,7 +228,7 @@ map.addLayer({
 
 ### Fill-Extrusion Layer
 
-For 3D extruded polygons (buildings, etc.). MapTiler v2 styles use `maptiler_planet` as the vector source; older styles used `openmaptiles`. Detect at runtime:
+For 3D extruded polygons (buildings, etc.). Detect the active vector source at runtime:
 
 ```js
 // Detect the vector source name from the current style
