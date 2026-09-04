@@ -137,21 +137,8 @@ map.addLayer(customLayer);
 
 Extend MapLibre tile loading with custom streaming decoders:
 
-### A. PMTiles (Zero-Server Cloud-Native Tiles)
-```javascript
-import { Protocol } from 'pmtiles';
-
-const protocol = new Protocol();
-maplibregl.addProtocol('pmtiles', protocol.tile);
-
-map.addSource('osm-pmtiles', {
-  type: 'vector',
-  url: 'pmtiles://https://data.source.coop/protomaps/osm.pmtiles'
-});
-```
-
-### B. Custom GeoJSON/Feature Transformations
-Intercept raw requests and parse in memory:
+### A. Custom GeoJSON & Data Transformations
+Intercept custom URL schemes and transform arbitrary data formats in memory:
 ```javascript
 maplibregl.addProtocol('csv-points', (params, abortController) => {
   return fetch(params.url.replace('csv-points://', ''))

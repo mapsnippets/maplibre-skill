@@ -30,7 +30,7 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 <li><a href="#-basemap-api-keys">Basemap API Keys</a></li>
 <li><a href="#-evaluation--validation">Evaluation & Validation</a></li>
 <li><a href="#links">Links</a></li>
-<li><a href="#-contributing">Contributing</a></li>
+<li><a href="#-forking--customization">Forking & Customization</a></li>
 <li><a href="#-license">License</a></li>
 </ul>
 </details>
@@ -48,7 +48,7 @@ When activated for **MapLibre GL JS**, this skill guides the agent to:
 - **Author complex data-driven expressions** (`interpolate`, `step`, `match`, `case`, `feature-state`) with strict type safety and zero syntax errors.
 - **Handle GeoJSON layers & spatial clustering** — spatial clustering, expansion zoom, unclustered point popups, and high-frequency `setData` mutations.
 - **Implement 3D terrain, hillshade & globe projections** — Terrain-RGB raster-dem sources, sky layers, pitch & bearing camera animations, and projection transitions.
-- **Support enterprise protocols & formats** — Cloud-Optimized PMTiles archives via `pmtiles.Protocol`, MapLibre Contour elevation lines, and custom WebGL layers.
+- **Full MapTiler ecosystem integration** — High-resolution MapTiler Planet v4 vector basemaps, Terrain-RGB elevation, elevation contours, hillshading, and custom WebGL layers.
 - **Prevent common hallucination traps** — eliminates deprecated Mapbox endpoints, fixes coordinate order inversions (`[lng, lat]` vs `[lat, lng]`), and guarantees layers wait for map `load` before injection.
 
 <br>
@@ -75,7 +75,7 @@ You don't need special commands to use this skill. Any natural language request 
 
 - *"Create an interactive MapLibre map centered on Tokyo with 3D buildings extrusion that change color based on height."*
 - *"Add a GeoJSON earthquake feed to my map with cluster circles and popups showing magnitude on click."*
-- *"How do I render a PMTiles vector archive locally in MapLibre GL JS without a tile server?"*
+- *"How do I combine MapTiler Satellite Hybrid tiles with 3D terrain elevation and contour lines in MapLibre GL JS?"*
 - *"Implement a smooth flyTo camera animation between five scenic waypoints in 3D terrain mode."*
 - *"Build a split-screen swipe map comparing satellite-v4 imagery with outdoor-v4 topographic tiles."*
 
@@ -136,11 +136,11 @@ mapsnippets/maplibre-skill/
 │       │   └── evals.json  — Machine-readable evaluation benchmarks (5 core test cases)
 │       ├── examples/       — 41 standalone runnable recipes (HTML/CSS/JS)
 │       │   ├── INDEX.md    — Curated categorized catalog of all recipes
-│       │   └── ...         — 3D terrain, clustering, PMTiles, animations, swipe maps
+│       │   └── ...         — 3D terrain, clustering, satellite hybrid, animations, swipe maps
 │       └── references/     — 15 deep technical reference guides & API specifications
 │           ├── INDEX.md    — Searchable index of references
 │           ├── versions.md — Single source of truth for library releases & styles
-│           └── ...         — expressions, layers, events, 3D terrain, PMTiles
+│           └── ...         — expressions, layers, events, 3D terrain, Planet v4 vector styling
 ├── README.md               — Project documentation & setup guide
 └── LICENSE.md              — MIT License
 ```
@@ -182,7 +182,7 @@ This skill includes an automated evaluation benchmark suite in `skills/maplibre/
 2. 3D Terrain & Extruded Buildings
 3. GeoJSON Data-Driven Expressions
 4. Marker Clustering & Popups
-5. Custom PMTiles Protocol Integration
+5. MapTiler Satellite Hybrid with 3D Terrain & Contours
 
 To validate compliance against the Agent Skills specification using the reference validator:
 
@@ -201,13 +201,11 @@ npx @agentskills/skills-ref validate skills/maplibre
 
 <br>
 
-## 🤝 Contributing
+## 🍴 Forking & Customization
 
-Contributions are welcome! If you have optimized recipes, updated API references, or new evaluation benchmarks:
-1. Fork the repository.
-2. Ensure relative links in `skills/maplibre/SKILL.md` remain strictly valid.
-3. Validate your changes with `npx @agentskills/skills-ref validate skills/maplibre`.
-4. Submit a Pull Request.
+This repository is maintained by [MapSnippets](https://mapsnippets.org/) for automated distribution to AI coding agents. To keep maintenance lightweight and reliable, external pull requests and code contributions are not accepted.
+
+However, you are completely free to fork, customize, and extend this skill for your own private agents, corporate workflows, or specialized mapping tools under the permissive [MIT License](./LICENSE.md).
 
 <br>
 

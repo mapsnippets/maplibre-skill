@@ -10,7 +10,7 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 
 | Topic Area | Directory / Prefix | Contents |
 | :--- | :--- | :--- |
-| **Task Examples** | **[examples/INDEX.md](../examples/INDEX.md)** | **atomic runnable recipes** with full HTML, CSS, and native JS across 3D Terrain, Globe, FlyTo, Clustering, Feature State, PMTiles, and Overlays |
+| **Task Examples** | **[examples/INDEX.md](../examples/INDEX.md)** | **atomic runnable recipes** with full HTML, CSS, and native JS across 3D Terrain, Globe, FlyTo, Clustering, Feature State, Satellite Hybrid, and Overlays |
 | **Core API & Architecture** | `references/api-*`, `references/architecture-*` | `Map` methods, custom `IControl`, runtime styling, Three.js custom layers, WebGL lifecycle |
 | **Style Specification** | `references/style-spec-*`, `references/expressions.md` | Exhaustive MapLibre Style Specification v8, all 9 layer types, expressions DSL |
 | **Basemaps, Schemas & Services**| `references/basemaps-*`, `references/vector-tile-*` | MapTiler Planet v4 tile URLs, vector schemas, and REST endpoints |
@@ -28,7 +28,7 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 * **[architecture-and-guides.md](architecture-and-guides.md)** — WebGL 16-context cleanup pattern, Three.js layer integration, custom protocols.
 * **[events.md](events.md)** — Map lifecycle, camera physics, pointer tracking, layer-scoped events, and spatial query listeners.
 * **[patterns-gotchas.md](patterns-gotchas.md)** — Solutions for the top critical MapLibre bugs (`[lng, lat]` order, missing CSS, context loss, reactive proxy bugs).
-* **[plugins-catalog.md](plugins-catalog.md)** — Directory of third-party plugins (`@maptiler/geocoding-control`, `terra-draw`, `pmtiles`, compare).
+* **[plugins-catalog.md](plugins-catalog.md)** — Directory of third-party plugins (`@maptiler/geocoding-control`, `terra-draw`, compare).
 * **[frameworks.md](frameworks.md)** — React (`react-map-gl/maplibre`), Next.js SSR fix, Vue 3 (`shallowRef`), Svelte, Angular.
 * **[prompt-benchmarks.md](prompt-benchmarks.md)** — Standardized MapLibre evaluation prompts and patterns.
 

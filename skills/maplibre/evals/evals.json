@@ -24,8 +24,9 @@
     },
     {
       "id": 5,
-      "prompt": "Create a serverless PMTiles map in MapLibre GL JS loading vector tiles from an archive using maplibregl.addProtocol.",
-      "expected_output": "A complete HTML page registering the PMTiles protocol via pmtiles.Protocol() and maplibregl.addProtocol, configuring a vector source with pmtiles:// URL, and rendering vector tile layers."
+      "prompt": "Create an interactive MapTiler Satellite Hybrid map in MapLibre GL JS with 3D terrain elevation and vector contour lines using MapTiler Cloud.",
+      "expected_output": "A complete HTML page using MapLibre GL JS importing maplibre-gl CSS and JS, setting style to MapTiler hybrid-v4, adding a raster-dem terrain source with map.setTerrain, and configuring vector contour lines.",
+      "name": "MapTiler Satellite Hybrid with 3D Terrain"
     }
   ]
 }

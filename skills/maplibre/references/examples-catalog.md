@@ -53,7 +53,7 @@ const map = new maplibregl.Map({
 
 ---
 
-## 4. Vector Styling, Shader Expressions & Serverless Streaming
+## 4. Vector Styling, Shader Expressions & Real-Time Data
 
 | Task & Architecture | Primary APIs & Techniques | Production Recipe |
 | :--- | :--- | :--- |
@@ -65,7 +65,7 @@ const map = new maplibregl.Map({
 | **Multi-Geometry Single Source**| Mixed points, lines, and polygons in one GeoJSON source with `$type` filters. | [`multiple-geometries-one-source.md`](../examples/multiple-geometries-one-source.md) |
 | **Multi-Stop Route Gradient** | Continuous color ramps on line geometry via `line-gradient` and `lineMetrics`. | [`gradient-line.md`](../examples/gradient-line.md) |
 | **Real-Time Attribute Sliders** | Client-side attribute filtering with range sliders via `map.setFilter()`. | [`filter-features-slider.md`](../examples/filter-features-slider.md) |
-| **Serverless PMTiles Streaming** | Custom protocol streaming of archive vector tiles with `addProtocol`. | [`pmtiles-protocol.md`](../examples/pmtiles-protocol.md) |
+| **MapTiler Satellite Hybrid 3D** | Satellite imagery combined with 3D terrain elevation and vector labels. | [`satellite-hybrid-terrain.md`](../examples/satellite-hybrid-terrain.md) |
 | **Live Telemetry Streaming** | Continuous polling and smooth source updates with `source.setData()`. | [`streaming-realtime-geojson.md`](../examples/streaming-realtime-geojson.md) |
 
 ---

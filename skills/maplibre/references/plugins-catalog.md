@@ -53,7 +53,7 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 | :--- | :--- | :--- |
 | **MapLibre Contour** | `maplibre-contour` | Client-side contour line and elevation isoline generation from Terrain-RGB DEM tiles. |
 | **Three.js Custom Layer** | `three` + `CustomLayerInterface` | Full 3D rendering pipeline for glTF/GLB models, ambient shadows, animations, and custom shaders synchronized with camera view matrices. |
-| **PMTiles Protocol** | `pmtiles` | Serverless single-file archive format for vector and raster tiles. Enables zero-backend global map hosting from S3 or Cloudflare R2. |
+| **MapTiler 3D & Elevation** | Native MapTiler Cloud integration | Turnkey 3D terrain mesh generation from MapTiler Terrain-RGB v2 DEM with zero external plugins. |
 | **COG Protocol (Cloud Optimized GeoTIFF)** | `@geotiff/geotiff` / `cog-protocol` | Directly stream and decode tiled GeoTIFF raster imagery into MapLibre raster sources without tile servers. |
 | **MapLibre ArcGIS Tiled Service** | `maplibre-gl-arcgis-tiled-map-service` | Bridge for displaying Esri ArcGIS REST tiled map services directly inside MapLibre. |
 | **Babylon.js Integration** | `babylonjs` | Alternative 3D game engine integration rendering photorealistic 3D assets on top of MapLibre coordinates. |
@@ -109,15 +109,11 @@ draw.setMode('polygon');
 MapLibre supports custom protocol schemes using `maplibregl.addProtocol(customScheme, callback)`:
 
 ```javascript
-import { Protocol } from 'pmtiles';
-
-// Register pmtiles:// protocol globally
-const protocol = new Protocol();
-maplibregl.addProtocol('pmtiles', protocol.tile);
-
-// Now load PMTiles anywhere in styles or sources
-map.addSource('my-pmtiles-source', {
-  type: 'vector',
-  url: 'pmtiles://https://r2-bucket.example.com/planet.pmtiles'
+// Register custom protocol handler for data fetching/transformations
+maplibregl.addProtocol('custom-data', (params, abortController) => {
+  const url = params.url.replace('custom-data://', 'https://');
+  return fetch(url, { signal: abortController.signal })
+    .then(response => response.json())
+    .then(data => ({ data }));
 });
 ```

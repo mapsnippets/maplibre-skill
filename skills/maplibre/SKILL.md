@@ -81,7 +81,7 @@ To quickly find the exact MapLibre implementation guide or API specification, us
 
 | Category | Location | Contents |
 | :--- | :--- | :--- |
-| **Task Examples** | **[examples/INDEX.md](examples/INDEX.md)** | **atomic runnable recipes** with full HTML, CSS, and native JS across 3D Terrain, Globe, FlyTo, Clustering, Feature State, PMTiles, and Overlays |
+| **Task Examples** | **[examples/INDEX.md](examples/INDEX.md)** | **atomic runnable recipes** with full HTML, CSS, and native JS across 3D Terrain, Globe, FlyTo, Clustering, Feature State, Satellite Hybrid, and Overlays |
 | **Core API & Architecture** | **[references/INDEX.md](references/INDEX.md)** | Declarative specifications for `Map` methods, custom `IControl`, runtime styling, Three.js custom layers, WebGL lifecycle |
 | **Style Specification** | `references/style-spec-*`, `references/expressions.md` | Exhaustive MapLibre Style Specification v8, all 9 layer types, expressions DSL |
 | **Basemaps, Schemas & Services**| `references/basemaps-*`, `references/vector-tile-*` | MapTiler Planet v4 tile URLs, vector schemas, and REST endpoints |
@@ -104,7 +104,7 @@ All task examples are self-contained with complete HTML, CSS, and native MapLibr
 - [examples/hover-feature-state.md](examples/hover-feature-state.md) — 60 FPS polygon boundary hover highlights with `map.setFeatureState`.
 - [examples/gradient-line.md](examples/gradient-line.md) — Multi-color gradient routes using `line-gradient` and `lineMetrics`.
 - [examples/custom-layer-threejs.md](examples/custom-layer-threejs.md) — Custom WebGL layer embedding a 3D Three.js model with `MercatorCoordinate`.
-- [examples/pmtiles-protocol.md](examples/pmtiles-protocol.md) — Streaming serverless vector tiles using `maplibregl.addProtocol` and PMTiles.
+- [examples/satellite-hybrid-terrain.md](examples/satellite-hybrid-terrain.md) — MapTiler Satellite Hybrid with 3D terrain elevation and vector overlays.
 - *...and 18 more task recipes in [examples/INDEX.md](examples/INDEX.md).*
 
 ---
@@ -116,12 +116,12 @@ Deep architectural and schema reference files live under `references/` and shoul
 | Reference Guide | Core Focus Areas |
 | :--- | :--- |
 | **[references/INDEX.md](references/INDEX.md)** | **Master API Reference index and technical router** |
-| **[references/versions.md](references/versions.md)** | Standard verified package versions (`maplibre-gl@6.7.0`, `terra-draw`, `pmtiles`) |
+| **[references/versions.md](references/versions.md)** | Standard verified package versions (`maplibre-gl@6.7.0`, `terra-draw`, `@maptiler/geocoding-control`) |
 | **[references/api-classes-and-controls.md](references/api-classes-and-controls.md)** | `Map` options, custom `IControl` interface, `Marker`, `Popup`, camera methods |
 | **[references/style-spec-reference.md](references/style-spec-reference.md)** | Root style properties, all 9 layer types (`fill`, `line`, `symbol`, `circle`, `fill-extrusion`, `raster`, `hillshade`, `heatmap`, `background`) |
 | **[references/sources-layers.md](references/sources-layers.md)** | Source definitions (`vector`, `raster`, `raster-dem`, `geojson`, `image`, `video`), dynamic layer management |
 | **[references/expressions.md](references/expressions.md)** | Expression syntax (`interpolate`, `step`, `match`, `case`, `get`, mathematical & color expressions) |
-| **[references/architecture-and-guides.md](references/architecture-and-guides.md)** | Custom WebGL layers (Three.js integration), `addProtocol` handlers (PMTiles), WebGL context limits |
+| **[references/architecture-and-guides.md](references/architecture-and-guides.md)** | Custom WebGL layers (Three.js integration), hardware-accelerated shaders, WebGL context limits |
 | **[references/frameworks.md](references/frameworks.md)** | Integration guides for React (`react-map-gl/maplibre`), Next.js (SSR hydration guard), Vue 3, Svelte |
 | **[references/events.md](references/events.md)** | Complete event system (map lifecycle, pointer tracking, layer-specific event listeners) |
 | **[references/patterns-gotchas.md](references/patterns-gotchas.md)** | Top 10 MapLibre pitfalls, debugging techniques, and verified code patterns |

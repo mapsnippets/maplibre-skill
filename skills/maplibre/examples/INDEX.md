@@ -39,7 +39,7 @@
 * **[multiple-geometries-one-source.md](multiple-geometries-one-source.md)** — Mixed points, lines, polygons in a single GeoJSON source with filter-based rendering.
 * **[gradient-line.md](gradient-line.md)** — Multi-color gradient routes using `line-gradient` and `lineMetrics`.
 * **[filter-features-slider.md](filter-features-slider.md)** — Real-time attribute filtering with range sliders via `map.setFilter`.
-* **[pmtiles-protocol.md](pmtiles-protocol.md)** — Streaming serverless vector tiles using `maplibregl.addProtocol` and PMTiles.
+* **[satellite-hybrid-terrain.md](satellite-hybrid-terrain.md)** — MapTiler Satellite Hybrid tiles with 3D terrain elevation, hillshading, and vector labels.
 * **[streaming-realtime-geojson.md](streaming-realtime-geojson.md)** — Live telemetry updates and smooth source data streaming.
 
 ### 5. 📍 Points, Clusters & UI

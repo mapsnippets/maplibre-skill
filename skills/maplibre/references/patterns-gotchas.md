@@ -109,13 +109,12 @@ useEffect(() => {
 
 ---
 
-### 7. PMTiles / Custom Protocol `slice of null` Crash
-* **Gotcha**: Forgetting to register the PMTiles protocol handler before loading a style that uses a `pmtiles://` source causes an unhandled rejection.
-* **Fix**: Register the protocol globally before initializing `Map`:
+### 7. Custom Protocol Registration Timing
+* **Gotcha**: Initializing `new maplibregl.Map()` or calling `map.setStyle()` before registering custom protocol handlers via `maplibregl.addProtocol` results in failed source fetches.
+* **Fix**: Always register custom protocol handlers globally at the module entry point before creating any `Map` instance:
   ```javascript
-  import { Protocol } from 'pmtiles';
-  const protocol = new Protocol();
-  maplibregl.addProtocol('pmtiles', protocol.tile);
+  maplibregl.addProtocol('custom-scheme', customHandler);
+  const map = new maplibregl.Map({ /* options */ });
   ```
 
 ---

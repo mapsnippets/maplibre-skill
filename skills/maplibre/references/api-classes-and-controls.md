@@ -211,7 +211,7 @@ marker.setPopup(popup);
 
 ## 6. Custom Streaming Protocol Handlers (`addProtocol`)
 
-Enables custom URL schemes (e.g. `pmtiles://`, `cog://`, `custom://`):
+Enables custom URL schemes (e.g. `custom://`, `mbtiles://`):
 ```javascript
 maplibregl.addProtocol('custom-source', (params, abortController) => {
   return fetch(params.url.replace('custom-source://', 'https://'), {

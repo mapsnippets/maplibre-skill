@@ -9,7 +9,6 @@ This guide lists the current production versions of MapLibre GL JS, verified com
 | Library / Package | Current Version | Ingestion / Type | Primary Purpose | Used in Recipe / Guide |
 | :--- | :--- | :--- | :--- | :--- |
 | **maplibre-gl** | `6.7.0` | ESM Module (`.mjs`) / NPM | Core WebGL2 vector mapping engine | Core basemaps & all 40 recipes |
-| **pmtiles** | `3.2.0` | ESM / Protocol Handler | Serverless cloud-optimized archive tile extraction | `pmtiles-protocol.md` |
 | **maplibre-contour** | `0.1.0` | ESM / DemSource Plugin | Real-time client-side contour line & hillshade generation | `vector-contour-lines.md` |
 | **@mapbox/mapbox-gl-draw** | `1.4.3` | UMD / ESM | Vector geometry drawing, editing, and CAD digitization | `plugins-catalog.md` |
 | **terra-draw** | `1.0.0` | ESM / NPM | Modern multi-engine map drawing library | `plugins-catalog.md` |
@@ -47,7 +46,6 @@ This guide lists the current production versions of MapLibre GL JS, verified com
 * **JsDelivr Fallback:** `https://cdn.jsdelivr.net/npm/maplibre-gl@6.7.0/dist/maplibre-gl.mjs`
 
 ### Companion Plugins (CDN)
-* **PMTiles v3.2.0:** `https://unpkg.com/pmtiles@3.2.0/dist/pmtiles.js`
 * **MapLibre Contour v0.1.0:** `https://unpkg.com/maplibre-contour@0.1.0/dist/index.min.js`
 * **Mapbox GL Draw v1.4.3:**
   - JS: `https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.js`
