@@ -118,7 +118,7 @@ mapsnippets/maplibre-skill/
 │       ├── SKILL.md        — Entry point prompt & router (< 200 lines)
 │       ├── evals/
 │       │   └── evals.json  — Machine-readable evaluation benchmarks
-│       ├── examples/       — 41 standalone runnable recipes
+│       ├── examples/       — 40 standalone runnable recipes
 │       │   ├── INDEX.md    — Curated catalog of all recipes
 │       │   └── ...         — 3D terrain, clustering, satellite, swipe
 │       └── references/     — 16 deep technical reference guides & APIs
