@@ -175,3 +175,29 @@ map.getCanvas().addEventListener('webglcontextrestored', () => {
     // or
     import { Map, NavigationControl } from 'maplibre-gl';
     ```
+
+---
+
+### 9. CSS Animation `transform` Overriding `maplibregl.Marker` Placement
+* **Gotcha**: Applying CSS `@keyframes` with `transform: scale(...)`, `rotate(...)`, or `translate(...)` directly to the root element passed to `new maplibregl.Marker({ element })`.
+* **Symptom**: All custom animated markers snap to `(0, 0)` in the top-left corner of the viewport and refuse to follow map pan/zoom.
+* **Why**: The CSS Cascade dictates that CSS `@keyframes` animations targeting `transform` take precedence over inline element styles (`style="transform: translate(-50%, -50%) translate(Xpx, Ypx)"`) calculated by MapLibre on every frame. The animation overwrites MapLibre's coordinate translations, resetting the element's origin to `(0, 0)`.
+* **Fix**: Never animate `transform` on the root marker element. Use a two-tier DOM structure:
+  ```html
+  <!-- BAD: animation overrides MapLibre transform -->
+  <div class="pulsing-marker"></div>
+  ```
+  ```javascript
+  // GOOD: Root wrapper receives MapLibre translate(); Inner child receives CSS pulse
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer;';
+
+  const dot = document.createElement('div');
+  dot.className = 'pulse-dot green'; // @keyframes pulse-ring operates safely on child
+  wrapper.appendChild(dot);
+
+  new maplibregl.Marker({ element: wrapper })
+    .setLngLat([lng, lat])
+    .setPopup(popup)
+    .addTo(map);
+  ```

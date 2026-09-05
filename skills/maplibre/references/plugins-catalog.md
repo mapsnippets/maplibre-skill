@@ -45,6 +45,23 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 | **MapLibre GL Fullscreen** | Native `maplibregl.FullscreenControl` | Built-in fullscreen toggle control. |
 | **MapLibre GL Scale** | Native `maplibregl.ScaleControl` | Built-in dynamic metric / imperial distance scale indicator. |
 
+### Featured: `@maplibre/maplibre-gl-compare` Split-Screen Swipe Wiper
+```html
+<link rel="stylesheet" href="https://unpkg.com/@maplibre/maplibre-gl-compare@0.5.0/dist/maplibre-gl-compare.css" />
+<script src="https://unpkg.com/@maplibre/maplibre-gl-compare@0.5.0/dist/maplibre-gl-compare.js"></script>
+
+<div id="comparison-container" style="position:relative; width:100%; height:100vh; overflow:hidden;">
+  <div id="before" class="map" style="position:absolute; top:0; bottom:0; width:100%;"></div>
+  <div id="after" class="map" style="position:absolute; top:0; bottom:0; width:100%;"></div>
+</div>
+
+<script>
+  const beforeMap = new maplibregl.Map({ container: 'before', style: '...streets-v4...' });
+  const afterMap = new maplibregl.Map({ container: 'after', style: '...satellite-v4...' });
+  const compare = new maplibregl.Compare(beforeMap, afterMap, '#comparison-container', { orientation: 'vertical' });
+</script>
+```
+
 ---
 
 ## 3. Layer Types & 3D Visualizations

@@ -15,6 +15,7 @@ This guide lists the current production versions of MapLibre GL JS, verified com
 | **@turf/turf** | `7.2.0` | ESM / Standalone Script | Advanced geospatial calculations, clipping, and buffers | `turf-distance-measurement.md` |
 | **@maptiler/geocoding-control** | `2.1.4` | ESM / IControl | Address search, forward/reverse geocoding autocomplete | `geocoding-and-services.md` |
 | **three** | `0.184.0` | ESM | Custom WebGL 3D mesh layers rendered into the map context | `custom-layer-threejs.md` |
+| **@maplibre/maplibre-gl-compare** | `0.5.0` | UMD / ESM | Side-by-side or split-screen swipe comparison wiper | `swipe-between-maps.md` |
 | **react-map-gl** | `7.1.7` | ESM / React Bindings | React component wrapper for MapLibre (`react-map-gl/maplibre`) | `frameworks.md` |
 
 > [!IMPORTANT]
@@ -52,6 +53,9 @@ This guide lists the current production versions of MapLibre GL JS, verified com
   - CSS: `https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.css`
 * **Turf.js v7.2.0:** `https://cdn.jsdelivr.net/npm/@turf/turf@7.2.0/turf.min.js`
 * **Three.js v0.184.0:** `https://unpkg.com/three@0.184.0/build/three.module.js`
+* **MapLibre GL Compare v0.5.0:**
+  - JS: `https://unpkg.com/@maplibre/maplibre-gl-compare@0.5.0/dist/maplibre-gl-compare.js`
+  - CSS: `https://unpkg.com/@maplibre/maplibre-gl-compare@0.5.0/dist/maplibre-gl-compare.css`
 
 ---
 

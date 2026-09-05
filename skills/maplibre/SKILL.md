@@ -144,3 +144,7 @@ Deep architectural and schema reference files live under `references/` and shoul
    - Always call `map.remove()` on component unmount (React `useEffect` cleanup) to avoid exceeding the 16 WebGL context browser limit.
 5. **Layer `source-layer` Missing on Vector Sources:**
    - Vector tile sources (`type: "vector"`) require a `source-layer` property (e.g. `source-layer: "building"` or `"water"`). Omitting it prevents features from rendering.
+6. **Custom Animated Marker CSS Transform Trap:**
+   - Never apply CSS `@keyframes` with `transform: scale(...)` or `rotate(...)` directly to the root element passed to `new maplibregl.Marker({ element })`. CSS animation transforms override MapLibre's inline `translate(x, y)` positioning, causing markers to snap to `(0, 0)` at the top-left corner. Always apply transform animations to an **inner child element**.
+7. **Split-Screen Swipe Comparison Requirements:**
+   - Swipe comparison requires `@maplibre/maplibre-gl-compare` (`maplibregl.Compare`) with two synchronized maps (`#before` and `#after`) inside `#comparison-container`. The container **must** have `position: relative; overflow: hidden;` and child `.map` containers **must** have `position: absolute; top: 0; bottom: 0; width: 100%;`.
