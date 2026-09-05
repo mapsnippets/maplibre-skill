@@ -104,8 +104,9 @@ All task examples are self-contained with complete HTML, CSS, and native MapLibr
 - [examples/hover-feature-state.md](examples/hover-feature-state.md) — 60 FPS polygon boundary hover highlights with `map.setFeatureState`.
 - [examples/gradient-line.md](examples/gradient-line.md) — Multi-color gradient routes using `line-gradient` and `lineMetrics`.
 - [examples/custom-layer-threejs.md](examples/custom-layer-threejs.md) — Custom WebGL layer embedding a 3D Three.js model with `MercatorCoordinate`.
+- [examples/draw-polygon-geojson.md](examples/draw-polygon-geojson.md) — Interactive polygon drawing and GeoJSON coordinate export with `MapboxDraw`.
 - [examples/satellite-hybrid-terrain.md](examples/satellite-hybrid-terrain.md) — MapTiler Satellite Hybrid with 3D terrain elevation and vector overlays.
-- *...and 18 more task recipes in [examples/INDEX.md](examples/INDEX.md).*
+- *...and 19 more task recipes in [examples/INDEX.md](examples/INDEX.md).*
 
 ---
 

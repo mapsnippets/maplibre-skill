@@ -49,6 +49,7 @@
 * **[pulsing-gpu-marker.md](pulsing-gpu-marker.md)** — Animated pulsating radar circle marker rendered with dynamic Canvas/GPU animation.
 * **[spatial-query-inspector.md](spatial-query-inspector.md)** — Spatial feature inspection using `queryRenderedFeatures`.
 * **[spatial-bbox-feature-filter.md](spatial-bbox-feature-filter.md)** — Interactive bounding box drag to query all rendered vector features.
+* **[draw-polygon-geojson.md](draw-polygon-geojson.md)** — Interactive vector polygon digitization and GeoJSON export with Mapbox GL Draw.
 * **[heatmap-layer.md](heatmap-layer.md)** — Hardware-accelerated WebGL heatmap density layers.
 
 ### 6. 🖼️ Raster, Canvas & Video Overlays
