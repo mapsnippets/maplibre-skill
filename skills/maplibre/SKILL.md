@@ -85,6 +85,7 @@ To quickly find the exact MapLibre implementation guide or API specification, us
 | **Core API & Architecture** | **[references/INDEX.md](references/INDEX.md)** | Declarative specifications for `Map` methods, custom `IControl`, runtime styling, Three.js custom layers, WebGL lifecycle |
 | **Style Specification** | `references/style-spec-*`, `references/expressions.md` | Exhaustive MapLibre Style Specification v8, all 9 layer types, expressions DSL |
 | **Basemaps, Schemas & Services**| `references/basemaps-*`, `references/vector-tile-*` | MapTiler Planet v4 tile URLs, vector schemas, and REST endpoints |
+| **Plugins Catalog** | **[references/plugins-catalog.md](references/plugins-catalog.md)** | Third-party plugins (@mapbox/mapbox-gl-draw, @maplibre/maplibre-gl-compare, Three.js, @maptiler/geocoding-control) |
 | **Package Versions** | **[references/versions.md](references/versions.md)** | Pinned production releases for MapLibre GL JS (`v6.7.0`) and companion plugins |
 
 ---
