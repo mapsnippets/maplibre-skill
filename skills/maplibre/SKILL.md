@@ -116,6 +116,7 @@ Deep architectural and schema reference files live under `references/` and shoul
 | Reference Guide | Core Focus Areas |
 | :--- | :--- |
 | **[references/INDEX.md](references/INDEX.md)** | **Master API Reference index and technical router** |
+| **[references/api-catalog.md](references/api-catalog.md)** | **Official MapLibre GL JS API Directory** (60 classes, 15 interfaces, 21 functions mapped to `maplibre.org/maplibre-gl-js/docs/API/`) |
 | **[references/versions.md](references/versions.md)** | Standard verified package versions (`maplibre-gl@6.7.0`, `terra-draw`, `@maptiler/geocoding-control`) |
 | **[references/api-classes-and-controls.md](references/api-classes-and-controls.md)** | `Map` options, custom `IControl` interface, `Marker`, `Popup`, camera methods |
 | **[references/style-spec-reference.md](references/style-spec-reference.md)** | Root style properties, all 9 layer types (`fill`, `line`, `symbol`, `circle`, `fill-extrusion`, `raster`, `hillshade`, `heatmap`, `background`) |

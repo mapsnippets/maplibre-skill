@@ -10,7 +10,9 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 
 | Topic Area | Directory / Prefix | Contents |
 | :--- | :--- | :--- |
-| **Task Examples** | **[examples/INDEX.md](../examples/INDEX.md)** | **atomic runnable recipes** with full HTML, CSS, and native JS across 3D Terrain, Globe, FlyTo, Clustering, Feature State, Satellite Hybrid, and Overlays |
+| **Official API Docs** | **[references/api-catalog.md](api-catalog.md)** | **Exhaustive catalog of all 60 classes, 15 interfaces & global functions** linking to [`maplibre.org/maplibre-gl-js/docs/API/`](https://maplibre.org/maplibre-gl-js/docs/API/) |
+| **Task Examples** | **[examples/INDEX.md](../examples/INDEX.md)** | **40 atomic runnable recipes** with full HTML, CSS, and native JS across 3D Terrain, Globe, FlyTo, Clustering, Feature State, Satellite Hybrid, and Overlays |
+| **Official Examples**| **[references/examples-catalog.md](examples-catalog.md)** | Full index of all 140 official MapLibre website examples cross-referenced to recipes |
 | **Core API & Architecture** | `references/api-*`, `references/architecture-*` | `Map` methods, custom `IControl`, runtime styling, Three.js custom layers, WebGL lifecycle |
 | **Style Specification** | `references/style-spec-*`, `references/expressions.md` | Exhaustive MapLibre Style Specification v8, all 9 layer types, expressions DSL |
 | **Basemaps, Schemas & Services**| `references/basemaps-*`, `references/vector-tile-*` | MapTiler Planet v4 tile URLs, vector schemas, and REST endpoints |
@@ -20,6 +22,8 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 ## 📑 Complete Reference Catalog (`references/`)
 
 ### 1. Core API Specifications & Guides
+* **[api-catalog.md](api-catalog.md)** — **Exhaustive official MapLibre GL JS API directory** (60 classes, 15 interfaces, 21 functions) linking directly to [`maplibre.org/maplibre-gl-js/docs/API/`](https://maplibre.org/maplibre-gl-js/docs/API/).
+* **[examples-catalog.md](examples-catalog.md)** — Full index of all 140 official MapLibre website examples cross-referenced to standalone recipes.
 * **[style-spec-reference.md](style-spec-reference.md)** — Exhaustive MapLibre Style Specification v8, root properties, 3D terrain, sky, all 9 layer types, and paint/layout properties.
 * **[expressions.md](expressions.md)** — Comprehensive expression syntax guide and operator dictionary (`interpolate`, `step`, `case`, `match`, math, typography).
 * **[api-classes-and-controls.md](api-classes-and-controls.md)** — `Map` methods, custom `IControl` interface, runtime styling (`setPaintProperty`), `Marker`, `Popup`, protocol handlers.
