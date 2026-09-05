@@ -37,11 +37,14 @@ When activated for **MapLibre GL JS**, this skill guides the agent to:
 
 This skill follows the **[Agent Skills open format](https://agentskills.io/)**, utilizing a **three-tier progressive disclosure model** to minimize context overhead:
 
-```text
-┌────────────────────────┐         Match Query         ┌────────────────────────┐         As Needed          ┌───────────────────────────────────┐
-│ 1. Discovery (Startup) │ ──────────────────────────> │ 2. Activation (Load)   │ ─────────────────────────> │ 3. Execution (Deep Dive)          │
-│    name & description  │                             │    SKILL.md router     │                            │    Modular References & Recipes   │
-└────────────────────────┘                             └────────────────────────┘                            └───────────────────────────────────┘
+```mermaid
+flowchart LR
+    A["1. Discovery (Startup)<br/>name & description (~50 tokens)"]
+    B["2. Activation (Load)<br/>SKILL.md router (under 5k tokens)"]
+    C["3. Execution (Deep Dive)<br/>Modular References & Recipes"]
+
+    A -->|Match Query| B
+    B -->|As Needed| C
 ```
 
 1. **Discovery (Startup)**: The agent only inspects the YAML frontmatter `name` and `description` (~50 tokens).
@@ -112,16 +115,16 @@ mapsnippets/maplibre-skill/
 │   └── plugin.json         — Claude Code plugin manifest & metadata
 ├── skills/
 │   └── maplibre/
-│       ├── SKILL.md        — Entry point prompt & progressive disclosure router (< 200 lines)
+│       ├── SKILL.md        — Entry point prompt & router (< 200 lines)
 │       ├── evals/
-│       │   └── evals.json  — Machine-readable evaluation benchmarks (5 core test cases)
-│       ├── examples/       — 41 standalone runnable recipes (HTML/CSS/JS)
-│       │   ├── INDEX.md    — Curated categorized catalog of all recipes
-│       │   └── ...         — 3D terrain, clustering, satellite hybrid, animations, swipe maps
-│       └── references/     — 15 deep technical reference guides & API specifications
+│       │   └── evals.json  — Machine-readable evaluation benchmarks
+│       ├── examples/       — 41 standalone runnable recipes
+│       │   ├── INDEX.md    — Curated catalog of all recipes
+│       │   └── ...         — 3D terrain, clustering, satellite, swipe
+│       └── references/     — 16 deep technical reference guides & APIs
 │           ├── INDEX.md    — Searchable index of references
-│           ├── versions.md — Single source of truth for library releases & styles
-│           └── ...         — expressions, layers, events, 3D terrain, Planet v4 vector styling
+│           ├── versions.md — Release matrix & style endpoints
+│           └── ...         — Expressions, layers, events, 3D terrain
 ├── README.md               — Project documentation & setup guide
 └── LICENSE.md              — MIT License
 ```
