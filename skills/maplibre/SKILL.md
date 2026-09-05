@@ -38,9 +38,11 @@ Every MapLibre implementation must fulfill these four lifecycle phases:
 <div id="map"></div>
 
 <link href="https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.css" rel="stylesheet" />
-<script src="https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.js"></script>
 
-<script>
+<script type="module">
+  import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.mjs';
+  // (In modern bundlers: import * as maplibregl from 'maplibre-gl';)
+
   // 2. Map Constructor Contract (Strict [lng, lat] Order)
   const map = new maplibregl.Map({
     container: 'map',

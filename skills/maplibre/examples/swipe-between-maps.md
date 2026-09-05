@@ -17,12 +17,10 @@ Synchronize two side-by-side MapLibre map instances with an interactive vertical
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Split-Screen Swipe Comparison Slider 🪟</title>
   
-  <!-- MapLibre GL JS -->
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
-  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-  
-  <!-- MapLibre GL Compare Plugin -->
+  <!-- MapLibre GL JS (v6.7.0 ESM or v5.24.0 UMD) -->
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.7.0/dist/maplibre-gl.css" />
   <link rel="stylesheet" href="https://unpkg.com/@maplibre/maplibre-gl-compare@0.5.0/dist/maplibre-gl-compare.css" />
+  <script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
   <script src="https://unpkg.com/@maplibre/maplibre-gl-compare@0.5.0/dist/maplibre-gl-compare.js"></script>
 
   <style>
