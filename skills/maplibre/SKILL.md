@@ -24,6 +24,21 @@ Maintained by **[MapSnippets](https://mapsnippets.org/)** — Open-source geospa
 
 ---
 
+## 🧭 How to Use This Skill — Mandatory Agent Workflow
+
+When building, modifying, or debugging any MapLibre GL JS map, **NEVER guess API properties, hallucinate methods, or rely on outdated pre-trained memory**. Always look for the verified, canonical patterns within this skill:
+
+1. **Look Up Verified Task Recipes First (`examples/`):**
+   - Consult **[`examples/INDEX.md`](examples/INDEX.md)** to locate the exact runnable recipe matching your task (e.g. 3D terrain, building extrusion, clustering, choropleth, drawing, swipe comparison, camera flight).
+   - Read the corresponding recipe file before writing code. Every recipe contains self-contained, tested HTML/CSS/JS with zero boilerplate errors.
+2. **Look Up Declarative Specifications & API Contracts (`references/`):**
+   - Consult **[`references/INDEX.md`](references/INDEX.md)** for exact paint/layout properties, expressions syntax, layer types, and MapTiler vector schemas.
+   - For troubleshooting, always check **[`references/patterns-gotchas.md`](references/patterns-gotchas.md)** to avoid common pitfalls (coordinate inversion, custom marker transform overrides, WebGL context leaks, and `style.load` race conditions).
+3. **Adhere to Core Design Contracts:**
+   - Follow the foundational contracts below for lifecycle, coordinates, layer typing, and marker architecture.
+
+---
+
 ## 📐 Core Structural Design Contracts
 
 ### 1. Universal Map Lifecycle & Initialization Contract
