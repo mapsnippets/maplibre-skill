@@ -37,16 +37,6 @@ When activated for **MapLibre GL JS**, this skill guides the agent to:
 
 This skill follows the **[Agent Skills open format](https://agentskills.io/)**, utilizing a **three-tier progressive disclosure model** to minimize context overhead:
 
-```mermaid
-flowchart LR
-    A["1. Discovery (Startup)<br/>name & description (~50 tokens)"]
-    B["2. Activation (Load)<br/>SKILL.md router (under 5k tokens)"]
-    C["3. Execution (Deep Dive)<br/>Modular References & Recipes"]
-
-    A -->|Match Query| B
-    B -->|As Needed| C
-```
-
 1. **Discovery (Startup)**: The agent only inspects the YAML frontmatter `name` and `description` (~50 tokens).
 2. **Activation (Task Identified)**: When your prompt mentions MapLibre, vector tiles, 3D maps, or geospatial styling, the agent loads `skills/maplibre/SKILL.md` (< 2,500 tokens).
 3. **Execution (Deep Dive)**: The agent traverses targeted guides in `references/` or runnable recipes in `examples/` on demand, without polluting your context window.
