@@ -986,3 +986,94 @@ All label layers (`*_label`, `place_label`, `poi_*`, `water_name`, `road_label`)
   ['get', 'name']
 ]
 ```
+
+---
+
+## 11. MapTiler Countries Vector Tile Schema (`schema/countries/`)
+
+MapTiler provides a dedicated global vector tileset for sovereign nations, administrative subdivisions, and postal boundaries. This tileset is the standard, authoritative data source for thematic choropleth maps, regional dashboards, boundary highlighting, and geographic statistics.
+
+### Tileset TileJSON Endpoint:
+```text
+https://api.maptiler.com/tiles/countries/tiles.json?key=YOUR_MAPTILER_API_KEY
+```
+* **Tile Format**: Mapbox Vector Tile (`.pbf` MVT protobuf v2.1)
+* **Zoom Range**: Zoom `0` to `11`
+* **Projection**: Spherical Mercator (`EPSG:3857`)
+* **Source Layers**: `administrative`, `postal`
+
+---
+
+### `source-layer: 'administrative'`
+> **Layer containing national sovereign borders and first-level regional administrative subdivisions.**  
+* **Geometry**: `Polygon` / `MultiPolygon` | **Zoom Range**: `z0` to `z11`
+
+| Field Name | Type | Description |
+| :--- | :--- | :--- |
+| **`gid`** | Integer | Unique global numeric identifier for the geographic feature. |
+| **`level`** | Integer | Administrative hierarchy level:<br>• `0`: Sovereign nation / country / state (e.g., France, Germany, USA).<br>• `1`: First-level administrative subdivision (e.g., US State, German Bundesland, French Region). |
+| **`level_0`** | String | ISO 3166-1 alpha-2 code of the parent sovereign nation (e.g., `'NL'`, `'US'`, `'DE'`). |
+| **`iso_a2`** | String | Country code in ISO 3166-1 alpha-2 format (e.g., `'NL'`, `'BE'`, `'GB'`, `'FR'`). |
+| **`code`** | String | Country code in ISO 3166-1 alpha-3 format (e.g., `'NLD'`, `'BEL'`, `'GBR'`, `'FRA'`). |
+| **`name`** | String | Primary localized name of the country or administrative entity. |
+| **`name:en`** | String | Official English name translation. |
+| **`name:{code}`** | String | Localized translations into specific languages (`name:de`, `name:es`, `name:fr`, etc.). |
+| **`area`** | Number | Land surface area of the entity in square kilometers (km²). |
+| **`continent`** | String | Continent designation (e.g., `'Europe'`, `'North America'`, `'Asia'`). |
+| **`wikidata`** | String | Permanent Wikidata QID entity identifier (e.g., `'Q55'` for Netherlands, `'Q183'` for Germany). |
+
+---
+
+### `source-layer: 'postal'`
+> **Layer containing postal code boundaries and regional post zones.**  
+* **Geometry**: `Polygon` / `MultiPolygon` | **Zoom Range**: `z0` to `z11`
+* **Attributes**: `gid`, `level`, `iso_a2`, `code`, `name`, `area`, `level_0`, `level_1`, `level_2`.
+
+---
+
+### 💡 Thematic Choropleth Architectural Pattern
+When requested to build a choropleth or regional thematic map (e.g. population density, GDP, election outcomes, climate metrics):
+
+1. **Avoid Heavy GeoJSON Bloat:** Never download or embed megabytes of raw polygon coordinates in client-side code.
+2. **Add Native Vector Source:** Add the `maptiler-countries` vector source directly:
+   ```javascript
+   map.addSource('maptiler-countries', {
+     type: 'vector',
+     url: `https://api.maptiler.com/tiles/countries/tiles.json?key=${MAPTILER_KEY}`
+   });
+   ```
+3. **Filter to Sovereign Countries:** Use `filter: ['==', ['get', 'level'], 0]` (or `level: 1` for states/provinces).
+4. **Data-Driven `match` Expression:** Map client-side statistical metrics to `['get', 'iso_a2']`:
+   ```javascript
+   map.addLayer({
+     id: 'countries-choropleth',
+     type: 'fill',
+     source: 'maptiler-countries',
+     'source-layer': 'administrative',
+     filter: ['==', ['get', 'level'], 0],
+     paint: {
+       'fill-color': [
+         'match',
+         ['get', 'iso_a2'],
+         'NL', '#b30000',
+         'BE', '#b30000',
+         'GB', '#e34a33',
+         'DE', '#fc8d59',
+         'FR', '#fdcc8a',
+         'rgba(255, 255, 255, 0.05)' // default fallback
+       ],
+       'fill-opacity': 0.8,
+       'fill-outline-color': 'rgba(255, 255, 255, 0.4)'
+     }
+   });
+   ```
+5. **Popups and Interactivity:** On click or hover, access standard properties directly:
+   ```javascript
+   map.on('click', 'countries-choropleth', (e) => {
+     const p = e.features[0].properties;
+     new maplibregl.Popup()
+       .setLngLat(e.lngLat)
+       .setHTML(`<b>${p['name:en'] || p.name} (${p.iso_a2})</b><br>Area: ${Number(p.area).toLocaleString()} km²`)
+       .addTo(map);
+   });
+   ```

@@ -31,6 +31,7 @@
 * **[color-relief-layer.md](color-relief-layer.md)** — Dynamic elevation color relief hypsometric ramps on DEM.
 
 ### 4. 🎨 Data & Vector Styling
+* **[vector-countries-choropleth.md](vector-countries-choropleth.md)** — Thematic choropleth using official MapTiler Countries vector tileset (`schema/countries/`), `iso_a2` data joining, and formatted legend.
 * **[geojson-choropleth.md](geojson-choropleth.md)** — Choropleth using data-driven expressions (`step` / `interpolate`).
 * **[vector-contour-lines.md](vector-contour-lines.md)** — Vector contour elevation lines with dynamic line labels and intervals.
 * **[hover-feature-state.md](hover-feature-state.md)** — 60 FPS polygon hover highlights with `map.setFeatureState`.

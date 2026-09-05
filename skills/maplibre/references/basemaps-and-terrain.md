@@ -76,3 +76,16 @@ map.on("load", () => {
   map.setTerrain({ source: "terrain", exaggeration: 1.5 });
 });
 ```
+
+---
+
+## 4. Specialized MapTiler Vector Data Tilesets
+
+Beyond standard street and satellite basemaps, MapTiler Cloud delivers dedicated vector data tilesets for thematic styling, regional analysis, and administrative overlays:
+
+| Tileset Name | TileJSON Endpoint | Layers & Content | Use Cases |
+| :--- | :--- | :--- | :--- |
+| **MapTiler Countries** | `https://api.maptiler.com/tiles/countries/tiles.json?key=YOUR_API_KEY` | `administrative` (level 0 sovereign countries, level 1 subdivisions/states), `postal` | Thematic choropleth maps, national boundary overlays, regional demographics |
+| **MapTiler Contours** | `https://api.maptiler.com/tiles/contours/tiles.json?key=YOUR_API_KEY` | `contour` (elevation isolines, index contours, height values in meters) | Topographic hiking overlays, terrain contour analysis |
+| **MapTiler Cadastre** | `https://api.maptiler.com/tiles/cadastre/tiles.json?key=YOUR_API_KEY` | `parcel`, `zoning` (official property boundaries, cadastral identifiers) | Real estate, land registry, parcel boundary inspection |
+

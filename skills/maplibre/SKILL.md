@@ -111,10 +111,45 @@ MapLibre positions custom HTML markers by calculating pixel coordinates and writ
 
 ---
 
-### 4. Ecosystem Capability & Plugin Boundary Matrix
+### 4. Administrative Boundaries & Thematic Choropleths Contract
+When asked to build a choropleth, thematic map, or regional demographic visualization (e.g. population density, election results, revenue by nation):
+* ⚠️ **Do NOT embed or download multi-megabyte GeoJSON polygons** for global/national boundaries.
+* **The Native Vector Standard:** Always consume the official **MapTiler Countries Vector Tileset** (`schema/countries/`):
+  ```javascript
+  // 1. Add native pre-tiled vector boundary source
+  map.addSource('maptiler-countries', {
+    type: 'vector',
+    url: `https://api.maptiler.com/tiles/countries/tiles.json?key=${MAPTILER_KEY}`
+  });
+
+  // 2. Add Fill Layer joined on iso_a2
+  map.addLayer({
+    id: 'countries-choropleth',
+    type: 'fill',
+    source: 'maptiler-countries',
+    'source-layer': 'administrative',
+    filter: ['==', ['get', 'level'], 0], // level 0 = Sovereign Nations, level 1 = States/Provinces
+    paint: {
+      'fill-color': [
+        'match',
+        ['get', 'iso_a2'],
+        'NL', '#b30000', 'BE', '#b30000', 'GB', '#e34a33', 'DE', '#fc8d59',
+        '#fef0d9' // fallback
+      ],
+      'fill-opacity': 0.8,
+      'fill-outline-color': 'rgba(255, 255, 255, 0.4)'
+    }
+  });
+  ```
+* **Streaming Lifecycle Guard:** Always guard layer additions with `if (map.isStyleLoaded()) init(); else { map.on('style.load', init); map.on('load', init); map.on('styledata', init); }`.
+
+---
+
+### 5. Ecosystem Capability & Plugin Boundary Matrix
 
 | Capability | Architecture | Standard Implementation | Reference |
 | :--- | :--- | :--- | :--- |
+| **Choropleths** | **Native Vector Core** | MapTiler Countries tileset (`schema/countries/`) with `match` expression on `iso_a2` | [`examples/vector-countries-choropleth.md`](examples/vector-countries-choropleth.md) |
 | **Clustering** | **Native Core** | GeoJSON source: `{ cluster: true, clusterRadius: 50, clusterMaxZoom: 14 }` | [`examples/marker-clustering.md`](examples/marker-clustering.md) |
 | **3D Buildings** | **Native Core** | Layer `type: 'fill-extrusion'`, height from `['get', 'render_height']` | [`examples/3d-buildings-extrusion.md`](examples/3d-buildings-extrusion.md) |
 | **3D Terrain DEM** | **Native Core** | `map.setTerrain({ source: 'terrain-rgb', exaggeration: 1.5 })` | [`examples/3d-terrain-elevation.md`](examples/3d-terrain-elevation.md) |
@@ -129,11 +164,11 @@ MapLibre positions custom HTML markers by calculating pixel coordinates and writ
 
 | Category | Location | Contents |
 | :--- | :--- | :--- |
-| **Task Examples** | **[examples/INDEX.md](examples/INDEX.md)** | **40 atomic runnable recipes** across 3D Terrain, Globe, FlyTo, Clustering, Feature State, Satellite Hybrid, and Overlays |
+| **Task Examples** | **[examples/INDEX.md](examples/INDEX.md)** | **42 atomic runnable recipes** across 3D Terrain, Globe, FlyTo, Clustering, Feature State, Satellite Hybrid, and Overlays |
 | **Core API & Architecture** | **[references/INDEX.md](references/INDEX.md)** | Declarative specifications for `Map` methods, custom `IControl`, runtime styling, Three.js custom layers, WebGL lifecycle |
 | **Style Specification** | `references/style-spec-*`, `references/expressions.md` | Exhaustive MapLibre Style Specification v8, all 9 layer types, expressions DSL |
 | **Plugins Catalog** | **[references/plugins-catalog.md](references/plugins-catalog.md)** | Third-party plugins (@mapbox/mapbox-gl-draw, @maplibre/maplibre-gl-compare, Three.js, @maptiler/geocoding-control) |
-| **Basemaps & Schemas** | `references/basemaps-*`, `references/vector-tile-*` | MapTiler Planet v4 tile URLs, vector schemas, and REST endpoints |
+| **Basemaps & Schemas** | `references/basemaps-*`, `references/vector-tile-*` | MapTiler Planet v4 tile URLs, MapTiler Countries schema, and REST endpoints |
 | **Package Versions** | **[references/versions.md](references/versions.md)** | Pinned production releases for MapLibre GL JS (`v6.7.0`) and companion plugins |
 
 ---

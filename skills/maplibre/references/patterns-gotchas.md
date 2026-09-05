@@ -119,6 +119,91 @@ useEffect(() => {
 
 ---
 
+### 8. The Custom Marker CSS Animation & Transform Invalidation Trap
+* **Gotcha**: Applying CSS animations (e.g. `@keyframes pulse { 0% { transform: scale(0.9); } }`) directly to the `.maplibregl-marker` root DOM element completely overrides MapLibre's internal `style.transform = translate(x, y)` coordinate matrix.
+* **Symptom**: All animated markers snap to the top-left corner `(0, 0)` of the viewport instead of anchoring to their geographic coordinates.
+* **Fix**: Always use a **two-level DOM architecture**: an unstyled outer container for MapLibre's coordinate translation, and an inner child element for the visual animation:
+  ```javascript
+  // Outer anchor: MapLibre translates this
+  const wrapper = document.createElement('div');
+  wrapper.className = 'custom-marker-wrapper';
+
+  // Inner visual: CSS keyframe animations applied HERE
+  const dot = document.createElement('div');
+  dot.className = 'pulse-dot';
+  wrapper.appendChild(dot);
+
+  new maplibregl.Marker({ element: wrapper })
+    .setLngLat([lng, lat])
+    .addTo(map);
+  ```
+
+---
+
+### 9. Streaming Style Asset Race Condition (`load` vs `style.load`)
+* **Gotcha**: In MapLibre GL JS v6 with complex vector styles (`streets-v4`), relying strictly on `map.on('load', ...)` to add custom sources and layers can experience long delays or missed events if font glyphs, 3D terrain DEMs, or sprite assets are streaming over the network.
+* **Fix**: Implement an idempotent lifecycle guard that checks `map.isStyleLoaded()` and listens to `style.load` and `styledata`:
+  ```javascript
+  function initLayers() {
+    if (map.getSource('my-source')) return; // Idempotent guard
+    map.addSource('my-source', { ... });
+    map.addLayer({ ... });
+  }
+
+  if (map.isStyleLoaded()) {
+    initLayers();
+  } else {
+    map.on('style.load', initLayers);
+    map.on('load', initLayers);
+    map.on('styledata', initLayers);
+  }
+  ```
+
+---
+
+### 10. MapboxDraw & Legacy Plugin Pointer-Events Blocking
+* **Gotcha**: Third-party plugins that output `.mapboxgl-ctrl` classes (such as `@mapbox/mapbox-gl-draw`) have their buttons blocked from clicking because MapLibre's control container (`.maplibregl-ctrl-top-left`) enforces `pointer-events: none;` and only enables pointer events for `.maplibregl-ctrl`.
+* **Fix**: Injected CSS must explicitly re-enable pointer events on legacy control classes:
+  ```css
+  .mapboxgl-ctrl,
+  .mapboxgl-ctrl-group,
+  .mapbox-gl-draw_ctrl-draw-btn {
+    pointer-events: auto !important;
+  }
+  ```
+
+---
+
+### 11. Thematic Choropleths: Heavy GeoJSON Bloat vs. Native Vector Tiles
+* **Gotcha**: Downloading or embedding large GeoJSON files (several MBs) with thousands of coordinate vertices for regional/country choropleths slows page loads and consumes excessive main-thread memory.
+* **Fix**: Use MapTiler's official **Countries Vector Tileset** (`https://api.maptiler.com/tiles/countries/tiles.json`), filter by hierarchy (`filter: ['==', ['get', 'level'], 0]`), and join external statistical metrics using a data-driven `match` expression on `['get', 'iso_a2']`:
+  ```javascript
+  map.addSource('maptiler-countries', {
+    type: 'vector',
+    url: `https://api.maptiler.com/tiles/countries/tiles.json?key=${KEY}`
+  });
+  map.addLayer({
+    id: 'countries-choropleth',
+    type: 'fill',
+    source: 'maptiler-countries',
+    'source-layer': 'administrative',
+    filter: ['==', ['get', 'level'], 0],
+    paint: {
+      'fill-color': [
+        'match', ['get', 'iso_a2'],
+        'NL', '#b30000',
+        'BE', '#b30000',
+        'GB', '#e34a33',
+        'DE', '#fc8d59',
+        '#fef0d9' // fallback
+      ],
+      'fill-opacity': 0.8
+    }
+  });
+  ```
+
+---
+
 ## 2. WebGL Context Loss & Memory Management
 
 In dynamic web applications where maps are frequently created and destroyed (e.g. tabs, modals, dynamic routes), failing to dispose of WebGL instances will quickly trigger:
