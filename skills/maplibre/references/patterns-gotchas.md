@@ -201,3 +201,23 @@ map.getCanvas().addEventListener('webglcontextrestored', () => {
     .setPopup(popup)
     .addTo(map);
   ```
+
+---
+
+### 10. Strict Layer-Type Paint Property Mismatches (`unknown property "fill-color"`)
+* **Gotcha**: Accidentally passing `fill-color` to a `type: 'line'` layer, or `line-color` to a `type: 'fill'` layer.
+* **Symptom**: MapLibre's internal style validator halts layer rendering with:
+  `Error: layers.<layer-id>.paint.<property>: unknown property "<property>"`
+* **Why**: Unlike Leaflet or SVG where attributes like `fill` and `stroke` are shared, MapLibre GL JS strictly prefixes paint properties by their exact layer type:
+  * **`fill` layers**: `'fill-color'`, `'fill-opacity'`, `'fill-outline-color'` (never `line-color` or `line-width`).
+  * **`line` layers**: `'line-color'`, `'line-width'`, `'line-opacity'`, `'line-dasharray'` (never `fill-color`).
+  * **`circle` layers**: `'circle-color'`, `'circle-radius'`, `'circle-stroke-color'`, `'circle-stroke-width'`.
+  * **`symbol` layers**: `'text-color'`, `'text-halo-color'`, `'icon-color'`, `'icon-halo-color'`.
+* **Fix**:
+  ```javascript
+  // ❌ BAD: fill-color throws on a line layer
+  map.addLayer({ id: 'route-line', type: 'line', source: 'route', paint: { 'fill-color': '#00D2FF', 'line-width': 3 } });
+
+  // ✅ GOOD: line-color on line layer
+  map.addLayer({ id: 'route-line', type: 'line', source: 'route', paint: { 'line-color': '#00D2FF', 'line-width': 3 } });
+  ```
