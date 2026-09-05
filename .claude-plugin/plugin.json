@@ -1,6 +1,6 @@
 {
   "name": "maplibre-skill",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "MapLibre GL JS AI Agent Skill by MapSnippets. Comprehensive instructions, best practices, and vector basemap patterns for AI coding assistants.",
   "author": {
     "name": "MapSnippets",
