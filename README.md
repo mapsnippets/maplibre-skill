@@ -1,5 +1,6 @@
 # MapLibre GL JS — Agent Skill 🗺️🤖
 
+[![Security: Grade A — Skills Directory](https://www.skillsdirectory.com/api/skills/mapsnippets-maplibre/badge)](https://www.skillsdirectory.com/skills/mapsnippets-maplibre)
 [![Agent Skills Specification](https://img.shields.io/badge/Agent_Skills-Specification_Compliant-0084FF?logo=anthropic&logoColor=white)](https://agentskills.io/specification)
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-Plugin-7952B3?logo=anthropic&logoColor=white)](https://code.claude.com)
 [![Skills CLI](https://img.shields.io/badge/Skills_CLI-npx_skills_add-success)](https://github.com/vercel-labs/skills)
